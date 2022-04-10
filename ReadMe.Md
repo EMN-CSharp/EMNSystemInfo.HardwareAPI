@@ -38,7 +38,7 @@ EMNSystemInfo.HardwareAPI is a hardware library for Windows based on [Libre Hard
 ## How does it work?
 The main component is the LibrarySettings class, whose task is provide library configuration options, like the kernel driver name, and provide the Initialize & Close methods that prepare the library to use its components and free the resources when it's no longer needed, respectively.<br/>This library has static classes that represent a hardware group, some of them have requirements about library initialization and execution with admin privileges.<br/>This table shows the hardware group classes and its requirements:
 
-| Class name| ¿Requires library initialization? | ¿Requires admin privileges? |
+| Class name| Requires library initialization? | Requires admin privileges? |
 | --- | --- | --- |
 | Batteries| No | No |
 | Processors| Yes | Yes |
