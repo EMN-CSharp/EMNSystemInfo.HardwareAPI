@@ -1,0 +1,10 @@
+*.user
+*.suo
+bin/
+EMNSystemInfo.HardwareAPI/.vs/
+EMNSystemInfo.HardwareAPI/bin/
+EMNSystemInfo.HardwareAPI/obj/
+EMNSystemInfo.HardwareAPITest/.vs/
+EMNSystemInfo.HardwareAPITest/bin/
+EMNSystemInfo.HardwareAPITest/obj/
+.vs/

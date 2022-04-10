@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net472;netstandard2.0;net5.0;net6.0</TargetFrameworks>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <AssemblyTitle>EMNSystemInfo.HardwareAPI</AssemblyTitle>
+    <Product>EMNSystemInfo.HardwareAPI</Product>
+    <Company>EMN-CSharp</Company>
+    <Copyright>Copyright © EMN-CSharp and Contributors. | Partial Copyright © LibreHardwareMonitor and Contributors. | Partial Copyright © Michael Möller &lt;mmoeller@openhardwaremonitor.org&gt; and Contributors.</Copyright>
+    <Version>0.1.40.8</Version>
+    <FileVersion>0.1.40.8</FileVersion>
+    <ProductVersion>0.1.40.8</ProductVersion>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <Folder Include="LPC\EC\" />
+    <Folder Include="Resources\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\inpout32.dll" />
+    <EmbeddedResource Include="Resources\inpoutx64.dll" />
+    <EmbeddedResource Include="Resources\WinRing0.sys" />
+    <EmbeddedResource Include="Resources\WinRing0x64.sys" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
+    <PackageReference Include="System.IO.Ports" Version="6.0.0" />
+    <PackageReference Include="System.IO.FileSystem.AccessControl" Version="5.0.0" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net5.0' OR '$(TargetFramework)' == 'net6.0'">
+    <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
+    <PackageReference Include="System.IO.Ports" Version="6.0.0" />
+    <PackageReference Include="System.Management" Version="5.0.0" />
+    <PackageReference Include="System.IO.FileSystem.AccessControl" Version="5.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Management" Version="5.0.0" />
+  </ItemGroup>
+
+</Project>
