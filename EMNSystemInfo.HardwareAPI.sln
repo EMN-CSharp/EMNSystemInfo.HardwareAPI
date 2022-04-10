@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EMNSystemInfo.HardwareAPI",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EMNSystemInfo.HardwareAPITest", "EMNSystemInfo.HardwareAPITest\EMNSystemInfo.HardwareAPITest.csproj", "{EEF8DD97-9BF6-4A62-94E0-8ECEA0022DD0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMNSystemInfo.HardwareAPIDemoWF", "EMNSystemInfo.HardwareAPIDemoWF\EMNSystemInfo.HardwareAPIDemoWF.csproj", "{69B54CC0-077E-44BF-AFEF-46AEA64A9545}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
