@@ -499,7 +499,7 @@ namespace EMNSystemInfo.HardwareAPITest
                                 type = "Visual Computing Board";
                                 break;
                             case NvidiaTempSensorType.VisualComputingInlet:
-                                type = "Visua Computing Inlet";
+                                type = "Visual Computing Inlet";
                                 break;
                             case NvidiaTempSensorType.VisualComputingOutlet:
                                 type = "Visual Computing Outlet";
@@ -525,7 +525,7 @@ namespace EMNSystemInfo.HardwareAPITest
                                 type = "Memory";
                                 break;
                             case NvidiaClockType.Shader:
-                                type = "Processor";
+                                type = "Shader";
                                 break;
                             case NvidiaClockType.Video:
                                 type = "Video";
