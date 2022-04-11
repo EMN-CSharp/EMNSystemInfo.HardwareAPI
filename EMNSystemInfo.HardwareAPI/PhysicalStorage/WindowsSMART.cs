@@ -13,11 +13,29 @@ using EMNSystemInfo.HardwareAPI.NativeInterop;
 
 namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
 {
+    /// <summary>
+    /// Drive health
+    /// </summary>
     public enum DriveHealth
     {
+        /// <summary>
+        /// Drive health is unknown
+        /// </summary>
         Unknown,
+
+        /// <summary>
+        /// An error occurred during health query
+        /// </summary>
         Error,
+
+        /// <summary>
+        /// Drive health is good
+        /// </summary>
         Good,
+
+        /// <summary>
+        /// Drive health is bad
+        /// </summary>
         Bad
     }
 

@@ -11,18 +11,40 @@ using System.Collections.Generic;
 
 namespace EMNSystemInfo.HardwareAPI.LPC
 {
+    /// <summary>
+    /// LPC chip type
+    /// </summary>
     public enum LPCType
     {
+        /// <summary>
+        /// Embedded Controller. Convert your <see cref="LPC"/> instance into <see cref="EC.EmbeddedController"/>.
+        /// </summary>
         EmbeddedController,
+
+        /// <summary>
+        /// Super I/O. Convert your <see cref="LPC"/> instance into <see cref="SuperIOHardware"/>.
+        /// </summary>
         SuperIO
     }
 
+    /// <summary>
+    /// Abstract class that represents a base LPC chip
+    /// </summary>
     public abstract class LPC
     {
+        /// <summary>
+        /// Gets the chip name
+        /// </summary>
         public string ChipName { get; internal set; }
 
+        /// <summary>
+        /// Gets the LPC chip type
+        /// </summary>
         public LPCType Type { get; internal set; }
 
+        /// <summary>
+        /// Frees the resources used in this class. It is not necessary to call this method, <see cref="LPCChips.DisposeLPCChips"/> does all the work.
+        /// </summary>
         public virtual void Close() { }
     }
 
@@ -33,6 +55,9 @@ namespace EMNSystemInfo.HardwareAPI.LPC
     {
         private static bool _lpcsAreLoaded = false;
 
+        /// <summary>
+        /// LPC chips list
+        /// </summary>
         public static LPC[] List { get; internal set; } = Array.Empty<LPC>();
 
         /// <summary>
@@ -66,6 +91,9 @@ namespace EMNSystemInfo.HardwareAPI.LPC
             return true;
         }
 
+        /// <summary>
+        /// Frees the resources used by <see cref="LPC"/> classes.
+        /// </summary>
         public static void DisposeLPCChips()
         {
             foreach (LPC lpc in List)

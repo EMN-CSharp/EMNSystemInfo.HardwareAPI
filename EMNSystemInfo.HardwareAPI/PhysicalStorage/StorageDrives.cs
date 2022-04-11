@@ -11,10 +11,19 @@ using System.Management;
 
 namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
 {
+    /// <summary>
+    /// Class that represents a list of physical drives connected to the system. Administrator privileges are required.
+    /// </summary>
     public static class StorageDrives
     {
+        /// <summary>
+        /// Drives list
+        /// </summary>
         public static Drive[] List { get; private set; } = Array.Empty<Drive>();
 
+        /// <summary>
+        /// Loads all the connected drives into the <see cref="List"/> property.
+        /// </summary>
         public static void LoadDrives()
         {
             //https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-diskdrive
@@ -45,6 +54,9 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
             List = drives.ToArray();
         }
 
+        /// <summary>
+        /// Frees the resources used by the <see cref="Drive"/> classes.
+        /// </summary>
         public static void DisposeDrives()
         {
             foreach (Drive storage in List)

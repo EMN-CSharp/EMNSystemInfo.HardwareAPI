@@ -10,11 +10,17 @@ using System.Linq;
 
 namespace EMNSystemInfo.HardwareAPI.GPU
 {
+    /// <summary>
+    /// Class that repersents an individual Intel integrated GPU
+    /// </summary>
     public class IntelIntegratedGPU : GPU
     {
         private readonly IntelCPU _intelCPU;
         private double? _powerSensor;
 
+        /// <summary>
+        /// Gets the GPU total power, in watts (W). This property is nullable.
+        /// </summary>
         public double? TotalPower => _powerSensor;
 
         internal IntelIntegratedGPU(IntelCPU intelCPU, string deviceId)
@@ -29,6 +35,9 @@ namespace EMNSystemInfo.HardwareAPI.GPU
             intelCPU.Update();
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public override void Update()
         {
             base.Update();

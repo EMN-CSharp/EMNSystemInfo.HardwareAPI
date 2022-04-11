@@ -14,6 +14,9 @@ using EMNSystemInfo.HardwareAPI.NativeInterop;
 
 namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
 {
+    /// <summary>
+    /// Class that represents a S.M.A.R.T. sensor
+    /// </summary>
     public class SMARTSensor
     {
         public SMARTAttribute Attribute { get; internal set; }
@@ -29,6 +32,9 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
         public double Value { get; internal set; }
     }
 
+    /// <summary>
+    /// Class that represents an individual drive with ATA capabilities.
+    /// </summary>
     public abstract class ATADrive : Drive
     {
         protected const byte POWERONHOURS_ATTRIBUTE = 0x09;
@@ -39,6 +45,9 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
 
         private readonly List<SMARTSensor> _sensors = new();
 
+        /// <summary>
+        /// Gets the S.M.A.R.T. sensors
+        /// </summary>
         public SMARTSensor[] SMARTSensors
         {
             get
@@ -90,12 +99,24 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
             }
         }
 
+        /// <summary>
+        /// Gets the drive health
+        /// </summary>
         public DriveHealth DriveHealth { get; }
 
+        /// <summary>
+        /// Gets the drive temperature, in degrees Celsius (°C). This property is nullable
+        /// </summary>
         public double? Temperature { get; protected set; }
 
+        /// <summary>
+        /// Gets the drive power-on time. This property is nullable
+        /// </summary>
         public TimeSpan? PowerOnTime { get; protected set; }
 
+        /// <summary>
+        /// Gets the drive power cycles. This property is nullable.
+        /// </summary>
         public ulong? PowerCycleCount { get; protected set; }
 
         /// <summary>

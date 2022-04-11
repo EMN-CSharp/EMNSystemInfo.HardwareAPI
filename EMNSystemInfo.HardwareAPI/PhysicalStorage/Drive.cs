@@ -11,14 +11,32 @@ using EMNSystemInfo.HardwareAPI.NativeInterop;
 
 namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
 {
+    /// <summary>
+    /// Physical drive type
+    /// </summary>
     public enum PhysicalDriveType
     {
         Generic,
+
+        /// <summary>
+        /// Hard disk or generic drive
+        /// </summary>
         HDD,
+
+        /// <summary>
+        /// SSD drive
+        /// </summary>
         SSD,
+
+        /// <summary>
+        /// NVM Express (NVMe) drive. Convert your <see cref="Drive"/> instance into <see cref="NVMeDrive"/>
+        /// </summary>
         NVMe
     }
 
+    /// <summary>
+    /// Class that represents an individual generic drive.
+    /// </summary>
     public class Drive
     {
         private readonly DrivePerformanceCounters _drivePCs;
@@ -28,26 +46,59 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
         private DateTime _lastUpdate = DateTime.MinValue;
         private double _usageSensor;
 
+        /// <summary>
+        /// Gets the drive name
+        /// </summary>
         public string Name { get; protected set; }
 
+        /// <summary>
+        /// Gets the drive serial number
+        /// </summary>
         public string SerialNumber { get; protected set; }
 
+        /// <summary>
+        /// Gets the drive capacity, in bytes.
+        /// </summary>
         public ulong Capacity => _storageInfo.DiskSize;
 
+        /// <summary>
+        /// Gets the drive firmware revision
+        /// </summary>
         public string FirmwareRevision { get; protected set; }
 
+        /// <summary>
+        /// Gets the drive geometry information
+        /// </summary>
         public DriveGeometry Geometry { get; protected set; }
 
+        /// <summary>
+        /// Gets if this drive is an ATA drive. If it's <see langword="true"/>, you can convert yout <see cref="Drive"/> instance into <see cref="ATADrive"/>
+        /// </summary>
         public bool IsATADrive { get; protected set; }
 
+        /// <summary>
+        /// Gets if this drive is removable
+        /// </summary>
         public bool IsRemovable => _storageInfo.Removable;
 
+        /// <summary>
+        /// Gets the logical drives of this drive.
+        /// </summary>
         public DriveInfo[] LogicalDrives { get; }
 
+        /// <summary>
+        /// Gets the device identifier
+        /// </summary>
         public string DeviceId => _storageInfo.DeviceId;
 
+        /// <summary>
+        /// Gets the drive index
+        /// </summary>
         public int Index => _storageInfo.Index;
 
+        /// <summary>
+        /// Gets the drive type.
+        /// </summary>
         public PhysicalDriveType Type { get; internal set; } = PhysicalDriveType.Generic;
 
         public double UsedCapacityPercentage => _usageSensor;

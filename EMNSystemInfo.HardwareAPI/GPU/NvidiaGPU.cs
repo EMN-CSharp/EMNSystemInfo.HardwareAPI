@@ -67,53 +67,146 @@ namespace EMNSystemInfo.HardwareAPI.GPU
         Unknown = -1
     }
 
+    /// <summary>
+    /// Clock type for NVIDIA GPUs
+    /// </summary>
     public enum NvidiaClockType
     {
+        /// <summary>
+        /// Graphics clock.
+        /// </summary>
         Graphics = 0,
+
+        /// <summary>
+        /// Memory clock.
+        /// </summary>
         Memory = 4,
-        Processor = 7,
+
+        /// <summary>
+        /// Shader clock.
+        /// </summary>
+        Shader = 7,
+
+        /// <summary>
+        /// Video clock.
+        /// </summary>
         Video = 8,
+
+        /// <summary>
+        /// Clock type is not defined.
+        /// </summary>
         Undefined = MAX_CLOCKS_PER_GPU
     }
 
+    /// <summary>
+    /// Load type for NVIDIA GPUs
+    /// </summary>
     public enum NvidiaLoadType
     {
+        /// <summary>
+        /// GPU load.
+        /// </summary>
         Gpu, // Core
+
+        /// <summary>
+        /// Framebuffer/memory controller load.
+        /// </summary>
         FrameBuffer, // Memory Controller
+
+        /// <summary>
+        /// Video engine load.
+        /// </summary>
         VideoEngine, // Video Engine
+
+        /// <summary>
+        /// Bus interface load.
+        /// </summary>
         BusInterface // Bus
     }
 
+    /// <summary>
+    /// Power sensor type for NVIDIA GPUs
+    /// </summary>
     public enum NvidiaPowerType : uint
     {
+        /// <summary>
+        /// GPU power.
+        /// </summary>
         Gpu = 0,
+
+        /// <summary>
+        /// GPU board power.
+        /// </summary>
         Board
     }
 
+    /// <summary>
+    /// Struct that represents a temperature sensor for NVIDIA GPUs.
+    /// </summary>
     public struct NvidiaTempSensor
     {
+        /// <summary>
+        /// Gets the temperature sensor type.
+        /// </summary>
         public NvidiaTempSensorType Type { get; set; }
+
+        /// <summary>
+        /// Gets the temperature sensor value, in degrees Celsius (°C).
+        /// </summary>
         public double Value { get; set; }
     }
 
+    /// <summary>
+    /// Struct that represents a clock speed sensor for NVIDIA GPUs.
+    /// </summary>
     public struct NvidiaClockSensor
     {
+        /// <summary>
+        /// Gets the clock sensor type.
+        /// </summary>
         public NvidiaClockType Type { get; set; }
+
+        /// <summary>
+        /// Gets the clock sensor value, in megahertz (MHz).
+        /// </summary>
         public double Value { get; set; }
     }
 
+    /// <summary>
+    /// Struct that represents a load sensor for NVIDIA GPUs.
+    /// </summary>
     public struct NvidiaLoadSensor
     {
+        /// <summary>
+        /// Gets the load sensor type.
+        /// </summary>
         public NvidiaLoadType Type { get; set; }
+
+        /// <summary>
+        /// Gets the load percentage value.
+        /// </summary>
         public double Value { get; set; }
     }
 
+    /// <summary>
+    /// Struct that represents a power sensor for NVIDIA GPUs.
+    /// </summary>
     public struct NvidiaPowerSensor
     {
+        /// <summary>
+        /// Gets the power sensor type.
+        /// </summary>
         public NvidiaPowerType Type { get; set; }
+
+        /// <summary>
+        /// Gets the power sensor value, in watts (W).
+        /// </summary>
         public double Value { get; set; }
     }
 
+    /// <summary>
+    /// Class that represents an individual NVIDIA GPU.
+    /// </summary>
     public sealed class NvidiaGPU : GPU
     {
         private readonly int _adapterIndex;
@@ -136,30 +229,69 @@ namespace EMNSystemInfo.HardwareAPI.GPU
         private double? _hotSpotTemperature;
         private double? _memoryJunctionTemperature;
 
+        /// <summary>
+        /// Gets the GPU clock speeds.
+        /// </summary>
         public NvidiaClockSensor[] ClockSpeeds => _clocks;
 
+        /// <summary>
+        /// Gets the GPU fan RPMs.
+        /// </summary>
         public double[] FanRPMs => _fans;
 
+        /// <summary>
+        /// Gets the GPU loads.
+        /// </summary>
         public NvidiaLoadSensor[] Loads => _loads;
 
+        /// <summary>
+        /// Gets the GPU free memory, in bytes.
+        /// </summary>
         public double MemoryFree => _memoryFree;
 
+        /// <summary>
+        /// Gets the GPU total memory, in bytes.
+        /// </summary>
         public double MemoryTotal => _memoryTotal;
 
+        /// <summary>
+        /// Gets the GPU used memory, in bytes.
+        /// </summary>
         public double MemoryUsed => _memoryUsed;
 
+        /// <summary>
+        /// Gets the GPU PCI-Express bus RX throughput, in bytes per second.
+        /// </summary>
         public double? PCIeThroughputRX => _pcieThroughputRx;
 
+        /// <summary>
+        /// Gets the GPU PCI-Express bus TX throughput, in bytes per second.
+        /// </summary>
         public double? PCIeThroughputTX => _pcieThroughputTx;
 
+        /// <summary>
+        /// Gets the GPU power sensors.
+        /// </summary>
         public NvidiaPowerSensor[] PowerSensors => _powers;
 
+        /// <summary>
+        /// Gets the GPU power usage.
+        /// </summary>
         public double PowerUsage => _powerUsage;
 
+        /// <summary>
+        /// Gets the GPU temperature sensors.
+        /// </summary>
         public NvidiaTempSensor[] Temperatures => _temperatures;
 
+        /// <summary>
+        /// Gets the GPU hot spot temperature, in degrees Celsius (°C).
+        /// </summary>
         public double? HotSpotTemperature => _hotSpotTemperature;
 
+        /// <summary>
+        /// Gets the GPU memory junction temperature, in degrees Celsius (°C).
+        /// </summary>
         public double? MemoryJunctionTemperature => _memoryJunctionTemperature;
 
         internal NvidiaGPU(int adapterIndex, NvPhysicalGpuHandle handle, NvDisplayHandle? displayHandle) : base()

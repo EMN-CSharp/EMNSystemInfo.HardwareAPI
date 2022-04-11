@@ -524,7 +524,7 @@ namespace EMNSystemInfo.HardwareAPITest
                             case NvidiaClockType.Memory:
                                 type = "Memory";
                                 break;
-                            case NvidiaClockType.Processor:
+                            case NvidiaClockType.Shader:
                                 type = "Processor";
                                 break;
                             case NvidiaClockType.Video:

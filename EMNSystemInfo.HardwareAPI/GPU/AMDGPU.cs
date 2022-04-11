@@ -10,26 +10,81 @@ using System;
 
 namespace EMNSystemInfo.HardwareAPI.GPU
 {
+    /// <summary>
+    /// Class that represents temperature sensors for AMD GPUs
+    /// </summary>
     public class AMDGPUTemperatures
     {
+        /// <summary>
+        /// Gets the GPU core temperature, in degrees Celsius (°C). This property is nullable.
+        /// </summary>
         public double? Core { get; internal set; }
+
+        /// <summary>
+        /// Gets the GPU hot spot temperature, in degrees Celsius (°C). This property is nullable.
+        /// </summary>
         public double? HotSpot { get; internal set; }
+
+        /// <summary>
+        /// Gets the GPU liquid temperature, in degrees Celsius (°C). This property is nullable.
+        /// </summary>
         public double? Liquid { get; internal set; }
+
+        /// <summary>
+        /// Gets the GPU memory temperature, in degrees Celsius (°C). This property is nullable.
+        /// </summary>
         public double? Memory { get; internal set; }
+
+        /// <summary>
+        /// Gets the GPU MVDD temperature, in degrees Celsius (°C). This property is nullable.
+        /// </summary>
         public double? MVDD { get; internal set; }
+
+        /// <summary>
+        /// Gets the GPU PLX temperature, in degrees Celsius (°C). This property is nullable.
+        /// </summary>
         public double? PLX { get; internal set; }
+
+        /// <summary>
+        /// Gets the GPU SoC temperature, in degrees Celsius (°C). This property is nullable.
+        /// </summary>
         public double? SoC { get; internal set; }
+
+        /// <summary>
+        /// Gets the GPU VDDC temperature, in degrees Celsius (°C). This property is nullable.
+        /// </summary>
         public double? VDDC { get; internal set; }
     }
 
+    /// <summary>
+    /// Class that represents power sensors for AMD GPUs
+    /// </summary>
     public class AMDGPUPowerSensors
     {
+        /// <summary>
+        /// Gets the GPU core power, in watts (W). This property is nullable.
+        /// </summary>
         public double? Core { get; internal set; }
+
+        /// <summary>
+        /// Gets the GPU PPT power, in watts (W). This property is nullable.
+        /// </summary>
         public double? PPT { get; internal set; }
+
+        /// <summary>
+        /// Gets the GPU SoC power, in watts (W). This property is nullable.
+        /// </summary>
         public double? SoC { get; internal set; }
+
+        /// <summary>
+        /// Gets the GPU total power, in watts (W). This property is nullable.
+        /// </summary>
         public double? Total { get; internal set; }
     }
 
+    /// <summary>
+    /// Class that represents an individual AMD GPU
+    /// </summary>
     public sealed class AMDGPU : GPU
     {
         private readonly int _adapterIndex;
@@ -50,16 +105,34 @@ namespace EMNSystemInfo.HardwareAPI.GPU
         private double? _socVoltage;
         private bool? _newQueryPmLogDataGetExists;
 
+        /// <summary>
+        /// Gets the GPU core clock speed, in megahertz (MHz). This property is nullable.
+        /// </summary>
         public double? CoreClockSpeed => _coreClock;
 
+        /// <summary>
+        /// Gets the GPU core load percantage. This property is nullable.
+        /// </summary>
         public double? CoreLoad => _coreLoad;
 
+        /// <summary>
+        /// Gets the GPU core voltage, in volts (V). This property is nullable.
+        /// </summary>
         public double? CoreVoltage => _coreVoltage;
 
+        /// <summary>
+        /// Gets the GPU fan speed, in revolutions per minute (RPM). This property is nullable.
+        /// </summary>
         public double? FanRPM => _fan;
 
+        /// <summary>
+        /// Gets the GPU fan speed percentage. This property is nullable.
+        /// </summary>
         public double? FanSpeedPercentage => _fanControlPercentage;
 
+        /// <summary>
+        /// Gets the GPU fullscreen FPS. This property is nullable.
+        /// </summary>
         public double? FullscreenFPS
         {
             get
@@ -72,22 +145,49 @@ namespace EMNSystemInfo.HardwareAPI.GPU
             }
         }
 
+        /// <summary>
+        /// Gets the GPU memory clock speed, in megahertz (MHz). This property is nullable.
+        /// </summary>
         public double? MemoryClockSpeed => _memoryClock;
 
+        /// <summary>
+        /// Gets the GPU memory load percentage. This property is nullable.
+        /// </summary>
         public double? MemoryLoad => _memoryLoad;
 
+        /// <summary>
+        /// Gets the GPU memory voltage, in volts (V). This property is nullable.
+        /// </summary>
         public double? MemoryVoltage => _memoryVoltage;
 
+        /// <summary>
+        /// Gets the GPU SoC clock speed, in megahertz (MHz). This property is nullable.
+        /// </summary>
         public double? SoCClock => _socClock;
 
+        /// <summary>
+        /// Gets the GPU SoC voltage, in volts (V). This property is nullable.
+        /// </summary>
         public double? SoCVoltage => _socVoltage;
 
+        /// <summary>
+        /// Gets the GPU temperature sensors.
+        /// </summary>
         public AMDGPUTemperatures Temperatures { get; private set; } = new();
 
+        /// <summary>
+        /// Gets the GPU power sensors.
+        /// </summary>
         public AMDGPUPowerSensors PowerSensors { get; private set; } = new();
 
+        /// <summary>
+        /// Gets the GPU bus number.
+        /// </summary>
         public int BusNumber { get; }
 
+        /// <summary>
+        /// Gets the GPU device number.
+        /// </summary>
         public int DeviceNumber { get; }
 
         internal AMDGPU(ATIADLxx.ADLAdapterInfo adapterInfo) 

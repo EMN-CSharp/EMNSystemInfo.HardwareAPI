@@ -38,6 +38,9 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
         VolatileMemoryBackupDeviceFailed,
     }
 
+    /// <summary>
+    /// Class that represents an individual NVMe drive.
+    /// </summary>
     public sealed class NVMeDrive : Drive
     {
         private const ulong Scale = 1000000;

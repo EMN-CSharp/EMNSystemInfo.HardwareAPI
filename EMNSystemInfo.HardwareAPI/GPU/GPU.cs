@@ -70,6 +70,9 @@ namespace EMNSystemInfo.HardwareAPI.GPU
         /// </summary>
         public GPUType Type { get; internal set; } = GPUType.Generic;
 
+        /// <summary>
+        /// Updates all the GPU properties.
+        /// </summary>
         public virtual void Update()
         {
             if (_d3dDeviceId != null && D3DDisplayDevice.GetDeviceInfoByIdentifier(_d3dDeviceId, out D3DDisplayDevice.D3DDeviceInfo deviceInfo))

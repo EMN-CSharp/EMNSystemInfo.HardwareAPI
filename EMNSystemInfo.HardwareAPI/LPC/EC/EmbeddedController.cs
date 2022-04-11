@@ -10,6 +10,9 @@ using System.Linq;
 
 namespace EMNSystemInfo.HardwareAPI.LPC.EC
 {
+    /// <summary>
+    /// Class that represents an Embedded Controller sensor
+    /// </summary>
     public class ECSensor
     {
         public ECSensorType Type { get; internal set; }
@@ -45,6 +48,9 @@ namespace EMNSystemInfo.HardwareAPI.LPC.EC
         Max
     };
 
+    /// <summary>
+    /// Class that represents an individual Embedded Controller LPC chip
+    /// </summary>
     public abstract class EmbeddedController : LPC
     {
         private static readonly Dictionary<ECSensorType, EmbeddedControllerSource> _knownSensors = new()
@@ -155,6 +161,9 @@ namespace EMNSystemInfo.HardwareAPI.LPC.EC
         private readonly ushort[] _registers;
         private readonly byte[] _data;
 
+        /// <summary>
+        /// Gets the Embedded Controller sensors
+        /// </summary>
         public ECSensor[] Sensors => _sensors.ToArray();
 
         internal EmbeddedController(IEnumerable<EmbeddedControllerSource> sources)

@@ -9,6 +9,9 @@ namespace EMNSystemInfo.HardwareAPI
 {
     public delegate void ControlEventHandler(Control control);
 
+    /// <summary>
+    /// Class that represents a fan control.
+    /// </summary>
     public class Control : IControl
     {
         private ControlMode _mode;

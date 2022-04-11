@@ -11,28 +11,66 @@ using System.Threading;
 
 namespace EMNSystemInfo.HardwareAPI.LPC
 {
+    /// <summary>
+    /// Class that represents a LPC sensor
+    /// </summary>
     public class LPCSensor
     {
+        /// <summary>
+        /// Sensor identifier
+        /// </summary>
         public string Identifier { get; internal set; }
+
+        /// <summary>
+        /// Sensor value
+        /// </summary>
         public double? Value { get; set; }
     }
 
+    /// <summary>
+    /// Class that represents a LPC voltage sensor
+    /// </summary>
     public class LPCVoltageSensor
     {
+        /// <summary>
+        /// Sensor identifier
+        /// </summary>
         public string Identifier { get; internal set; }
+
+        /// <summary>
+        /// Sensor value, in volts (V).
+        /// </summary>
         public double? Value { get; internal set; }
-        public double InputResistance { get; internal set; }
-        public double ReferenceResistance { get; internal set; }
-        public double ReferenceVoltage { get; internal set; }
+
+        internal double InputResistance { get; set; }
+        internal double ReferenceResistance { get; set; }
+        internal double ReferenceVoltage { get; set; }
     }
 
+    /// <summary>
+    /// Class that represents an LPC fan control sensor.
+    /// </summary>
     public class LPCControlSensor : IControlSensor
     {
+        /// <summary>
+        /// Sensor identifier
+        /// </summary>
         public string Identifier { get; internal set; }
+
+        /// <summary>
+        /// Gets the fan controller.
+        /// </summary>
         public Control Control { get; internal set; }
+
+        /// <summary>
+        /// Sensor value
+        /// </summary>
         public double? Value { get; internal set; }
     }
 
+    /// <summary>
+    /// Class that represents an individual Super I/O LPC chip.
+    /// </summary>
     public sealed class SuperIOHardware : LPC
     {
         private readonly List<LPCControlSensor> _controls = new();
@@ -48,9 +86,24 @@ namespace EMNSystemInfo.HardwareAPI.LPC
         private readonly List<LPCSensor> _temperatures = new();
         private readonly List<LPCVoltageSensor> _voltages = new();
 
+        /// <summary>
+        /// Gets the control sensors
+        /// </summary>
         public LPCControlSensor[] ControlSensors => _controls.ToArray();
+
+        /// <summary>
+        /// Gets the fan sensors
+        /// </summary>
         public LPCSensor[] Fans => _fans.ToArray();
+
+        /// <summary>
+        /// Gets the temperature sensors
+        /// </summary>
         public LPCSensor[] Temperatures => _temperatures.ToArray();
+
+        /// <summary>
+        /// Gets the voltage sensors
+        /// </summary>
         public LPCVoltageSensor[] Voltages => _voltages.ToArray();
 
         internal SuperIOHardware(ISuperIO superIO, MotherboardManufacturer manufacturer, MotherboardModel model)
