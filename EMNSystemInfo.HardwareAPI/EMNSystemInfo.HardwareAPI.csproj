@@ -11,9 +11,16 @@
     <Product>EMNSystemInfo.HardwareAPI</Product>
     <Company>EMN-CSharp</Company>
     <Copyright>Copyright © EMN-CSharp and Contributors. | Partial Copyright © LibreHardwareMonitor and Contributors. | Partial Copyright © Michael Möller &lt;mmoeller@openhardwaremonitor.org&gt; and Contributors.</Copyright>
-    <Version>0.1.40.8</Version>
-    <FileVersion>0.1.40.8</FileVersion>
-    <ProductVersion>0.1.40.8</ProductVersion>
+    <Version>0.1.45.11</Version>
+    <FileVersion>0.1.4545.1111</FileVersion>
+    <ProductVersion>0.1.45.11</ProductVersion>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <Description>EMNSystemInfo.HardwareAPI is a hardware library for Windows based on Libre Hardware Monitor. It provides a base model to access hardware information.</Description>
+    <PackageProjectUrl />
+    <RepositoryUrl>https://github.com/EMN-CSharp/EMNSystemInfo.HardwareAPI/</RepositoryUrl>
+    <PackageReleaseNotes />
+    <PackageTags>open-source opensource csharp hardware dotnet hardware information hardware monitoring library</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   
   <ItemGroup>
@@ -43,6 +50,12 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Management" Version="5.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
