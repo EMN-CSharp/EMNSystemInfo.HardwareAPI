@@ -56,7 +56,7 @@ Get info about installed CPUs (admin privileges are required)
 ``` c#
 using EMNSystemInfo.HardwareAPI.CPU;
 
-// Set kernel driver names
+// Set name and display name for the kernel driver
 LibrarySettings.KernelDriverName = "CPUInfoExampleKrnlDrv";
 LibrarySettings.KernelDriverDisplayName = "CPU Info Example Kernel Driver";
 LibrarySettings.Initialize(); // It's necessary to initialize the library to get CPU info
@@ -64,7 +64,7 @@ LibrarySettings.Initialize(); // It's necessary to initialize the library to get
 Processors.LoadProcessors(); // Load CPUs into the List property
 foreach (Processor p in Processors.List)
 {
-    Console.WriteLine("Processor N.º {0}", p.Index + 1);
+    Console.WriteLine("Processor #{0}", p.Index + 1);
     Console.WriteLine(" · Name: {0}", p.BrandString);
     Console.WriteLine(" · Short Name: {0}", p.Name);
     Console.WriteLine(" · Manufacturer: {0}", p.Vendor);
