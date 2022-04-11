@@ -36,7 +36,7 @@ EMNSystemInfo.HardwareAPI is a hardware library for Windows based on [Libre Hard
   - SSDs Sandforce
 
 ## How does it work?
-The main component is the LibrarySettings class, whose task is provide library configuration options, like the kernel driver name, and provide the Initialize & Close methods that prepare the library to use its components and free the resources when it's no longer needed, respectively.<br/>This library has static classes that represent a hardware group, some of them have requirements about library initialization and execution with admin privileges.<br/>This table shows the hardware group classes and its requirements:
+The main component is the LibrarySettings class, whose task is provide library configuration options, like the kernel driver name, and provide the Initialize & Close methods that prepare the library to use its components and free resources when it's no longer needed, respectively.<br/>This library has static classes that represent a hardware group, some of them have requirements about library initialization and execution with admin privileges.<br/>This table shows the hardware group classes and its requirements:
 
 | Class name| Requires library initialization? | Requires admin privileges? |
 | --- | --- | --- |
@@ -49,7 +49,7 @@ The main component is the LibrarySettings class, whose task is provide library c
 These hardware group classes have a property named "List" that contains classes that represent each installed hardware element, and methods to load and delete them from the mentioned property.<br/>Finally, these classes that represent a hardware element contain properties about its information and sensor values. Some of these classes instances provide more detailed-and-specific information for a hardware. To access it, you have to check the hardware type the instance is representing, with the "Type" property. Then, you have to convert that instance into the one denoted by the "Type" property.
 
 ## Why this library installs a kernel driver?
-Because the majority of hardware information, like CPU info or LPC chips info, is obtained through the execution of instructions not available for a normal app. Also, it communicates with hardware through system buses. Those functions are only available for kernel driver, that's the reason it is necessary to install one. All programs that give detailed info about hardware and sensors install one too. In the case of this library, you decide when to install or uninstall the driver, with the methods Initialize & Close from LibrarySettings class.
+Because the majority of hardware information, like CPU info or LPC chips info, is obtained through the execution of instructions not available for a normal app. Also, it communicates with hardware through system buses. Those functions are only available for kernel drivers, that's the reason it is necessary to install one. All programs that show detailed info about hardware and sensors install one too. In the case of this library, you decide when to install or uninstall the driver, with the methods Initialize & Close from LibrarySettings class.
 
 ## Example for .NET 6:
 Get info about installed CPUs (admin privileges are required)
