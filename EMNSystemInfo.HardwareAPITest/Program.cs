@@ -29,13 +29,13 @@ namespace EMNSystemInfo.HardwareAPITest
 
         static string GetNodeName(NodeEngineType nodeEngineType, string nodeEngTypeStrWhenOther)
         {
-            string nodeName = "<Desconocido>";
+            string nodeName = "<Unknown>";
             switch (nodeEngineType)
             {
                 case NodeEngineType.Other:
                     if (string.IsNullOrEmpty(nodeEngTypeStrWhenOther))
                     {
-                        nodeName = "Otro";
+                        nodeName = "Other";
                     }
                     else
                     {
@@ -46,25 +46,25 @@ namespace EMNSystemInfo.HardwareAPITest
                     nodeName = "3D";
                     break;
                 case NodeEngineType.VideoDecode:
-                    nodeName = "Decodificación de video";
+                    nodeName = "Video Decode";
                     break;
                 case NodeEngineType.VideoEncode:
-                    nodeName = "Codificación de video";
+                    nodeName = "Video Encode";
                     break;
                 case NodeEngineType.VideoProcessing:
-                    nodeName = "Procesado de video";
+                    nodeName = "Video Processing";
                     break;
                 case NodeEngineType.SceneAssembly:
-                    nodeName = "Ensamblado de escena";
+                    nodeName = "Scene Assembly";
                     break;
                 case NodeEngineType.Copy:
-                    nodeName = "Copia";
+                    nodeName = "Copy";
                     break;
                 case NodeEngineType.Overlay:
-                    nodeName = "Incrustación";
+                    nodeName = "Overlay";
                     break;
                 case NodeEngineType.Crypto:
-                    nodeName = "Criptografía";
+                    nodeName = "Cryptography";
                     break;
             }
 
@@ -94,87 +94,87 @@ namespace EMNSystemInfo.HardwareAPITest
             foreach (Battery bat in Batteries.List)
             {
                 bat.Update();
-                string chemistry = "<Desconocida>";
+                string chemistry = "<Unknown>";
                 switch (bat.Chemistry)
                 {
                     case BatteryChemistry.LeadAcid:
-                        chemistry = "Ácido-plomo";
+                        chemistry = "Lead-Acid";
                         break;
                     case BatteryChemistry.NickelCadmium:
-                        chemistry = "Níquel-cadmio";
+                        chemistry = "Nickel-Cadmium";
                         break;
                     case BatteryChemistry.NickelMetalHydride:
-                        chemistry = "Níquel-hidruro metálico";
+                        chemistry = "Nickel-Metal Hydride";
                         break;
                     case BatteryChemistry.LithiumIon:
-                        chemistry = "Ion de litio";
+                        chemistry = "Lithium Ion";
                         break;
                     case BatteryChemistry.NickelZinc:
-                        chemistry = "Níquel-zinc";
+                        chemistry = "Nickel-Zinc";
                         break;
                     case BatteryChemistry.AlkalineManganese:
-                        chemistry = "Alcalina de manganeso recargable";
+                        chemistry = "Rechargeable Alkaline-Manganese";
                         break;
                 }
 
-                string powerState = "<Desconocido>";
+                string powerState = "<Unknown>";
                 switch (bat.PowerState)
                 {
                     case BatteryPowerState.Charging:
-                        powerState = "Cargando";
+                        powerState = "Charging";
                         break;
                     case BatteryPowerState.Critical:
-                        powerState = "Crítico";
+                        powerState = "Critical";
                         break;
                     case BatteryPowerState.Discharging:
-                        powerState = "Descargando";
+                        powerState = "Discharging";
                         break;
                     case BatteryPowerState.OnAC:
-                        powerState = "Conectado al cargador";
+                        powerState = "On AC Power";
                         break;
                 }
 
-                output.Append("Batería N.º ").Append(count).AppendLine(":")
-                      .Append(" · Nombre: ").AppendLine(bat.Name)
-                      .Append(" · Fabricante: ").AppendLine(bat.Manufacturer)
-                      .Append(" · Estado: ").AppendLine(powerState)
-                      .Append(" · Composición química: ").AppendLine(chemistry)
-                      .Append(" · Porcentaje de degradación: ").AppendFormat("{0:F2}", bat.DegradationLevel).AppendLine(" %")
-                      .Append(" · Capacidad de fábrica: ").Append(bat.DesignedCapacity).AppendLine(" mWh")
-                      .Append(" · Capacidad a máxima carga: ").Append(bat.FullChargedCapacity).AppendLine(" mWh");
+                output.Append("Battery #").Append(count).AppendLine(":")
+                      .Append(" · Name: ").AppendLine(bat.Name)
+                      .Append(" · Manufacturer: ").AppendLine(bat.Manufacturer)
+                      .Append(" · Status: ").AppendLine(powerState)
+                      .Append(" · Chemistry: ").AppendLine(chemistry)
+                      .Append(" · Degradation Level: ").AppendFormat("{0:F2}", bat.DegradationLevel).AppendLine(" %")
+                      .Append(" · Designed Capacity: ").Append(bat.DesignedCapacity).AppendLine(" mWh")
+                      .Append(" · Full Charged Capacity: ").Append(bat.FullChargedCapacity).AppendLine(" mWh");
                 if (bat.RemainingCapacity.HasValue)
                 {
-                    output.Append(" · Capacidad restante: ").Append(bat.RemainingCapacity.Value).AppendLine(" mWh");
+                    output.Append(" · Remaining Capacity: ").Append(bat.RemainingCapacity.Value).AppendLine(" mWh");
                 }
                 if (bat.ChargeLevel.HasValue)
                 {
-                    output.Append(" · Nivel de carga: ").AppendFormat("{0:F2}", bat.ChargeLevel.Value).AppendLine(" %");
+                    output.Append(" · Charge Level: ").AppendFormat("{0:F2}", bat.ChargeLevel.Value).AppendLine(" %");
                 }
                 if (bat.Voltage.HasValue)
                 { 
-                    output.Append(" · Voltaje: ").AppendFormat("{0:F3}", bat.Voltage.Value).AppendLine(" V");
+                    output.Append(" · Voltage: ").AppendFormat("{0:F3}", bat.Voltage.Value).AppendLine(" V");
                 }
                 if (bat.EstimatedRemainingTime.HasValue)
                 {
-                    output.Append(" · Tiempo restante (estimado): ").AppendFormat("{0:g}", bat.EstimatedRemainingTime.Value).AppendLine();
+                    output.Append(" · Remaining Time (Estimated): ").AppendFormat("{0:g}", bat.EstimatedRemainingTime.Value).AppendLine();
                 }
                 if (bat.ChargeDischargeRate.HasValue)
                 {
                     switch (bat.ChargeDischargeRate.Value)
                     {
                         case > 0:
-                            output.Append(" · Velocidad de carga: ").AppendFormat("{0:F1}", bat.ChargeDischargeRate).AppendLine(" W")
-                                  .Append(" · Corriente de carga: ").AppendFormat("{0:F3}", bat.ChargeDischargeRate / bat.Voltage).AppendLine(" A");
+                            output.Append(" · Charge Rate: ").AppendFormat("{0:F1}", bat.ChargeDischargeRate).AppendLine(" W")
+                                  .Append(" · Charge Current: ").AppendFormat("{0:F3}", bat.ChargeDischargeRate / bat.Voltage).AppendLine(" A");
 
                             break;
                         case < 0:
-                            output.Append(" · Velocidad de descarga: ").AppendFormat("{0:F1}", Math.Abs(bat.ChargeDischargeRate.Value)).AppendLine(" W")
-                                  .Append(" · Corriente de descarga: ").AppendFormat("{0:F3}", Math.Abs(bat.ChargeDischargeRate.Value) / bat.Voltage).AppendLine(" A");
+                            output.Append(" · Discharge Rate: ").AppendFormat("{0:F1}", Math.Abs(bat.ChargeDischargeRate.Value)).AppendLine(" W")
+                                  .Append(" · Discharge Current: ").AppendFormat("{0:F3}", Math.Abs(bat.ChargeDischargeRate.Value) / bat.Voltage).AppendLine(" A");
 
                             break;
                         default:
-                            output.AppendLine(" · Velocidad de carga/descarga: 0 W")
-                                  .AppendLine(" · Corriente de carga/descarga: 0 A");
+                            output.AppendLine(" · Charge/Discharge Rate: 0 W")
+                                  .AppendLine(" · Charge/Discharge Current: 0 A");
 
                             break;
                     }
@@ -189,34 +189,34 @@ namespace EMNSystemInfo.HardwareAPITest
 
             #region Processors Information
 
-            IList<Processor> processors = Processors.List;
+            Processor[] processors = Processors.List;
             foreach (Processor p in processors)
             {
-                output.AppendFormat("Procesador N.º {0}", p.Index + 1).AppendLine();
-                output.AppendFormat(" · Nombre: {0}", p.BrandString).AppendLine();
-                output.AppendFormat(" · Nombre resumido: {0}", p.Name).AppendLine();
-                output.AppendFormat(" · Fabricante: {0}", p.Vendor).AppendLine();
-                output.AppendFormat(" · Porcentaje de utilización: {0:F2} %", p.TotalLoad).AppendLine();
+                output.AppendFormat("Processor #{0}:", p.Index + 1).AppendLine();
+                output.AppendFormat(" · Name: {0}", p.BrandString).AppendLine();
+                output.AppendFormat(" · Short Name {0}", p.Name).AppendLine();
+                output.AppendFormat(" · Manufacturer: {0}", p.Vendor).AppendLine();
+                output.AppendFormat(" · Load: {0:F2} %", p.TotalLoad).AppendLine();
 
-                output.Append(" · Utilización de los núcleos:").AppendLine();
+                output.Append(" · Thread Loads:").AppendLine();
                 foreach (ThreadLoad threadLoad in p.ThreadLoads)
                 {
                     if (threadLoad.Thread != null)
                     {
-                        output.AppendFormat("   · Núcleo N.º {0}, hilo N.º {1}: {2:F2} %", threadLoad.Core + 1, threadLoad.Thread + 1, threadLoad.Value).AppendLine();
+                        output.AppendFormat("   · Core #{0}, Thread #{1}: {2:F2} %", threadLoad.Core + 1, threadLoad.Thread + 1, threadLoad.Value).AppendLine();
                     }
                     else
                     {
-                        output.AppendFormat("   · Núcleo N.º {0}: {1:F2} %", threadLoad.Core + 1, threadLoad.Value).AppendLine();
+                        output.AppendFormat("   · Core #{0}: {1:F2} %", threadLoad.Core + 1, threadLoad.Value).AppendLine();
                     }
                 }
 
-                output.AppendFormat(" · ¿Tiene TSC?: {0}", p.HasTimeStampCounter).AppendLine();
+                output.AppendFormat(" · ¿Has TSC?: {0}", p.HasTimeStampCounter).AppendLine();
                 if (p.HasTimeStampCounter)
                 {
-                    output.AppendFormat(" · Frecuencia del TSC: {0:F2} MHz", p.TimeStampCounterFrequency).AppendLine();
+                    output.AppendFormat(" · TSC Frequency: {0:F2} MHz", p.TimeStampCounterFrequency).AppendLine();
                 }
-                output.AppendFormat(" · ¿Tiene MSRs?: {0}", p.HasModelSpecificRegisters).AppendLine();
+                output.AppendFormat(" · ¿Has MSRs?: {0}", p.HasModelSpecificRegisters).AppendLine();
 
                 #region Intel CPU
 
@@ -224,55 +224,39 @@ namespace EMNSystemInfo.HardwareAPITest
                 {
                     IntelCPU intelCPU = (IntelCPU)p;
                     intelCPU.Update();
-                    output.Append(" · Propiedades específicas de Intel:").AppendLine();
-                    output.AppendFormat("   · Microarquitectura: {0}", intelCPU.Microarchitecture).AppendLine();
-                    output.AppendFormat("   · Frecuencia del bus: {0:F2} MHz", intelCPU.BusClock).AppendLine();
-                    output.AppendFormat("   · Voltaje del núcleo (VID): {0:F3} V", intelCPU.CoreVoltage).AppendLine();
+                    output.Append(" · Intel-Specific Properties:").AppendLine();
+                    output.AppendFormat("   · Microarchitecture: {0}", intelCPU.Microarchitecture).AppendLine();
+                    output.AppendFormat("   · Bus Clock: {0:F2} MHz", intelCPU.BusClock).AppendLine();
+                    output.AppendFormat("   · Core Voltage (VID): {0:F3} V", intelCPU.CoreVoltage).AppendLine();
 
-                    output.Append("   · Frecuencias de reloj por núcleo:").AppendLine();
+                    output.Append("   · Core Frequency Clocks:").AppendLine();
                     count = 1;
                     foreach (double clock in intelCPU.CoreFrequencyClocks)
                     {
-                        output.AppendFormat("     · Núcleo N.º {0}: {1:F2} MHz (multiplicador: × {2:F2})", count, clock, clock / intelCPU.BusClock).AppendLine();
+                        output.AppendFormat("     · Core # {0}: {1:F2} MHz (multiplier: × {2:F2})", count, clock, clock / intelCPU.BusClock).AppendLine();
                         count++;
                     }
 
                     if (intelCPU.PackageTemperature.HasValue)
                     {
-                        output.AppendFormat("   · Temperatura del encapsulado: {0:F2} °C", intelCPU.PackageTemperature.Value.Value).AppendLine();
-                        output.AppendFormat("   · Temperatura máxima soportada por el encapsulado (valor TjMax): {0:F2} °C", intelCPU.PackageTemperature.Value.TjMax).AppendLine();
+                        output.AppendFormat("   · Package Temperature: {0:F2} °C", intelCPU.PackageTemperature.Value.Value).AppendLine();
+                        output.AppendFormat("   · Maximum temperature supported by the package (TjMax value): {0:F2} °C", intelCPU.PackageTemperature.Value.TjMax).AppendLine();
                     }
-                    output.AppendFormat("   · Temperatura promedio del núcleo: {0:F2} °C", intelCPU.CoreAverageTemperature).AppendLine();
+                    output.AppendFormat("   · Average Core Temperature: {0:F2} °C", intelCPU.CoreAverageTemperature).AppendLine();
 
-                    output.Append("   · Temperaturas por núcleo:").AppendLine();
+                    output.Append("   · Core Temperatures:").AppendLine();
                     count = 1;
                     foreach (CoreTemperature temp in intelCPU.CoreTemperatures)
                     {
-                        output.AppendFormat("     · Núcleo N.º {0}: {1:F2} °C", count, temp.Value).AppendLine();
+                        output.AppendFormat("     · Core # {0}: {1:F2} °C", count, temp.Value).AppendLine();
                         count++;
                     }
 
-                    output.Append("   · Sensores de potencia:").AppendLine();
+                    output.Append("   · Power Sensors:").AppendLine();
                     count = 1;
                     foreach (IntelPowerSensor? ps in intelCPU.PowerSensors)
                     {
-                        string type = "<Desconocido>";
-                        switch (ps?.Type)
-                        {
-                            case IntelPowerSensorType.Package:
-                                type = "Potencia total consumida";
-                                break;
-                            case IntelPowerSensorType.Cores:
-                                type = "Potencia consumida por los núcleos";
-                                break;
-                            case IntelPowerSensorType.Graphics:
-                                type = "Potencia consumida por los gráficos";
-                                break;
-                            case IntelPowerSensorType.Memory:
-                                type = "Potencia consumida por la memoria";
-                                break;
-                        }
-                        output.AppendFormat("     · {0}: {1:F2} W", type, ps?.Value).AppendLine();
+                        output.AppendFormat("     · {0}: {1:F2} W", ps?.Type, ps?.Value).AppendLine();
                         count++;
                     }
                 }
@@ -285,22 +269,22 @@ namespace EMNSystemInfo.HardwareAPITest
                 {
                     AMD0FCPU amd0FCPU = (AMD0FCPU)p;
                     amd0FCPU.Update();
-                    output.Append(" · Propiedades específicas de AMD:").AppendLine();
-                    output.AppendFormat("   · Frecuencia del bus: {0:F2} MHz", amd0FCPU.BusClock).AppendLine();
+                    output.Append(" · AMD-Specific Properties:").AppendLine();
+                    output.AppendFormat("   · Bus Clock: {0:F2} MHz", amd0FCPU.BusClock).AppendLine();
 
-                    output.Append("   · Frecuencias de reloj por núcleo:").AppendLine();
+                    output.Append("   · Core Frequency Clocks:").AppendLine();
                     count = 1;
                     foreach (double clock in amd0FCPU.CoreFrequencyClocks)
                     {
-                        output.AppendFormat("     · Núcleo N.º {0}: {1:F2} MHz (multiplicador: × {2:F2})", count, clock, clock / amd0FCPU.BusClock).AppendLine();
+                        output.AppendFormat("     · Core # {0}: {1:F2} MHz (multiplier: × {2:F2})", count, clock, clock / amd0FCPU.BusClock).AppendLine();
                         count++;
                     }
 
-                    output.Append("   · Temperaturas por núcleo:").AppendLine();
+                    output.Append("   · Core Temperatures:").AppendLine();
                     count = 1;
                     foreach (CoreTemperature temp in amd0FCPU.CoreTemperatures)
                     {
-                        output.AppendFormat("     · Núcleo N.º {0}: {1:F2} °C", count, temp.Value).AppendLine();
+                        output.AppendFormat("     · Core # {0}: {1:F2} °C", count, temp.Value).AppendLine();
                         count++;
                     }
                 }
@@ -313,22 +297,25 @@ namespace EMNSystemInfo.HardwareAPITest
                 {
                     AMD10CPU amd10CPU = (AMD10CPU)p;
                     amd10CPU.Update();
-                    output.Append(" · Propiedades específicas de AMD:").AppendLine();
-                    output.AppendFormat("   · Frecuencia del bus: {0:F2} MHz", amd10CPU.BusClock).AppendLine();
-                    output.AppendFormat("   · Voltaje del núcleo (VID): {0:F3} V", amd10CPU.CoreVoltage).AppendLine();
-                    output.AppendFormat("   · Voltaje del puente norte: {0:F3} V", amd10CPU.NorthbridgeVoltage).AppendLine();
+                    output.Append(" · AMD-Specific Properties:").AppendLine();
+                    output.AppendFormat("   · Bus Clock: {0:F2} MHz", amd10CPU.BusClock).AppendLine();
+                    output.AppendFormat("   · Core Voltage (VID): {0:F3} V", amd10CPU.CoreVoltage).AppendLine();
+                    output.AppendFormat("   · Northbridge Voltage: {0:F3} V", amd10CPU.NorthbridgeVoltage).AppendLine();
                     output.AppendFormat("   · C2 State Residency Level: {0:F3} %", amd10CPU.C2StateResidencyLevel).AppendLine();
                     output.AppendFormat("   · C3 State Residency Level: {0:F3} %", amd10CPU.C3StateResidencyLevel).AppendLine();
 
-                    output.Append("   · Frecuencias de reloj por núcleo:").AppendLine();
+                    output.Append("   · Core Frequency Clocks:").AppendLine();
                     count = 1;
                     foreach (double clock in amd10CPU.CoreFrequencyClocks)
                     {
-                        output.AppendFormat("     · Núcleo N.º {0}: {1:F2} MHz (multiplicador: × {2:F2})", count, clock, clock / amd10CPU.BusClock).AppendLine();
+                        output.AppendFormat("     · Core # {0}: {1:F2} MHz (multiplier: × {2:F2})", count, clock, clock / amd10CPU.BusClock).AppendLine();
                         count++;
                     }
 
-                    output.AppendFormat("   · Temperatura del núcleo: {1:F2} °C", count, amd10CPU.CoreTemperature).AppendLine();
+                    if (amd10CPU.CoreTemperature.HasValue)
+                    {
+                        output.AppendFormat("   · Core Temperature: {1:F2} °C", count, amd10CPU.CoreTemperature.Value.Value).AppendLine();
+                    }
                 }
 
                 #endregion
@@ -339,22 +326,22 @@ namespace EMNSystemInfo.HardwareAPITest
                 {
                     AMD17CPU amd17CPU = (AMD17CPU)p;
                     amd17CPU.Update();
-                    output.Append(" · Propiedades específicas de AMD:").AppendLine();
-                    output.AppendFormat("   · Nombre código: {0}", amd17CPU.CodeName).AppendLine();
-                    output.AppendFormat("   · Frecuencia del bus: {0:F2} MHz", amd17CPU.BusClock).AppendLine();
-                    output.AppendFormat("   · Voltaje del núcleo (VID): {0:F3} V", amd17CPU.CoreVoltage).AppendLine();
-                    output.AppendFormat("   · Potencia total consumida: {0:F3} V", amd17CPU.PackagePower).AppendLine();
+                    output.Append(" · AMD-Specific Properties:").AppendLine();
+                    output.AppendFormat("   · Code Name: {0}", amd17CPU.CodeName).AppendLine();
+                    output.AppendFormat("   · Bus Clock: {0:F2} MHz", amd17CPU.BusClock).AppendLine();
+                    output.AppendFormat("   · Core Voltage (VID): {0:F3} V", amd17CPU.CoreVoltage).AppendLine();
+                    output.AppendFormat("   · Package Power: {0:F3} V", amd17CPU.PackagePower).AppendLine();
 
                     if (amd17CPU.SoCVoltage.HasValue)
                     {
-                        output.AppendFormat("   · Voltaje del SoC: {0:F3} V", amd17CPU.SoCVoltage.Value).AppendLine();
+                        output.AppendFormat("   · SoC Voltage: {0:F3} V", amd17CPU.SoCVoltage.Value).AppendLine();
                     }
 
-                    output.AppendFormat("   · Temperatura del núcleo (Tctl): {1:F2} °C", count, amd17CPU.CoreTemperatureTctl).AppendLine();
-                    output.AppendFormat("   · Temperatura del núcleo (Tctl/Tdie): {1:F2} °C", count, amd17CPU.CoreTemperatureTctlTdie).AppendLine();
-                    output.AppendFormat("   · Temperatura del núcleo (Tdie): {1:F2} °C", count, amd17CPU.CoreTemperatureTctlTdie).AppendLine();
+                    output.AppendFormat("   · Core Temperature (Tctl): {1:F2} °C", count, amd17CPU.CoreTemperatureTctl).AppendLine();
+                    output.AppendFormat("   · Core Temperature (Tctl/Tdie): {1:F2} °C", count, amd17CPU.CoreTemperatureTctlTdie).AppendLine();
+                    output.AppendFormat("   · Core Temperature (Tdie): {1:F2} °C", count, amd17CPU.CoreTemperatureTctlTdie).AppendLine();
 
-                    output.Append("   · Temperaturas de los CCDs:").AppendLine();
+                    output.Append("   · CCD Temperatures:").AppendLine();
                     count = 1;
                     foreach (CoreTemperature temp in amd17CPU.CCDTemperatures)
                     {
@@ -362,28 +349,28 @@ namespace EMNSystemInfo.HardwareAPITest
                         count++;
                     }
 
-                    output.Append("   · Sensores SMU:").AppendLine();
+                    output.Append("   · SMU Sensors:").AppendLine();
                     foreach (var smuSensor in amd17CPU.SMUSensors)
                     {
                         switch (smuSensor.Key.Type)
                         {
                             case SMUSensorType.Voltage:
-                                output.AppendFormat("     · (Voltaje) {0}: {1:F2} V", smuSensor.Key.Name, smuSensor.Value).AppendLine();
+                                output.AppendFormat("     · (Voltage) {0}: {1:F2} V", smuSensor.Key.Name, smuSensor.Value).AppendLine();
                                 break;
                             case SMUSensorType.Current:
-                                output.AppendFormat("     · (Corriente) {0}: {1:F2} A", smuSensor.Key.Name, smuSensor.Value).AppendLine();
+                                output.AppendFormat("     · (Current) {0}: {1:F2} A", smuSensor.Key.Name, smuSensor.Value).AppendLine();
                                 break;
                             case SMUSensorType.Power:
-                                output.AppendFormat("     · (Potencia) {0}: {1:F2} W", smuSensor.Key.Name, smuSensor.Value).AppendLine();
+                                output.AppendFormat("     · (Power) {0}: {1:F2} W", smuSensor.Key.Name, smuSensor.Value).AppendLine();
                                 break;
                             case SMUSensorType.Clock:
-                                output.AppendFormat("     · (Frecuencia de reloj) {0}: {1:F2} MHz", smuSensor.Key.Name, smuSensor.Value).AppendLine();
+                                output.AppendFormat("     · (Clock Frequency) {0}: {1:F2} MHz", smuSensor.Key.Name, smuSensor.Value).AppendLine();
                                 break;
                             case SMUSensorType.Temperature:
-                                output.AppendFormat("     · (Temperatura) {0}: {1:F2} °C", smuSensor.Key.Name, smuSensor.Value).AppendLine();
+                                output.AppendFormat("     · (Temperature) {0}: {1:F2} °C", smuSensor.Key.Name, smuSensor.Value).AppendLine();
                                 break;
                             case SMUSensorType.Load:
-                                output.AppendFormat("     · (Utilización) {0}: {1:F2} %", smuSensor.Key.Name, smuSensor.Value).AppendLine();
+                                output.AppendFormat("     · (Load) {0}: {1:F2} %", smuSensor.Key.Name, smuSensor.Value).AppendLine();
                                 break;
                             case SMUSensorType.Factor:
                                 output.AppendFormat("     · (Factor) {0}: {1:F2}", smuSensor.Key.Name, smuSensor.Value).AppendLine();
@@ -407,11 +394,11 @@ namespace EMNSystemInfo.HardwareAPITest
             foreach (GPU gpu in gpus)
             {
                 gpu.Update();
-                output.AppendFormat("GPU N.º {0}:", count).AppendLine();
-                output.AppendFormat(" · Nombre: {0}", gpu.Name).AppendLine();
-                output.AppendFormat(" · Uso de memoria dedicada: {0}", ByteConversions.ConvertBytesToString(gpu.DedicatedMemoryUsage, Unit.BinaryByte)).AppendLine();
-                output.AppendFormat(" · Uso de memoria compartida: {0}", ByteConversions.ConvertBytesToString(gpu.SharedMemoryUsage, Unit.BinaryByte)).AppendLine();
-                output.Append(" · Uso de los nodos de motores gráficos:").AppendLine();
+                output.AppendFormat("GPU #{0}:", count).AppendLine();
+                output.AppendFormat(" · Name: {0}", gpu.Name).AppendLine();
+                output.AppendFormat(" · Dedicated Memory Usage: {0}", ByteConversions.ConvertBytesToString(gpu.DedicatedMemoryUsage, Unit.BinaryByte)).AppendLine();
+                output.AppendFormat(" · Shared Memory Usage: {0}", ByteConversions.ConvertBytesToString(gpu.SharedMemoryUsage, Unit.BinaryByte)).AppendLine();
+                output.Append(" · Node Usages:").AppendLine();
                 foreach (var nodeGroup in from nd in gpu.NodeUsage
                                           orderby GetNodeName(nd.NodeEngineType, nd.NodeEngineTypeString) ascending
                                           group nd by GetNodeName(nd.NodeEngineType, nd.NodeEngineTypeString))
@@ -424,11 +411,11 @@ namespace EMNSystemInfo.HardwareAPITest
                         if (nodeGroup.Count() > 1)
                         {
                             nodeCount++;
-                            output.AppendFormat(@"   · {0} N.º {1}: {2:F2} % (tiempo activado: {3:hh\:mm\:ss\.fff})", nodeName, nodeCount, node.Value, node.RunningTime).AppendLine();
+                            output.AppendFormat(@"   · {0} #{1}: {2:F2} % (running time: {3:hh\:mm\:ss\.fff})", nodeName, nodeCount, node.Value, node.RunningTime).AppendLine();
                         }
                         else
                         {
-                            output.AppendFormat(@"   · {0}: {1:F2} % (tiempo activado: {2:hh\:mm\:ss\.fff})", nodeName, node.Value, node.RunningTime).AppendLine();
+                            output.AppendFormat(@"   · {0}: {1:F2} % (running time: {2:hh\:mm\:ss\.fff})", nodeName, node.Value, node.RunningTime).AppendLine();
                         }
                     }
                 }
@@ -439,11 +426,11 @@ namespace EMNSystemInfo.HardwareAPITest
                 {
                     IntelIntegratedGPU iiGPU = (IntelIntegratedGPU)gpu;
                     iiGPU.Update();
-                    output.Append(" · Propiedades específicas de las GPU integradas Intel:").AppendLine();
+                    output.Append(" · Intel Integrated GPU Specific Properties:").AppendLine();
 
                     if (iiGPU.TotalPower.HasValue)
                     {
-                        output.AppendFormat("   · Potencia total consumida: {0:F2} W", iiGPU.TotalPower.Value).AppendLine();
+                        output.AppendFormat("   · Total Power: {0:F2} W", iiGPU.TotalPower.Value).AppendLine();
                     }
                 }
 
@@ -455,131 +442,131 @@ namespace EMNSystemInfo.HardwareAPITest
                 {
                     NvidiaGPU nvGPU = (NvidiaGPU)gpu;
                     nvGPU.Update();
-                    output.Append(" · Propiedades específicas de las GPU NVIDIA:").AppendLine();
+                    output.Append(" · NVIDIA GPU Specific Properties:").AppendLine();
 
-                    output.Append("   · Sensores de utilización:").AppendLine();
+                    output.Append("   · Load Sensors:").AppendLine();
                     foreach (NvidiaLoadSensor load in nvGPU.Loads)
                     {
-                        string type = "<Desconocido>";
+                        string type = "<Unknown>";
                         switch (load.Type)
                         {
                             case NvidiaLoadType.Gpu:
-                                type = "Utilización de la GPU";
+                                type = "GPU Load";
                                 break;
                             case NvidiaLoadType.FrameBuffer:
-                                type = "Utilización del framebuffer";
+                                type = "Framebuffer Load";
                                 break;
                             case NvidiaLoadType.VideoEngine:
-                                type = "Utilización del motor de video";
+                                type = "Video Engine Load";
                                 break;
                             case NvidiaLoadType.BusInterface:
-                                type = "Utilización de la interfaz de bus";
+                                type = "Bus Interface Load";
                                 break;
                         }
                         output.AppendFormat("     · {0}: {1:F2} %", type, load.Value).AppendLine();
                         count++;
                     }
 
-                    output.AppendFormat(" · Temperatura de la zona caliente: {0} °C", nvGPU.HotSpotTemperature).AppendLine();
-                    output.AppendFormat(" · Temperatura en la unión de las memorias: {0} °C", nvGPU.MemoryJunctionTemperature).AppendLine();
+                    output.AppendFormat(" · HotSpot Temperature: {0} °C", nvGPU.HotSpotTemperature).AppendLine();
+                    output.AppendFormat(" · Memory Junction Temperature: {0} °C", nvGPU.MemoryJunctionTemperature).AppendLine();
 
-                    output.Append("   · Sensores de temperatura:").AppendLine();
+                    output.Append("   · Temperature Sensors:").AppendLine();
                     foreach (NvidiaTempSensor temp in nvGPU.Temperatures)
                     {
-                        string type = "<Desconocido>";
+                        string type = "<Unknown>";
                         switch (temp.Type)
                         {
                             case NvidiaTempSensorType.Gpu:
                                 type = "GPU";
                                 break;
                             case NvidiaTempSensorType.Memory:
-                                type = "Memoria";
+                                type = "Memory";
                                 break;
                             case NvidiaTempSensorType.PowerSupply:
-                                type = "Fuente de alimentación";
+                                type = "Power Supply";
                                 break;
                             case NvidiaTempSensorType.Board:
                                 type = "PCB";
                                 break;
                             case NvidiaTempSensorType.VisualComputingBoard:
-                                type = "Placa de computación visual";
+                                type = "Visual Computing Board";
                                 break;
                             case NvidiaTempSensorType.VisualComputingInlet:
-                                type = "Entrada de computación visual";
+                                type = "Visua Computing Inlet";
                                 break;
                             case NvidiaTempSensorType.VisualComputingOutlet:
-                                type = "Salida de computación visual";
+                                type = "Visual Computing Outlet";
                                 break;
                             case NvidiaTempSensorType.All:
-                                type = "Todo";
+                                type = "All";
                                 break;
                         }
                         output.AppendFormat("     · {0}: {1:F2} °C", type, temp.Value).AppendLine();
                         count++;
                     }
 
-                    output.Append("   · Frecuencias de reloj:").AppendLine();
+                    output.Append("   · Frequency Clocks:").AppendLine();
                     foreach (NvidiaClockSensor clock in nvGPU.FrequencyClocks)
                     {
                         string type = "<Desconocido>";
                         switch (clock.Type)
                         {
                             case NvidiaClockType.Graphics:
-                                type = "Gráficos";
+                                type = "Graphics";
                                 break;
                             case NvidiaClockType.Memory:
-                                type = "Memoria";
+                                type = "Memory";
                                 break;
                             case NvidiaClockType.Processor:
-                                type = "Procesador";
+                                type = "Processor";
                                 break;
                             case NvidiaClockType.Video:
                                 type = "Video";
                                 break;
                             case NvidiaClockType.Undefined:
-                                type = "<Sin definir>";
+                                type = "<Undefined>";
                                 break;
                         }
                         output.AppendFormat("     · {0}: {1:F2} MHz", type, clock.Value).AppendLine();
                         count++;
                     }
 
-                    output.Append("   · Sensores de potencia:").AppendLine();
+                    output.Append("   · Power Sensors:").AppendLine();
                     foreach (NvidiaPowerSensor power in nvGPU.PowerSensors)
                     {
                         string type = "<Desconocido>";
                         switch (power.Type)
                         {
                             case NvidiaPowerType.Gpu:
-                                type = "Potencia consumida por la GPU";
+                                type = "GPU Power";
                                 break;
                             case NvidiaPowerType.Board:
-                                type = "Potencia consumida por el PCB";
+                                type = "PCB";
                                 break;
                         }
                         output.AppendFormat("     · {0}: {1:F2} W", type, power.Value).AppendLine();
                         count++;
                     }
 
-                    output.Append("   · Velocidad de los ventiladores:").AppendLine();
+                    output.Append("   · Fan Speeds:").AppendLine();
                     count = 1;
                     foreach (double fanRPM in nvGPU.FanRPMs)
                     {
-                        output.AppendFormat("     · Ventilador N.º {0}: {1:F2} RPM", count, fanRPM).AppendLine();
+                        output.AppendFormat("     · Fan # {0}: {1:F2} RPM", count, fanRPM).AppendLine();
                         count++;
                     }
 
-                    output.AppendFormat(" · Memoria total: {0}", ByteConversions.ConvertBytesToString((ulong)nvGPU.MemoryTotal, Unit.BinaryByte)).AppendLine();
-                    output.AppendFormat(" · Memoria en uso: {0}", ByteConversions.ConvertBytesToString((ulong)nvGPU.MemoryUsed, Unit.BinaryByte)).AppendLine();
-                    output.AppendFormat(" · Memoria disponible: {0}", ByteConversions.ConvertBytesToString((ulong)nvGPU.MemoryFree, Unit.BinaryByte)).AppendLine();
+                    output.AppendFormat(" · Total Memory: {0}", ByteConversions.ConvertBytesToString((ulong)nvGPU.MemoryTotal, Unit.BinaryByte)).AppendLine();
+                    output.AppendFormat(" · Used Memory: {0}", ByteConversions.ConvertBytesToString((ulong)nvGPU.MemoryUsed, Unit.BinaryByte)).AppendLine();
+                    output.AppendFormat(" · Available Memory: {0}", ByteConversions.ConvertBytesToString((ulong)nvGPU.MemoryFree, Unit.BinaryByte)).AppendLine();
 
                     if (nvGPU.PCIeThroughputRX.HasValue)
                     {
-                        output.AppendFormat(" · Velocidad de recepción de datos del bus PCI-Express: {0}", ByteConversions.ConvertBytesToString((ulong)nvGPU.PCIeThroughputRX.Value, Unit.BytesPerSecond)).AppendLine();
+                        output.AppendFormat(" · PCI-Express RX Throughput: {0}", ByteConversions.ConvertBytesToString((ulong)nvGPU.PCIeThroughputRX.Value, Unit.BytesPerSecond)).AppendLine();
                     }
                     if (nvGPU.PCIeThroughputTX.HasValue)
                     {
-                        output.AppendFormat(" · Velocidad de transmisión de datos del bus PCI-Express: {0}", ByteConversions.ConvertBytesToString((ulong)nvGPU.PCIeThroughputTX.Value, Unit.BytesPerSecond)).AppendLine();
+                        output.AppendFormat(" · PCI-Express TX Throughput: {0}", ByteConversions.ConvertBytesToString((ulong)nvGPU.PCIeThroughputTX.Value, Unit.BytesPerSecond)).AppendLine();
                     }
                 }
 
@@ -591,50 +578,50 @@ namespace EMNSystemInfo.HardwareAPITest
                 {
                     AMDGPU amdGPU = (AMDGPU)gpu;
                     amdGPU.Update();
-                    output.Append(" · Propiedades específicas de las GPU dedicadas AMD:").AppendLine();
+                    output.Append(" · AMD GPU Specific Properties:").AppendLine();
 
                     if (amdGPU.CoreFrequencyClock.HasValue)
-                        output.AppendFormat("   · Frecuencia de reloj de la GPU: {0} MHz", amdGPU.CoreFrequencyClock.Value).AppendLine();
+                        output.AppendFormat("   · Core Frequency Clock: {0} MHz", amdGPU.CoreFrequencyClock.Value).AppendLine();
 
                     if (amdGPU.MemoryFrequencyClock.HasValue)
-                        output.AppendFormat("   · Frecuencia de reloj de la memoria: {0:F2} MHz", amdGPU.MemoryFrequencyClock.Value).AppendLine();
+                        output.AppendFormat("   · Memory Frequency Clock: {0:F2} MHz", amdGPU.MemoryFrequencyClock.Value).AppendLine();
 
                     if (amdGPU.SoCClock.HasValue)
-                        output.AppendFormat("   · Frecuencia de reloj del SoC: {0:F2} MHz", amdGPU.SoCClock.Value).AppendLine();
+                        output.AppendFormat("   · SoC Clock: {0:F2} MHz", amdGPU.SoCClock.Value).AppendLine();
 
                     if (amdGPU.CoreLoad.HasValue)
-                        output.AppendFormat("   · Utilización de la GPU: {0:F2} %", amdGPU.CoreLoad.Value).AppendLine();
+                        output.AppendFormat("   · Core Load: {0:F2} %", amdGPU.CoreLoad.Value).AppendLine();
 
                     if (amdGPU.MemoryLoad.HasValue)
-                        output.AppendFormat("   · Utilización de la memoria: {0:F2} %", amdGPU.MemoryLoad.Value).AppendLine();
+                        output.AppendFormat("   · Memory Load: {0:F2} %", amdGPU.MemoryLoad.Value).AppendLine();
 
                     if (amdGPU.CoreVoltage.HasValue)
-                        output.AppendFormat("   · Voltaje de la GPU: {0:F2} V", amdGPU.CoreVoltage.Value).AppendLine();
+                        output.AppendFormat("   · Core Voltage: {0:F2} V", amdGPU.CoreVoltage.Value).AppendLine();
 
                     if (amdGPU.MemoryVoltage.HasValue)
-                        output.AppendFormat("   · Voltaje de la memoria: {0:F2} V", amdGPU.MemoryVoltage.Value).AppendLine();
+                        output.AppendFormat("   · Memory Voltage: {0:F2} V", amdGPU.MemoryVoltage.Value).AppendLine();
 
                     if (amdGPU.SoCVoltage.HasValue)
-                        output.AppendFormat("   · Voltaje del SoC: {0:F2} V", amdGPU.SoCVoltage.Value).AppendLine();
+                        output.AppendFormat("   · SoC Voltage: {0:F2} V", amdGPU.SoCVoltage.Value).AppendLine();
 
                     if (amdGPU.FanRPM.HasValue)
-                        output.AppendFormat("   · Velocidad del ventilador: {0:F2} RPM", amdGPU.FanRPM.Value).AppendLine();
+                        output.AppendFormat("   · Fan Speed: {0:F2} RPM", amdGPU.FanRPM.Value).AppendLine();
 
                     if (amdGPU.FanSpeedPercentage.HasValue)
-                        output.AppendFormat("   · Porcentaje de velocidad del ventilador: {0:F2} &", amdGPU.FanSpeedPercentage.Value).AppendLine();
+                        output.AppendFormat("   · Fan Speed Percentage: {0:F2} &", amdGPU.FanSpeedPercentage.Value).AppendLine();
 
                     if (amdGPU.FullscreenFPS.HasValue)
-                        output.AppendFormat("   · FPS a pantalla completa: {0:F2} FPS", amdGPU.FullscreenFPS.Value).AppendLine();
+                        output.AppendFormat("   · Fullscreen FPS: {0:F2} FPS", amdGPU.FullscreenFPS.Value).AppendLine();
 
-                    output.Append("   · Temperaturas:").AppendLine();
+                    output.Append("   · Temperatures:").AppendLine();
                     if (amdGPU.Temperatures.Core.HasValue)
                         output.AppendFormat("     · GPU: {0:F2} °C", amdGPU.Temperatures.Core.Value).AppendLine();
                     if (amdGPU.Temperatures.HotSpot.HasValue)
-                        output.AppendFormat("     · Zona caliente: {0:F2} °C", amdGPU.Temperatures.HotSpot.Value).AppendLine();
+                        output.AppendFormat("     · Hot Spot: {0:F2} °C", amdGPU.Temperatures.HotSpot.Value).AppendLine();
                     if (amdGPU.Temperatures.Liquid.HasValue)
-                        output.AppendFormat("     · Líquido: {0:F2} °C", amdGPU.Temperatures.Liquid.Value).AppendLine();
+                        output.AppendFormat("     · Liquid: {0:F2} °C", amdGPU.Temperatures.Liquid.Value).AppendLine();
                     if (amdGPU.Temperatures.Memory.HasValue)
-                        output.AppendFormat("     · Memoria: {0:F2} °C", amdGPU.Temperatures.Memory.Value).AppendLine();
+                        output.AppendFormat("     · Memory: {0:F2} °C", amdGPU.Temperatures.Memory.Value).AppendLine();
                     if (amdGPU.Temperatures.MVDD.HasValue)
                         output.AppendFormat("     · MVDD: {0:F2} °C", amdGPU.Temperatures.MVDD.Value).AppendLine();
                     if (amdGPU.Temperatures.PLX.HasValue)
@@ -644,15 +631,15 @@ namespace EMNSystemInfo.HardwareAPITest
                     if (amdGPU.Temperatures.VDDC.HasValue)
                         output.AppendFormat("     · VDDC: {0:F2} °C", amdGPU.Temperatures.VDDC.Value).AppendLine();
 
-                    output.Append(" · Sensores de potencia:").AppendLine();
+                    output.Append(" · Power Sensors:").AppendLine();
                     if (amdGPU.PowerSensors.Core.HasValue)
-                        output.AppendFormat("     · Potencia consumida por la GPU: {0:F2} W", amdGPU.PowerSensors.Core.Value).AppendLine();
+                        output.AppendFormat("     · GPU Power: {0:F2} W", amdGPU.PowerSensors.Core.Value).AppendLine();
                     if (amdGPU.PowerSensors.PPT.HasValue)
-                        output.AppendFormat("     · Potencia consumida por el PPT: {0:F2} W", amdGPU.PowerSensors.PPT.Value).AppendLine();
+                        output.AppendFormat("     · PPT: {0:F2} W", amdGPU.PowerSensors.PPT.Value).AppendLine();
                     if (amdGPU.PowerSensors.SoC.HasValue)
-                        output.AppendFormat("     · Potencia consumida por el SoC: {0:F2} W", amdGPU.PowerSensors.SoC.Value).AppendLine();
+                        output.AppendFormat("     · SoC: {0:F2} W", amdGPU.PowerSensors.SoC.Value).AppendLine();
                     if (amdGPU.PowerSensors.Total.HasValue)
-                        output.AppendFormat("     · Potencia total consumida: {0:F2} W", amdGPU.PowerSensors.Total.Value).AppendLine();
+                        output.AppendFormat("     · Total Power: {0:F2} W", amdGPU.PowerSensors.Total.Value).AppendLine();
                 }
 
                 #endregion
@@ -679,48 +666,48 @@ namespace EMNSystemInfo.HardwareAPITest
                     {
                         EmbeddedController ec = (EmbeddedController)lpc;
                         ec.Update();
-                        output.AppendFormat("Controlador embebido (Embedded Controller) N.º {0}:", count).AppendLine();
-                        output.Append(" · Sensores:").AppendLine();
+                        output.AppendFormat("Embedded Controller #{0}:", count).AppendLine();
+                        output.Append(" · Sensors:").AppendLine();
                         foreach (ECSensor ecs in ec.Sensors)
                         {
                             string typeValueFormat = "<Desconocido>: {0}";
                             switch (ecs.Type)
                             {
                                 case ECSensorType.TempChipset:
-                                    typeValueFormat = "Temperatura del chipset: {0:F2} °C";
+                                    typeValueFormat = "Chipset Temperature: {0:F2} °C";
                                     break;
                                 case ECSensorType.TempCPU:
-                                    typeValueFormat = "Temperatura de la CPU: {0:F2} °C";
+                                    typeValueFormat = "CPU Temperature: {0:F2} °C";
                                     break;
                                 case ECSensorType.TempMB:
-                                    typeValueFormat = "Temperatura de la placa base: {0:F2} °C";
+                                    typeValueFormat = "Motherboard Temperatur: {0:F2} °C";
                                     break;
                                 case ECSensorType.TempTSensor:
-                                    typeValueFormat = "Temperatura del \"T_Sensor\": {0:F2} °C";
+                                    typeValueFormat = "\"T_Sensor\" Temperature: {0:F2} °C";
                                     break;
                                 case ECSensorType.TempVrm:
-                                    typeValueFormat = "Temperatura del VRM: {0:F2} °C";
+                                    typeValueFormat = "VRM Temperature: {0:F2} °C";
                                     break;
                                 case ECSensorType.FanCPUOpt:
-                                    typeValueFormat = "Velocidad del ventilador opcional de la CPU: {0:F2} RPM";
+                                    typeValueFormat = "CPU Optional Fan Speed: {0:F2} RPM";
                                     break;
                                 case ECSensorType.FanVrmHS:
-                                    typeValueFormat = "Velocidad del ventilador disipador del VRM: {0:F2} RPM";
+                                    typeValueFormat = "VRM Heat Sink Fan Speed: {0:F2} RPM";
                                     break;
                                 case ECSensorType.FanChipset:
-                                    typeValueFormat = "Velocidad del ventilador del chipset: {0:F2} RPM";
+                                    typeValueFormat = "Chipset Fan Speed: {0:F2} RPM";
                                     break;
                                 case ECSensorType.FanWaterFlow:
-                                    typeValueFormat = "Caudal de líquido refrigerante: {0:F2} L/h";
+                                    typeValueFormat = "Water Flow (water cooling system): {0:F2} L/h";
                                     break;
                                 case ECSensorType.CurrCPU:
-                                    typeValueFormat = "Corriente de la CPU: {0:F3} A";
+                                    typeValueFormat = "CPU Current: {0:F3} A";
                                     break;
                                 case ECSensorType.TempWaterIn:
-                                    typeValueFormat = "Temperatura de entrada del líquido refrigerante: {0:F2} °C";
+                                    typeValueFormat = "Water In Temperature (water cooling system): {0:F2} °C";
                                     break;
                                 case ECSensorType.TempWaterOut:
-                                    typeValueFormat = "Temperatura de salida del líquido refrigerante: {0:F2} °C";
+                                    typeValueFormat = "Water Out Temperature (water cooling system): {0:F2} °C";
                                     break;
                             }
 
@@ -739,12 +726,12 @@ namespace EMNSystemInfo.HardwareAPITest
                     {
                         SuperIOHardware superIO = (SuperIOHardware)lpc;
                         superIO.Update();
-                        output.AppendFormat("Chip LPC N.º {0}:", count).AppendLine();
-                        output.AppendFormat(" · Nombre y modelo: {0}", superIO.ChipName).AppendLine();
+                        output.AppendFormat("LPC Chip #{0}:", count).AppendLine();
+                        output.AppendFormat(" · Chip Name: {0}", superIO.ChipName).AppendLine();
 
                         if (superIO.ControlSensors.Length > 0)
                         {
-                            output.Append(" · Controles de los ventiladores:").AppendLine();
+                            output.Append(" · Fan Controls:").AppendLine();
                             foreach (LPCControlSensor controlSensor in superIO.ControlSensors)
                             {
                                 output.AppendFormat("   · {0}: {1:F2} %", controlSensor.Identifier, controlSensor.Value).AppendLine();
@@ -753,7 +740,7 @@ namespace EMNSystemInfo.HardwareAPITest
 
                         if (superIO.Fans.Length > 0)
                         {
-                            output.Append(" · Velocidades de los ventiladores:").AppendLine();
+                            output.Append(" · Fan Speeds:").AppendLine();
                             foreach (LPCSensor controlSensor in superIO.Fans)
                             {
                                 output.AppendFormat("   · {0}: {1:F2} RPM", controlSensor.Identifier, controlSensor.Value).AppendLine();
@@ -762,7 +749,7 @@ namespace EMNSystemInfo.HardwareAPITest
 
                         if (superIO.Temperatures.Length > 0)
                         {
-                            output.Append(" · Sensores de temperatura:").AppendLine();
+                            output.Append(" · Temperature Sensors:").AppendLine();
                             foreach (LPCSensor temps in superIO.Temperatures)
                             {
                                 output.AppendFormat("   · {0}: {1:F2} °C", temps.Identifier, temps.Value).AppendLine();
@@ -771,7 +758,7 @@ namespace EMNSystemInfo.HardwareAPITest
 
                         if (superIO.Voltages.Length > 0)
                         {
-                            output.Append(" · Voltajes:").AppendLine();
+                            output.Append(" · Voltages:").AppendLine();
                             foreach (LPCVoltageSensor voltageSensor in superIO.Voltages)
                             {
                                 output.AppendFormat("   · {0}: {1:F2} V", voltageSensor.Identifier, voltageSensor.Value).AppendLine();
@@ -797,107 +784,107 @@ namespace EMNSystemInfo.HardwareAPITest
                                     select d)
             {
                 drive.Update();
-                output.AppendFormat("Unidad de almacenamiento N.º {0}:", drive.Index + 1).AppendLine();
-                output.AppendFormat(" · Nombre: {0}", drive.Name).AppendLine();
-                output.AppendFormat(" · Número de serie: {0}", drive.SerialNumber).AppendLine();
-                output.AppendFormat(" · Capacidad: {0}", ByteConversions.ConvertBytesToString(drive.Capacity, Unit.BinaryByte)).AppendLine();
-                output.AppendFormat(" · Revisión del firmware: {0}", drive.FirmwareRevision).AppendLine();
-                output.AppendFormat(" · Id. del dispositivo: {0}", drive.DeviceId).AppendLine();
-                output.AppendFormat(" · Tipo: {0}", drive.Type).AppendLine();
-                output.AppendFormat(" · ¿Es removible?: {0}", drive.IsRemovable).AppendLine();
-                output.AppendFormat(" · Porcentaje de espacio ocupado: {0:F2} %", drive.UsedCapacityPercentage).AppendLine();
+                output.AppendFormat("Physical Storage #{0}:", drive.Index + 1).AppendLine();
+                output.AppendFormat(" · Name: {0}", drive.Name).AppendLine();
+                output.AppendFormat(" · Serial Number: {0}", drive.SerialNumber).AppendLine();
+                output.AppendFormat(" · Capacity: {0}", ByteConversions.ConvertBytesToString(drive.Capacity, Unit.BinaryByte)).AppendLine();
+                output.AppendFormat(" · Firmware Revision: {0}", drive.FirmwareRevision).AppendLine();
+                output.AppendFormat(" · Device Id.: {0}", drive.DeviceId).AppendLine();
+                output.AppendFormat(" · Type: {0}", drive.Type).AppendLine();
+                output.AppendFormat(" · Removable?: {0}", drive.IsRemovable).AppendLine();
+                output.AppendFormat(" · Used Capacity: {0:F2} %", drive.UsedCapacityPercentage).AppendLine();
 
                 #region Logical Drives Info
 
-                output.Append(" · Unidades lógicas:").AppendLine();
+                output.Append(" · Logical Drives:").AppendLine();
                 foreach (DriveInfo logicalDrive in drive.LogicalDrives)
                 {
                     long usedSpace = logicalDrive.TotalSize - logicalDrive.AvailableFreeSpace;
-                    output.AppendFormat("   · Unidad lógica {0}", logicalDrive.Name.Replace("\\", "")).AppendLine();
-                    output.AppendFormat("     · Nombre: {0}", logicalDrive.VolumeLabel).AppendLine();
-                    output.AppendFormat("     · Tipo de unidad: {0}", logicalDrive.DriveType).AppendLine();
-                    output.AppendFormat("     · Sistema de archivos: {0}", logicalDrive.DriveFormat).AppendLine();
-                    output.AppendFormat("     · Directorio raíz: {0}", logicalDrive.RootDirectory).AppendLine();
-                    output.AppendFormat("     · Capacidad: {0}", ByteConversions.ConvertBytesToString((ulong)logicalDrive.TotalSize, Unit.BinaryByte)).AppendLine();
-                    output.AppendFormat("     · Porcentaje de espacio ocupado: {0:F2} %", usedSpace * 100d / logicalDrive.TotalSize).AppendLine();
-                    output.AppendFormat("     · Espacio en uso: {0}", ByteConversions.ConvertBytesToString((ulong)usedSpace, Unit.BinaryByte)).AppendLine();
-                    output.AppendFormat("     · Espacio disponible: {0}", ByteConversions.ConvertBytesToString((ulong)logicalDrive.AvailableFreeSpace, Unit.BinaryByte)).AppendLine();
+                    output.AppendFormat("   · Logical Drive {0}", logicalDrive.Name.Replace("\\", "")).AppendLine();
+                    output.AppendFormat("     · Name: {0}", logicalDrive.VolumeLabel).AppendLine();
+                    output.AppendFormat("     · Drive Type: {0}", logicalDrive.DriveType).AppendLine();
+                    output.AppendFormat("     · File System: {0}", logicalDrive.DriveFormat).AppendLine();
+                    output.AppendFormat("     · Root Directory: {0}", logicalDrive.RootDirectory).AppendLine();
+                    output.AppendFormat("     · Capacity: {0}", ByteConversions.ConvertBytesToString((ulong)logicalDrive.TotalSize, Unit.BinaryByte)).AppendLine();
+                    output.AppendFormat("     · Used Space Percentage: {0:F2} %", usedSpace * 100d / logicalDrive.TotalSize).AppendLine();
+                    output.AppendFormat("     · Used Space: {0}", ByteConversions.ConvertBytesToString((ulong)usedSpace, Unit.BinaryByte)).AppendLine();
+                    output.AppendFormat("     · Available Space: {0}", ByteConversions.ConvertBytesToString((ulong)logicalDrive.AvailableFreeSpace, Unit.BinaryByte)).AppendLine();
                 }
 
                 #endregion
 
                 #region Drive Geometry Info
 
-                output.Append(" · Geometría de la unidad:").AppendLine();
+                output.Append(" · Drive Geometry Info:").AppendLine();
                 if (drive.Geometry.BytesPerSector.HasValue)
-                    output.AppendFormat("   · Bytes por sector: {0}", drive.Geometry.BytesPerSector.Value).AppendLine();
+                    output.AppendFormat("   · Bytes per Sector: {0}", drive.Geometry.BytesPerSector.Value).AppendLine();
                 if (drive.Geometry.Cylinders.HasValue)
-                    output.AppendFormat("   · Cilindros: {0}", drive.Geometry.Cylinders.Value).AppendLine();
+                    output.AppendFormat("   · Cylinders: {0}", drive.Geometry.Cylinders.Value).AppendLine();
                 if (drive.Geometry.Heads.HasValue)
-                    output.AppendFormat("   · Cabezales: {0}", drive.Geometry.Heads.Value).AppendLine();
+                    output.AppendFormat("   · Heads: {0}", drive.Geometry.Heads.Value).AppendLine();
                 if (drive.Geometry.Sectors.HasValue)
-                    output.AppendFormat("   · Sectores: {0}", drive.Geometry.Sectors.Value).AppendLine();
+                    output.AppendFormat("   · Sectors: {0}", drive.Geometry.Sectors.Value).AppendLine();
                 if (drive.Geometry.SectorsPerTrack.HasValue)
-                    output.AppendFormat("   · Sectores por pista: {0}", drive.Geometry.SectorsPerTrack.Value).AppendLine();
+                    output.AppendFormat("   · Sectors per Track: {0}", drive.Geometry.SectorsPerTrack.Value).AppendLine();
                 if (drive.Geometry.Tracks.HasValue)
-                    output.AppendFormat("   · Pistas: {0}", drive.Geometry.Tracks.Value).AppendLine();
+                    output.AppendFormat("   · Tracks: {0}", drive.Geometry.Tracks.Value).AppendLine();
                 if (drive.Geometry.TracksPerCylinder.HasValue)
-                    output.AppendFormat("   · Pistas por cilindro: {0}", drive.Geometry.TracksPerCylinder.Value).AppendLine();
+                    output.AppendFormat("   · Tracks per Cylinder: {0}", drive.Geometry.TracksPerCylinder.Value).AppendLine();
 
                 #endregion
 
                 if (drive.TotalActivityPercentage.HasValue)
-                    output.AppendFormat(" · Porcentaje de actividad: {0:F2} %", drive.TotalActivityPercentage.Value).AppendLine();
+                    output.AppendFormat(" · Total Activity: {0:F2} %", drive.TotalActivityPercentage.Value).AppendLine();
 
                 if (drive.TotalReadActivityPercentage.HasValue)
-                    output.AppendFormat(" · Porcentaje de actividad de lectura: {0:F2} %", drive.TotalReadActivityPercentage.Value).AppendLine();
+                    output.AppendFormat(" · Read Activity: {0:F2} %", drive.TotalReadActivityPercentage.Value).AppendLine();
 
                 if (drive.TotalWriteActivityPercentage.HasValue)
-                    output.AppendFormat(" · Porcentaje de actividad de escritura: {0:F2} %", drive.TotalWriteActivityPercentage.Value).AppendLine();
+                    output.AppendFormat(" · Write Activity: {0:F2} %", drive.TotalWriteActivityPercentage.Value).AppendLine();
 
                 if (drive.ReadSpeed.HasValue)
-                    output.AppendFormat(" · Velocidad de lectura: {0}", ByteConversions.ConvertBytesToString((ulong)drive.ReadSpeed.Value, Unit.BytesPerSecond)).AppendLine();
+                    output.AppendFormat(" · Read Speed: {0}", ByteConversions.ConvertBytesToString((ulong)drive.ReadSpeed.Value, Unit.BytesPerSecond)).AppendLine();
 
                 if (drive.WriteSpeed.HasValue)
-                    output.AppendFormat(" · Velocidad de escritura: {0}", ByteConversions.ConvertBytesToString((ulong)drive.WriteSpeed.Value, Unit.BytesPerSecond)).AppendLine();
+                    output.AppendFormat(" · Write Speed: {0}", ByteConversions.ConvertBytesToString((ulong)drive.WriteSpeed.Value, Unit.BytesPerSecond)).AppendLine();
 
                 if (drive.AverageResponseTimePerTransfer.HasValue)
-                    output.AppendFormat(" · Tiempo promedio de respuesta por transferencia: {0}", SecondsToString.Convert(drive.AverageResponseTimePerTransfer.Value)).AppendLine();
+                    output.AppendFormat(" · Avg. Response Time per Transfer: {0}", SecondsToString.Convert(drive.AverageResponseTimePerTransfer.Value)).AppendLine();
                 
                 if (drive.AverageResponseTimePerRead.HasValue)
-                    output.AppendFormat(" · Tiempo promedio de respuesta por lectura: {0}", SecondsToString.Convert(drive.AverageResponseTimePerRead.Value)).AppendLine();
+                    output.AppendFormat(" · Avg. Response Time per Read: {0}", SecondsToString.Convert(drive.AverageResponseTimePerRead.Value)).AppendLine();
                 
                 if (drive.AverageResponseTimePerWrite.HasValue)
-                    output.AppendFormat(" · Tiempo promedio de respuesta por escritura: {0}", SecondsToString.Convert(drive.AverageResponseTimePerWrite.Value)).AppendLine();
+                    output.AppendFormat(" · Avg. Response Time per Write: {0}", SecondsToString.Convert(drive.AverageResponseTimePerWrite.Value)).AppendLine();
 
-                output.AppendFormat(" · ¿Es almacenamiento ATA?: {0}", drive.IsATADrive).AppendLine();
+                output.AppendFormat(" · Is ATA Drive?: {0}", drive.IsATADrive).AppendLine();
 
                 #region ATA Information
 
                 if (drive.IsATADrive)
                 {
-                    output.Append(" · Información específica de unidades ATA:").AppendLine();
+                    output.Append(" · ATA Drive Specific Information:").AppendLine();
                     ATADrive ataDrive = (ATADrive)drive;
 
-                    output.AppendFormat("   · Estado de salud de la unidad: {0}", ataDrive.DriveHealth).AppendLine();
+                    output.AppendFormat("   · Drive Health: {0}", ataDrive.DriveHealth).AppendLine();
 
                     if (ataDrive.PowerOnTime.HasValue)
                     {
-                        output.AppendFormat("   · Tiempo encendido: {0:F1} horas", ataDrive.PowerOnTime.Value.TotalHours).AppendLine();
+                        output.AppendFormat("   · Power On Time: {0:F1} horas", ataDrive.PowerOnTime.Value.TotalHours).AppendLine();
                     }
                     if (ataDrive.PowerCycleCount.HasValue)
                     {
-                        output.AppendFormat("   · Número de ciclos de encendido: {0} veces", ataDrive.PowerCycleCount.Value).AppendLine();
+                        output.AppendFormat("   · Power Cycles: {0} veces", ataDrive.PowerCycleCount.Value).AppendLine();
                     }
                     if (ataDrive.Temperature.HasValue)
                     {
-                        output.AppendFormat("   · Temperatura: {0:F2} °C", ataDrive.Temperature.Value).AppendLine();
+                        output.AppendFormat("   · Temperature: {0:F2} °C", ataDrive.Temperature.Value).AppendLine();
                     }
 
-                    output.Append("   · Información del S.M.A.R.T.:").AppendLine();
-                    output.Append("     ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————").AppendLine();
-                    output.Append("     Índice   | Identificador   | Nombre del atributo                               | Valor actual   | Peor valor   | Umbral   | Valor convertido   | Valor en bruto   ").AppendLine();
-                    output.Append("     ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————").AppendLine();
+                    output.Append("   · S.M.A.R.T. Information:").AppendLine();
+                    output.Append("     ———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————").AppendLine();
+                    output.Append("     Index    | Identifier      | Attribute Name                                    | Current Value  | Worst Value  | Threshold | Converted Value    | Raw Value        ").AppendLine();
+                    output.Append("     ———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————").AppendLine();
                     count = 1;
                     foreach (SMARTSensor sensor in from s in ataDrive.SMARTSensors
                                                    orderby s.Attribute.Id ascending
@@ -908,11 +895,11 @@ namespace EMNSystemInfo.HardwareAPITest
                         output.AppendFormat("    | {0,-46}", sensor.Attribute.Name);
                         output.AppendFormat("    | {0,-11}", sensor.NormalizedValue);
                         output.AppendFormat("    | {0,-9}", sensor.WorstValue);
-                        output.AppendFormat("    | {0,-5}", sensor.Threshold);
-                        output.AppendFormat("    | {0,-15}", sensor.Value);
+                        output.AppendFormat("    | {0,-6}", sensor.Threshold);
+                        output.AppendFormat("    | {0,-16}", sensor.Value);
                         output.AppendFormat("    | {0}", ConvertBytesToHexString(sensor.RawValue));
 
-                        output.AppendLine("\n     ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————");
+                        output.AppendLine("\n     ———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————");
                         count++;
                     }
                 }
@@ -921,15 +908,15 @@ namespace EMNSystemInfo.HardwareAPITest
 
                 #region NVMe Information
 
-                if (drive.Type == PhysicalDriveType.NVMe)
+                else if (drive.Type == PhysicalDriveType.NVMe)
                 {
-                    output.Append(" · Información específica de unidades NVM Express (NVMe):").AppendLine();
+                    output.Append(" · NVM Express (NVMe) Drive Specific Information:").AppendLine();
                     NVMeDrive nvmeDrive = (NVMeDrive)drive;
 
-                    output.AppendFormat("   · Capacidad NVM total: {0}", ByteConversions.ConvertBytesToString(nvmeDrive.TotalNVMCapacity, Unit.BinaryByte)).AppendLine();
-                    output.AppendFormat("   · Capacidad NVM sin utilizar: {0}", ByteConversions.ConvertBytesToString(nvmeDrive.UnallocatedNVMCapacity, Unit.BinaryByte)).AppendLine();
+                    output.AppendFormat("   · Total NVM Capacity: {0}", ByteConversions.ConvertBytesToString(nvmeDrive.TotalNVMCapacity, Unit.BinaryByte)).AppendLine();
+                    output.AppendFormat("   · Unallocated NVM Capacity: {0}", ByteConversions.ConvertBytesToString(nvmeDrive.UnallocatedNVMCapacity, Unit.BinaryByte)).AppendLine();
 
-                    output.Append("   · Advertencias críticas:").AppendLine();
+                    output.Append("   · Critical Warnings:").AppendLine();
                     NVMeCriticalWarning[] warnings = nvmeDrive.CriticalWarnings;
                     if (warnings.Length > 0)
                     {
@@ -939,19 +926,19 @@ namespace EMNSystemInfo.HardwareAPITest
                             switch (warning)
                             {
                                 case NVMeCriticalWarning.AvailableSpaceLow:
-                                    criticalWarningDesc = "El espacio disponible está por debajo del umbral";
+                                    criticalWarningDesc = "Available spare space has fallen below the threshold.";
                                     break;
                                 case NVMeCriticalWarning.TemperatureThreshold:
-                                    criticalWarningDesc = "La temperatura de la unidad está fuera del rango seguro";
+                                    criticalWarningDesc = "A temperature sensor is above an over-temperature threshold or an under-temperature threshold.";
                                     break;
                                 case NVMeCriticalWarning.ReliabilityDegraded:
-                                    criticalWarningDesc = "La confiabilidad de la unidad es baja. Puede deberse a una gran cantidad de errores de medio o cualquier error interno que afecte a la confiabilidad de la unidad.";
+                                    criticalWarningDesc = "Device reliability has been degraded due to significant media-related errors or any internal error that degrades device reliability.";
                                     break;
                                 case NVMeCriticalWarning.ReadOnly:
-                                    criticalWarningDesc = "La unidad está en modo de solo lectura";
+                                    criticalWarningDesc = "Device has entered in read-only mode.";
                                     break;
                                 case NVMeCriticalWarning.VolatileMemoryBackupDeviceFailed:
-                                    criticalWarningDesc = "La memoria volátil de recuperación falló";
+                                    criticalWarningDesc = "Volatile memory backup device has failed.";
                                     break;
                             }
                             output.AppendFormat("     · {0}", criticalWarningDesc).AppendLine();
@@ -959,55 +946,55 @@ namespace EMNSystemInfo.HardwareAPITest
                     }
                     else
                     {
-                        output.Append("     · No hay advertencias para mostrar").AppendLine();
+                        output.Append("     · There are no warnings to show").AppendLine();
                     }
 
                     if (nvmeDrive.Temperature.HasValue)
-                        output.AppendFormat("   ·  Temperatura de la unidad: {0} °C", nvmeDrive.Temperature.Value).AppendLine();
+                        output.AppendFormat("   ·  Temperature: {0} °C", nvmeDrive.Temperature.Value).AppendLine();
 
-                    output.AppendFormat("   ·  Sensores de temperatura:").AppendLine();
+                    output.AppendFormat("   ·  Temperature Sensors:").AppendLine();
                     count = 1;
                     foreach (double tempSensor in nvmeDrive.TemperatureSensors)
                     {
-                        output.AppendFormat("     ·  Sensor N.º {0}: {1:F2} °C", count, tempSensor).AppendLine();
+                        output.AppendFormat("     ·  Sensor #{0}: {1:F2} °C", count, tempSensor).AppendLine();
                         count++;
                     }
 
                     if (nvmeDrive.AvailableSpare.HasValue)
-                        output.AppendFormat("   · Espacio de respuesto disponible: {0}", ByteConversions.ConvertBytesToString((ulong)nvmeDrive.AvailableSpare.Value, Unit.BinaryByte)).AppendLine();
+                        output.AppendFormat("   · Available Spare: {0}", ByteConversions.ConvertBytesToString((ulong)nvmeDrive.AvailableSpare.Value, Unit.BinaryByte)).AppendLine();
                     if (nvmeDrive.AvailableSpareThreshold.HasValue)
-                        output.AppendFormat("   · Umbral de espacio de respuesto disponible: {0}", ByteConversions.ConvertBytesToString((ulong)nvmeDrive.AvailableSpareThreshold.Value, Unit.BinaryByte)).AppendLine();
+                        output.AppendFormat("   · Available Spare Threshold: {0}", ByteConversions.ConvertBytesToString((ulong)nvmeDrive.AvailableSpareThreshold.Value, Unit.BinaryByte)).AppendLine();
                     if (nvmeDrive.PercentageUsed.HasValue)
-                        output.AppendFormat("   · Porcentaje de utilización: {0} %", nvmeDrive.DataRead.Value).AppendLine();
+                        output.AppendFormat("   · Percentage Used: {0} %", nvmeDrive.DataRead.Value).AppendLine();
                     if (nvmeDrive.DataRead.HasValue)
-                        output.AppendFormat("   · Datos leídos: {0}", ByteConversions.ConvertBytesToString(nvmeDrive.DataRead.Value, Unit.BinaryByte)).AppendLine();
+                        output.AppendFormat("   · Data Read: {0}", ByteConversions.ConvertBytesToString(nvmeDrive.DataRead.Value, Unit.BinaryByte)).AppendLine();
                     if (nvmeDrive.DataWritten.HasValue)
-                        output.AppendFormat("   · Datos escritos: {0}", ByteConversions.ConvertBytesToString(nvmeDrive.DataWritten.Value, Unit.BinaryByte)).AppendLine();
+                        output.AppendFormat("   · Data Written: {0}", ByteConversions.ConvertBytesToString(nvmeDrive.DataWritten.Value, Unit.BinaryByte)).AppendLine();
                     if (nvmeDrive.HostReadCommands.HasValue)
-                        output.AppendFormat("   · Comandos de lectura del host: {0}", nvmeDrive.HostReadCommands.Value).AppendLine();
+                        output.AppendFormat("   · Host Read Commands: {0}", nvmeDrive.HostReadCommands.Value).AppendLine();
                     if (nvmeDrive.HostWriteCommands.HasValue)
-                        output.AppendFormat("   · Comandos de escritura del host: {0}", nvmeDrive.HostWriteCommands.Value).AppendLine();
+                        output.AppendFormat("   · Host Write Commands: {0}", nvmeDrive.HostWriteCommands.Value).AppendLine();
                     if (nvmeDrive.ControllerBusyTime.HasValue)
-                        output.AppendFormat("   · Tiempo del controlador ocupado: {0}", nvmeDrive.ControllerBusyTime.Value).AppendLine();
+                        output.AppendFormat("   · Controller Busy Time: {0}", nvmeDrive.ControllerBusyTime.Value).AppendLine();
                     if (nvmeDrive.PowerCycles.HasValue)
-                        output.AppendFormat("   · Número de ciclos de encendido: {0} veces", nvmeDrive.PowerCycles.Value).AppendLine();
+                        output.AppendFormat("   · Power Cycles: {0} veces", nvmeDrive.PowerCycles.Value).AppendLine();
                     if (nvmeDrive.PowerOnTime.HasValue)
-                        output.AppendFormat("   · Tiempo encendido: {0:g}", nvmeDrive.PowerOnTime.Value).AppendLine();
+                        output.AppendFormat("   · Power On Time: {0:g}", nvmeDrive.PowerOnTime.Value).AppendLine();
                     if (nvmeDrive.UnsafeShutdowns.HasValue)
-                        output.AppendFormat("   · Número de apagados inseguros de la unidad: {0}", nvmeDrive.UnsafeShutdowns.Value).AppendLine();
+                        output.AppendFormat("   · Unsafe Shutdowns: {0}", nvmeDrive.UnsafeShutdowns.Value).AppendLine();
                     if (nvmeDrive.MediaErrors.HasValue)
-                        output.AppendFormat("   · Errores del medio: {0}", nvmeDrive.MediaErrors.Value).AppendLine();
+                        output.AppendFormat("   · Media Errors: {0}", nvmeDrive.MediaErrors.Value).AppendLine();
                     if (nvmeDrive.ErrorInfoLogCount.HasValue)
-                        output.AppendFormat("   · Conteo de registros de información de errores: {0}", nvmeDrive.ErrorInfoLogCount.Value).AppendLine();
+                        output.AppendFormat("   · Error Info Log Count: {0}", nvmeDrive.ErrorInfoLogCount.Value).AppendLine();
                     if (nvmeDrive.WarningCompositeTemperatureTime.HasValue)
-                        output.AppendFormat("   · Duración de advertencia de temperatura compuesta: {0}", nvmeDrive.WarningCompositeTemperatureTime.Value).AppendLine();
+                        output.AppendFormat("   · Warning Composite Temperature Time: {0}", nvmeDrive.WarningCompositeTemperatureTime.Value).AppendLine();
                     if (nvmeDrive.CriticalCompositeTemperatureTime.HasValue)
-                        output.AppendFormat("   · Duración de advertencia crítica de temperatura compuesta: {0}", nvmeDrive.CriticalCompositeTemperatureTime.Value).AppendLine();
+                        output.AppendFormat("   · Critical Composite Temperature Time: {0}", nvmeDrive.CriticalCompositeTemperatureTime.Value).AppendLine();
 
-                    output.AppendFormat("   · Id. de fabricante de PCI: {0} (0x{0:X})", nvmeDrive.PCIVendorID).AppendLine();
-                    output.AppendFormat("   · Id. de fabricante del subsistema PCI: {0} (0x{0:X})", nvmeDrive.PCISubsystemVendorID).AppendLine();
-                    output.AppendFormat("   · Identificador IEEE OUI: {0}", nvmeDrive.IEEEOuiIdentifier).AppendLine();
-                    output.AppendFormat("   · Id. del controlador: {0}", nvmeDrive.ControllerID).AppendLine();
+                    output.AppendFormat("   · PCI Vendor ID: {0} (0x{0:X})", nvmeDrive.PCIVendorID).AppendLine();
+                    output.AppendFormat("   · PCI Subsystem Vendor ID: {0} (0x{0:X})", nvmeDrive.PCISubsystemVendorID).AppendLine();
+                    output.AppendFormat("   · IEEE OUI Identifier: {0}", nvmeDrive.IEEEOuiIdentifier).AppendLine();
+                    output.AppendFormat("   · Controller ID: {0}", nvmeDrive.ControllerID).AppendLine();
                 }
 
                 #endregion
@@ -1017,7 +1004,7 @@ namespace EMNSystemInfo.HardwareAPITest
             #endregion
 
             Console.WriteLine(output);
-            Console.Write("Presione cualquier tecla para salir...");
+            Console.Write("Press any key to exit...");
             Console.ReadKey();
             LibrarySettings.Close();
         }
