@@ -231,10 +231,10 @@ namespace EMNSystemInfo.HardwareAPITest
                     intelCPU.Update();
                     output.Append(" · Intel-Specific Properties:").AppendLine();
                     output.AppendFormat("   · Microarchitecture: {0}", intelCPU.Microarchitecture).AppendLine();
-                    output.AppendFormat("   · Bus Clock: {0:F2} MHz", intelCPU.BusClock).AppendLine();
+                    output.AppendFormat("   · Bus Clock Speed: {0:F2} MHz", intelCPU.BusClock).AppendLine();
                     output.AppendFormat("   · Core Voltage (VID): {0:F3} V", intelCPU.CoreVoltage).AppendLine();
 
-                    output.Append("   · Core Frequency Clocks:").AppendLine();
+                    output.Append("   · Core Clock Speeds:").AppendLine();
                     count = 1;
                     foreach (double clock in intelCPU.CoreFrequencyClocks)
                     {
@@ -277,9 +277,9 @@ namespace EMNSystemInfo.HardwareAPITest
                     output.Append(" · AMD-Specific Properties:").AppendLine();
                     output.AppendFormat("   · Bus Clock: {0:F2} MHz", amd0FCPU.BusClock).AppendLine();
 
-                    output.Append("   · Core Frequency Clocks:").AppendLine();
+                    output.Append("   · Core Clock Speeds:").AppendLine();
                     count = 1;
-                    foreach (double clock in amd0FCPU.CoreFrequencyClocks)
+                    foreach (double clock in amd0FCPU.CoreClockSpeed)
                     {
                         output.AppendFormat("     · Core # {0}: {1:F2} MHz (multiplier: × {2:F2})", count, clock, clock / amd0FCPU.BusClock).AppendLine();
                         count++;
@@ -303,15 +303,15 @@ namespace EMNSystemInfo.HardwareAPITest
                     AMD10CPU amd10CPU = (AMD10CPU)p;
                     amd10CPU.Update();
                     output.Append(" · AMD-Specific Properties:").AppendLine();
-                    output.AppendFormat("   · Bus Clock: {0:F2} MHz", amd10CPU.BusClock).AppendLine();
+                    output.AppendFormat("   · Bus Clock Speed: {0:F2} MHz", amd10CPU.BusClock).AppendLine();
                     output.AppendFormat("   · Core Voltage (VID): {0:F3} V", amd10CPU.CoreVoltage).AppendLine();
                     output.AppendFormat("   · Northbridge Voltage: {0:F3} V", amd10CPU.NorthbridgeVoltage).AppendLine();
                     output.AppendFormat("   · C2 State Residency Level: {0:F3} %", amd10CPU.C2StateResidencyLevel).AppendLine();
                     output.AppendFormat("   · C3 State Residency Level: {0:F3} %", amd10CPU.C3StateResidencyLevel).AppendLine();
 
-                    output.Append("   · Core Frequency Clocks:").AppendLine();
+                    output.Append("   · Core Clock Speeds:").AppendLine();
                     count = 1;
-                    foreach (double clock in amd10CPU.CoreFrequencyClocks)
+                    foreach (double clock in amd10CPU.CoreClockSpeeds)
                     {
                         output.AppendFormat("     · Core # {0}: {1:F2} MHz (multiplier: × {2:F2})", count, clock, clock / amd10CPU.BusClock).AppendLine();
                         count++;
@@ -333,7 +333,7 @@ namespace EMNSystemInfo.HardwareAPITest
                     amd17CPU.Update();
                     output.Append(" · AMD-Specific Properties:").AppendLine();
                     output.AppendFormat("   · Code Name: {0}", amd17CPU.CodeName).AppendLine();
-                    output.AppendFormat("   · Bus Clock: {0:F2} MHz", amd17CPU.BusClock).AppendLine();
+                    output.AppendFormat("   · Bus Clock Speed: {0:F2} MHz", amd17CPU.BusClock).AppendLine();
                     output.AppendFormat("   · Core Voltage (VID): {0:F3} V", amd17CPU.CoreVoltage).AppendLine();
                     output.AppendFormat("   · Package Power: {0:F3} V", amd17CPU.PackagePower).AppendLine();
 
@@ -369,7 +369,7 @@ namespace EMNSystemInfo.HardwareAPITest
                                 output.AppendFormat("     · (Power) {0}: {1:F2} W", smuSensor.Key.Name, smuSensor.Value).AppendLine();
                                 break;
                             case SMUSensorType.Clock:
-                                output.AppendFormat("     · (Clock Frequency) {0}: {1:F2} MHz", smuSensor.Key.Name, smuSensor.Value).AppendLine();
+                                output.AppendFormat("     · (Clock Speed) {0}: {1:F2} MHz", smuSensor.Key.Name, smuSensor.Value).AppendLine();
                                 break;
                             case SMUSensorType.Temperature:
                                 output.AppendFormat("     · (Temperature) {0}: {1:F2} °C", smuSensor.Key.Name, smuSensor.Value).AppendLine();
@@ -510,8 +510,8 @@ namespace EMNSystemInfo.HardwareAPITest
                         count++;
                     }
 
-                    output.Append("   · Frequency Clocks:").AppendLine();
-                    foreach (NvidiaClockSensor clock in nvGPU.FrequencyClocks)
+                    output.Append("   · Clock Speeds:").AppendLine();
+                    foreach (NvidiaClockSensor clock in nvGPU.ClockSpeeds)
                     {
                         string type = "<Desconocido>";
                         switch (clock.Type)
@@ -585,11 +585,11 @@ namespace EMNSystemInfo.HardwareAPITest
                     amdGPU.Update();
                     output.Append(" · AMD GPU Specific Properties:").AppendLine();
 
-                    if (amdGPU.CoreFrequencyClock.HasValue)
-                        output.AppendFormat("   · Core Frequency Clock: {0} MHz", amdGPU.CoreFrequencyClock.Value).AppendLine();
+                    if (amdGPU.CoreClockSpeed.HasValue)
+                        output.AppendFormat("   · Core Clock Speed: {0} MHz", amdGPU.CoreClockSpeed.Value).AppendLine();
 
-                    if (amdGPU.MemoryFrequencyClock.HasValue)
-                        output.AppendFormat("   · Memory Frequency Clock: {0:F2} MHz", amdGPU.MemoryFrequencyClock.Value).AppendLine();
+                    if (amdGPU.MemoryClockSpeed.HasValue)
+                        output.AppendFormat("   · Memory Clock Speed: {0:F2} MHz", amdGPU.MemoryClockSpeed.Value).AppendLine();
 
                     if (amdGPU.SoCClock.HasValue)
                         output.AppendFormat("   · SoC Clock: {0:F2} MHz", amdGPU.SoCClock.Value).AppendLine();

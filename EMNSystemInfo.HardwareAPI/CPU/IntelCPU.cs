@@ -112,7 +112,7 @@ namespace EMNSystemInfo.HardwareAPI.CPU
         public double EnergyUnitsMultiplier => _energyUnitMultiplier;
 
         /// <summary>
-        /// Gets the bus frequency clock, in megahertz (MHz).
+        /// Gets the bus clock speed, in megahertz (MHz).
         /// </summary>
         public double BusClock => _busClock;
 
@@ -122,7 +122,7 @@ namespace EMNSystemInfo.HardwareAPI.CPU
         public double CoreAverageTemperature => _coreAvgTemp;
 
         /// <summary>
-        /// Gets the frequency clock for all the cores. You can get the multiplier by dividing each value by the <see cref="BusClock"/> value.
+        /// Gets the clock speed for all the cores. You can get the multiplier by dividing each value by the <see cref="BusClock"/> value.
         /// </summary>
         public double[] CoreFrequencyClocks => _coreClocks;
 

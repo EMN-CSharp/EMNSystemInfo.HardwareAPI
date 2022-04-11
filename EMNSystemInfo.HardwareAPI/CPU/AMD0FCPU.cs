@@ -24,14 +24,14 @@ namespace EMNSystemInfo.HardwareAPI.CPU
         private readonly byte _thermSenseCoreSelCPU1;
 
         /// <summary>
-        /// Gets the bus frequency clock, in megahertz (MHz).
+        /// Gets the bus clock speed, in megahertz (MHz).
         /// </summary>
         public double BusClock => _busClock;
 
         /// <summary>
-        /// Gets the frequency clock for all the cores, in megahertz (MHz). You can get the multiplier by dividing each value by the <see cref="BusClock"/> value.
+        /// Gets the clock speed for all the cores, in megahertz (MHz). You can get the multiplier by dividing each value by the <see cref="BusClock"/> value.
         /// </summary>
-        public double[] CoreFrequencyClocks => _coreClocks;
+        public double[] CoreClockSpeed => _coreClocks;
 
         /// <summary>
         /// Gets an array of <see cref="CoreTemperature"/>s for each core.

@@ -136,7 +136,7 @@ namespace EMNSystemInfo.HardwareAPI.GPU
         private double? _hotSpotTemperature;
         private double? _memoryJunctionTemperature;
 
-        public NvidiaClockSensor[] FrequencyClocks => _clocks;
+        public NvidiaClockSensor[] ClockSpeeds => _clocks;
 
         public double[] FanRPMs => _fans;
 

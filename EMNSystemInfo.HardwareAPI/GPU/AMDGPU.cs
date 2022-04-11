@@ -50,7 +50,7 @@ namespace EMNSystemInfo.HardwareAPI.GPU
         private double? _socVoltage;
         private bool? _newQueryPmLogDataGetExists;
 
-        public double? CoreFrequencyClock => _coreClock;
+        public double? CoreClockSpeed => _coreClock;
 
         public double? CoreLoad => _coreLoad;
 
@@ -72,7 +72,7 @@ namespace EMNSystemInfo.HardwareAPI.GPU
             }
         }
 
-        public double? MemoryFrequencyClock => _memoryClock;
+        public double? MemoryClockSpeed => _memoryClock;
 
         public double? MemoryLoad => _memoryLoad;
 

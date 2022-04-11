@@ -19,7 +19,7 @@ namespace EMNSystemInfo.HardwareAPI.CPU
         private readonly RyzenSMU _smu;
 
         /// <summary>
-        /// Gets the bus frequency clock, in megahertz (MHz).
+        /// Gets the bus clock speed, in megahertz (MHz).
         /// </summary>
         public double BusClock => _processor.BusClock;
 
