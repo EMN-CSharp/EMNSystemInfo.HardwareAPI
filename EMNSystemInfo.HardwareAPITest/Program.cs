@@ -87,7 +87,7 @@ namespace EMNSystemInfo.HardwareAPITest
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                Console.WriteLine(LibrarySettings.GetRing0Report());
+                Console.WriteLine(LibrarySettings.GetKernelDriverReport());
             }
 
             StringBuilder output = new();
@@ -194,6 +194,7 @@ namespace EMNSystemInfo.HardwareAPITest
 
             #region Processors Information
 
+            Processors.LoadProcessors();
             Processor[] processors = Processors.List;
             foreach (Processor p in processors)
             {
@@ -386,6 +387,7 @@ namespace EMNSystemInfo.HardwareAPITest
 
                 #endregion
             }
+            Processors.DisposeAllProcessors();
 
             #endregion
 

@@ -3,12 +3,19 @@
 // Copyright (C) EMN-CSharp and Contributors.
 // All Rights Reserved.
 
+using EMNSystemInfo.HardwareAPI.Battery;
 using EMNSystemInfo.HardwareAPI.CPU;
+using EMNSystemInfo.HardwareAPI.GPU;
+using EMNSystemInfo.HardwareAPI.LPC;
+using EMNSystemInfo.HardwareAPI.PhysicalStorage;
 using System;
 using System.Security.Principal;
 
 namespace EMNSystemInfo.HardwareAPI
 {
+    /// <summary>
+    /// Class that provides library settings.
+    /// </summary>
     public static class LibrarySettings
     {
         private static string _krnldrvName;
@@ -50,6 +57,8 @@ namespace EMNSystemInfo.HardwareAPI
         /// <summary>
         /// Initializes the library. Installs the kernel driver used to get hardware info, with <see cref="KernelDriverName"/> and <see cref="KernelDriverDisplayName"/> as the driver name and display name respectively.
         /// </summary>
+        /// <exception cref="UnauthorizedAccessException"/>
+        /// <exception cref="FormatException"/>
         public static void Initialize()
         {
             if (!IsInitialized)
@@ -67,12 +76,15 @@ namespace EMNSystemInfo.HardwareAPI
                     Ring0.Open();
                     OpCode.Open();
                     IsInitialized = true;
-                    Processors.LoadProcessors();
                 }
             }
         }
 
-        public static string GetRing0Report()
+        /// <summary>
+        /// Gets the kernel driver report. Used for debug purposes.
+        /// </summary>
+        /// <returns>A string that represents the kernel driver report</returns>
+        public static string GetKernelDriverReport()
         {
             return Ring0.GetReport();
         }
@@ -84,6 +96,11 @@ namespace EMNSystemInfo.HardwareAPI
         {
             if (IsInitialized)
             {
+                Batteries.DisposeAllBatteries();
+                Processors.DisposeAllProcessors();
+                GPUs.DisposeGPUs();
+                LPCChips.DisposeLPCChips();
+                StorageDrives.DisposeDrives();
                 Ring0.Close();
                 OpCode.Close();
                 IsInitialized = false;

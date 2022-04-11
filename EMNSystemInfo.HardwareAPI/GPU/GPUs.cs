@@ -119,7 +119,11 @@ namespace EMNSystemInfo.HardwareAPI.GPU
             #endregion
 
             #region Intel integrated GPU listing
-
+            
+            if (!Processors.ProcessorsAreLoaded)
+            {
+                Processors.LoadProcessors();
+            }
             IList<IntelCPU> intelCPUs = (from iCPU in Processors.List
                                          where iCPU.Type == ProcessorType.IntelCPU
                                          select (IntelCPU)iCPU).ToList();

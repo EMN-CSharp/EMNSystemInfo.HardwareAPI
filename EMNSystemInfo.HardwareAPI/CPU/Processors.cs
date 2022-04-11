@@ -18,6 +18,8 @@ namespace EMNSystemInfo.HardwareAPI.CPU
         private static CPUID[][][] _threads;
         private static bool _processorsAreLoaded = false;
 
+        public static bool ProcessorsAreLoaded => _processorsAreLoaded;
+
         /// <summary>
         /// Processors list
         /// </summary>
@@ -27,7 +29,7 @@ namespace EMNSystemInfo.HardwareAPI.CPU
         /// Loads all the installed processors into the <see cref="List"/> property.
         /// </summary>
         /// <returns><see langword="false"/> if the library is not initialized, the user is not an administrator, or the processors were loaded before. Otherwise, <see langword="true"/>.</returns>
-        internal static bool LoadProcessors()
+        public static bool LoadProcessors()
         {
             if (!LibrarySettings.IsInitialized || !LibrarySettings.UserIsAdmin || _processorsAreLoaded)
             {
@@ -91,6 +93,15 @@ namespace EMNSystemInfo.HardwareAPI.CPU
                 _processorsAreLoaded = true;
                 return true;
             }
+        }
+
+        /// <summary>
+        /// Deletes all processors from the <see cref="List"/> property.
+        /// </summary>
+        public static void DisposeAllProcessors()
+        {
+            _processorsAreLoaded = false;
+            List = Array.Empty<Processor>();
         }
 
         private static CPUID[][] GetProcessorThreads()
