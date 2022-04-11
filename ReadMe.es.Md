@@ -17,8 +17,8 @@ EMNSystemInfo.HardwareAPI es una biblioteca de hardware para Windows basada en [
 - Chips LPC (las "x" representan cualquier número o caracter que contenga el modelo del chip):
   - ASUS ATK0110 (Super I/O)
   - Fintek F718xx (Super I/O)
-  - iTE IT87xx (Super I/O)
-  - Nuvoton NCT67xx (Super I/O)
+  - iTE IT8xx (Super I/O)
+  - Nuvoton NCT6xx (Super I/O)
   - Winbond W836xx (Super I/O)
   - Embedded Controller (Controlador embebido)
 
