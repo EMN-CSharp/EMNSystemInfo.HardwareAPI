@@ -56,12 +56,12 @@ Obtener info. de los procesadores instalados (requiere permisos de administrador
 ``` c#
 using EMNSystemInfo.HardwareAPI.CPU;
 
-// Set kernel driver names
+// Asignar el nombre y nombre para mostrar del controlador en modo de kernel
 LibrarySettings.KernelDriverName = "CPUInfoExampleKrnlDrv";
-LibrarySettings.KernelDriverDisplayName = "CPU Info Example Kernel Driver";
-LibrarySettings.Initialize(); // It's necessary to initialize the library to get CPU info
+LibrarySettings.KernelDriverDisplayName = "Controlador del kernel para el ejemplo de info. de CPU";
+LibrarySettings.Initialize(); // Es necesario inicializar la biblioteca para obtener info. de las CPU
 
-Processors.LoadProcessors(); // Load CPUs into the List property
+Processors.LoadProcessors(); // Cargar las CPU a la propiedad List
 foreach (Processor p in Processors.List)
 {
     Console.WriteLine("Processor N.º {0}", p.Index + 1);
