@@ -199,7 +199,7 @@ namespace EMNSystemInfo.HardwareAPITest
             {
                 output.AppendFormat("Processor #{0}:", p.Index + 1).AppendLine();
                 output.AppendFormat(" · Name: {0}", p.BrandString).AppendLine();
-                output.AppendFormat(" · Short Name {0}", p.Name).AppendLine();
+                output.AppendFormat(" · Short Name: {0}", p.Name).AppendLine();
                 output.AppendFormat(" · Manufacturer: {0}", p.Vendor).AppendLine();
                 output.AppendFormat(" · Load: {0:F2} %", p.TotalLoad).AppendLine();
 
@@ -238,7 +238,7 @@ namespace EMNSystemInfo.HardwareAPITest
                     count = 1;
                     foreach (double clock in intelCPU.CoreFrequencyClocks)
                     {
-                        output.AppendFormat("     · Core # {0}: {1:F2} MHz (multiplier: × {2:F2})", count, clock, clock / intelCPU.BusClock).AppendLine();
+                        output.AppendFormat("     · Core #{0}: {1:F2} MHz (multiplier: × {2:F2})", count, clock, clock / intelCPU.BusClock).AppendLine();
                         count++;
                     }
 
@@ -253,7 +253,7 @@ namespace EMNSystemInfo.HardwareAPITest
                     count = 1;
                     foreach (CoreTemperature temp in intelCPU.CoreTemperatures)
                     {
-                        output.AppendFormat("     · Core # {0}: {1:F2} °C", count, temp.Value).AppendLine();
+                        output.AppendFormat("     · Core #{0}: {1:F2} °C", count, temp.Value).AppendLine();
                         count++;
                     }
 
@@ -281,7 +281,7 @@ namespace EMNSystemInfo.HardwareAPITest
                     count = 1;
                     foreach (double clock in amd0FCPU.CoreClockSpeed)
                     {
-                        output.AppendFormat("     · Core # {0}: {1:F2} MHz (multiplier: × {2:F2})", count, clock, clock / amd0FCPU.BusClock).AppendLine();
+                        output.AppendFormat("     · Core #{0}: {1:F2} MHz (multiplier: × {2:F2})", count, clock, clock / amd0FCPU.BusClock).AppendLine();
                         count++;
                     }
 
@@ -289,7 +289,7 @@ namespace EMNSystemInfo.HardwareAPITest
                     count = 1;
                     foreach (CoreTemperature temp in amd0FCPU.CoreTemperatures)
                     {
-                        output.AppendFormat("     · Core # {0}: {1:F2} °C", count, temp.Value).AppendLine();
+                        output.AppendFormat("     · Core #{0}: {1:F2} °C", count, temp.Value).AppendLine();
                         count++;
                     }
                 }
@@ -313,7 +313,7 @@ namespace EMNSystemInfo.HardwareAPITest
                     count = 1;
                     foreach (double clock in amd10CPU.CoreClockSpeeds)
                     {
-                        output.AppendFormat("     · Core # {0}: {1:F2} MHz (multiplier: × {2:F2})", count, clock, clock / amd10CPU.BusClock).AppendLine();
+                        output.AppendFormat("     · Core #{0}: {1:F2} MHz (multiplier: × {2:F2})", count, clock, clock / amd10CPU.BusClock).AppendLine();
                         count++;
                     }
 
@@ -557,7 +557,7 @@ namespace EMNSystemInfo.HardwareAPITest
                     count = 1;
                     foreach (double fanRPM in nvGPU.FanRPMs)
                     {
-                        output.AppendFormat("     · Fan # {0}: {1:F2} RPM", count, fanRPM).AppendLine();
+                        output.AppendFormat("     · Fan #{0}: {1:F2} RPM", count, fanRPM).AppendLine();
                         count++;
                     }
 
@@ -875,11 +875,11 @@ namespace EMNSystemInfo.HardwareAPITest
 
                     if (ataDrive.PowerOnTime.HasValue)
                     {
-                        output.AppendFormat("   · Power On Time: {0:F1} horas", ataDrive.PowerOnTime.Value.TotalHours).AppendLine();
+                        output.AppendFormat("   · Power On Time: {0:F1} hours", ataDrive.PowerOnTime.Value.TotalHours).AppendLine();
                     }
                     if (ataDrive.PowerCycleCount.HasValue)
                     {
-                        output.AppendFormat("   · Power Cycles: {0} veces", ataDrive.PowerCycleCount.Value).AppendLine();
+                        output.AppendFormat("   · Power Cycles: {0} times", ataDrive.PowerCycleCount.Value).AppendLine();
                     }
                     if (ataDrive.Temperature.HasValue)
                     {
@@ -982,7 +982,7 @@ namespace EMNSystemInfo.HardwareAPITest
                     if (nvmeDrive.ControllerBusyTime.HasValue)
                         output.AppendFormat("   · Controller Busy Time: {0}", nvmeDrive.ControllerBusyTime.Value).AppendLine();
                     if (nvmeDrive.PowerCycles.HasValue)
-                        output.AppendFormat("   · Power Cycles: {0} veces", nvmeDrive.PowerCycles.Value).AppendLine();
+                        output.AppendFormat("   · Power Cycles: {0} times", nvmeDrive.PowerCycles.Value).AppendLine();
                     if (nvmeDrive.PowerOnTime.HasValue)
                         output.AppendFormat("   · Power On Time: {0:g}", nvmeDrive.PowerOnTime.Value).AppendLine();
                     if (nvmeDrive.UnsafeShutdowns.HasValue)
