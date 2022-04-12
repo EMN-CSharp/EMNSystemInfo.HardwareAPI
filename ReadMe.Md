@@ -60,6 +60,7 @@ Because the majority of hardware information, like CPU info or LPC chips info, i
 ## Example for .NET 6:
 Get info about installed CPUs (admin privileges are required)
 ``` c#
+using EMNSystemInfo.HardwareAPI;
 using EMNSystemInfo.HardwareAPI.CPU;
 
 // Set name and display name for the kernel driver
@@ -70,7 +71,6 @@ LibrarySettings.Initialize(); // It's necessary to initialize the library to get
 Processors.LoadProcessors(); // Load CPUs into the List property
 foreach (Processor p in Processors.List)
 {
-    p.Update();
     Console.WriteLine("Processor #{0}", p.Index + 1);
     Console.WriteLine(" · Name: {0}", p.BrandString);
     Console.WriteLine(" · Short Name: {0}", p.Name);

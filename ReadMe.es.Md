@@ -39,7 +39,7 @@ EMNSystemInfo.HardwareAPI es una biblioteca de hardware para Windows basada en [
 
 ## ¿De dónde lo puedo descargar?
 Puedes decargar la última versión desde NuGet [aquí](https://www.nuget.org/packages/EMNSystemInfo.HardwareAPI/).
-Alternativamente, puedes descargar el paquete NuGet desde la página [Releases](https://github.com/EMN-CSharp/EMNSystemInfo.HardwareAPI/releases).
+Alternatiamente, puedes descargar el paquete NuGet desde la página [Releases](https://github.com/EMN-CSharp/EMNSystemInfo.HardwareAPI/releases).
 
 ## ¿Cómo funciona?
 Como principal componente, está la clase LibrarySettings, encargada de realizar la configuración necesaria para utilizar la bibiloteca, como el nombre del controlador en modo de kernel que se va a instalar y proveer los métodos Initialize y Close que preparan la biblioteca para su uso y liberan los recursos una vez utilizada, respectivamente.<br/>Esta biblioteca tiene clases estáticas que representan un grupo de hardware, algunas de ellas tienen requerimientos sobre la inicialización de la bibiloteca y su ejecución con permisos de administrador.<br/>La siguiente tabla muestra las clases de grupos de hardware y sus requerimientos:
@@ -60,6 +60,7 @@ Debido a que la mayoría de información del hardware, como la de los procesador
 ## Ejemplo para .NET 6:
 Obtener info. de los procesadores instalados (requiere permisos de administrador)
 ``` c#
+using EMNSystemInfo.HardwareAPI;
 using EMNSystemInfo.HardwareAPI.CPU;
 
 // Asignar el nombre y nombre para mostrar del controlador en modo de kernel
@@ -70,12 +71,11 @@ LibrarySettings.Initialize(); // Es necesario inicializar la biblioteca para obt
 Processors.LoadProcessors(); // Cargar las CPU a la propiedad List
 foreach (Processor p in Processors.List)
 {
-    p.Update();
-    Console.WriteLine("Processor N.º {0}", p.Index + 1);
-    Console.WriteLine(" · Name: {0}", p.BrandString);
-    Console.WriteLine(" · Short Name: {0}", p.Name);
-    Console.WriteLine(" · Manufacturer: {0}", p.Vendor);
-    Console.WriteLine(" · Load: {0:F2} %", p.TotalLoad);
+    Console.WriteLine("Procesador N.º {0}", p.Index + 1);
+    Console.WriteLine(" · Nombre: {0}", p.BrandString);
+    Console.WriteLine(" · Nombre resumido: {0}", p.Name);
+    Console.WriteLine(" · Fabricante: {0}", p.Vendor);
+    Console.WriteLine(" · Utilización: {0:F2} %", p.TotalLoad);
 }
 Processors.DisposeAllProcessors();
 
