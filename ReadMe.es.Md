@@ -35,6 +35,10 @@ EMNSystemInfo.HardwareAPI es una biblioteca de hardware para Windows basada en [
   - SSDs Samsung
   - SSDs Sandforce
 
+## ¿De dónde lo puedo descargar?
+Puedes decargar la última versión desde NuGet [aquí](https://www.nuget.org/packages/EMNSystemInfo.HardwareAPI/).
+Alternatiamente, puedes descargar el paquete NuGet desde la página [Releases](https://github.com/EMN-CSharp/EMNSystemInfo.HardwareAPI/releases).
+
 ## ¿Cómo funciona?
 Como principal componente, está la clase LibrarySettings, encargada de realizar la configuración necesaria para utilizar la bibiloteca, como el nombre del controlador en modo de kernel que se va a instalar y proveer los métodos Initialize y Close que preparan la biblioteca para su uso y liberan los recursos una vez utilizada, respectivamente.<br/>Esta biblioteca tiene clases estáticas que representan un grupo de hardware, algunas de ellas tienen requerimientos sobre la inicialización de la bibiloteca y su ejecución con permisos de administrador.<br/>La siguiente tabla muestra las clases de grupos de hardware y sus requerimientos:
 
