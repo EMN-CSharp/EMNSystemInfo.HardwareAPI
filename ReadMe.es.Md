@@ -1,5 +1,7 @@
 # EMNSystemInfo.HardwareAPI
 
+[![GitHub license](https://img.shields.io/github/license/EMN-CSharp/EMNSystemInfo.HardwareAPI)](https://github.com/EMN-CSharp/EMNSystemInfo.HardwareAPI/blob/master/LICENSE) [![Nuget](https://img.shields.io/nuget/v/EMNSystemInfo.HardwareAPI)](https://www.nuget.org/packages/EMNSystemInfo.HardwareAPI/)
+
 EMNSystemInfo.HardwareAPI es una biblioteca de hardware para Windows basada en [Libre Hardware Monitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor), diseñada para la plataforma .NET. Provee un modelo base para acceder la información del hardware, en el cual puedes construir otros modelos como el de "vista de árbol" que ofrece Libre Hardware Monitor. Este modelo que propongo aquí consiste en listas de clases que representan un hardware en específico. Estas clases contienen las propiedades del hardware que representan y un método para actualizarlas.
 
 ## Soporte de hardware
