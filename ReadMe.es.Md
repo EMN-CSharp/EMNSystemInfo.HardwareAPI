@@ -70,6 +70,7 @@ LibrarySettings.Initialize(); // Es necesario inicializar la biblioteca para obt
 Processors.LoadProcessors(); // Cargar las CPU a la propiedad List
 foreach (Processor p in Processors.List)
 {
+    p.Update();
     Console.WriteLine("Processor N.º {0}", p.Index + 1);
     Console.WriteLine(" · Name: {0}", p.BrandString);
     Console.WriteLine(" · Short Name: {0}", p.Name);

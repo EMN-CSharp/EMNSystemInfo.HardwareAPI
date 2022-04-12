@@ -70,6 +70,7 @@ LibrarySettings.Initialize(); // It's necessary to initialize the library to get
 Processors.LoadProcessors(); // Load CPUs into the List property
 foreach (Processor p in Processors.List)
 {
+    p.Update();
     Console.WriteLine("Processor #{0}", p.Index + 1);
     Console.WriteLine(" · Name: {0}", p.BrandString);
     Console.WriteLine(" · Short Name: {0}", p.Name);

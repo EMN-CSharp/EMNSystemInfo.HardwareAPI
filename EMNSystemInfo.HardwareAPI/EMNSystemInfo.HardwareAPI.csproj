@@ -19,7 +19,7 @@
     <PackageProjectUrl />
     <RepositoryUrl>https://github.com/EMN-CSharp/EMNSystemInfo.HardwareAPI/</RepositoryUrl>
     <PackageReleaseNotes />
-    <PackageTags>open-source opensource csharp hardware dotnet hardware information hardware monitoring library</PackageTags>
+    <PackageTags>open-source opensource csharp dotnet hardware information monitoring library</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   
