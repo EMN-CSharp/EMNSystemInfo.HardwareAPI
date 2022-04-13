@@ -57,6 +57,7 @@ The main component is the LibrarySettings class, whose task is provide library c
 | GPUs| No | Yes |
 | LPCChips| Yes | Yes |
 | StorageDrives| No | Yes |
+| Coolers| No | Yes (probably) |
 
 These hardware group classes have a property named "List" that contains classes that represent each installed hardware element, and methods to load and delete them from the mentioned property.<br/>Finally, these classes that represent a hardware element contain properties about its information and sensor values. Some of these classes instances provide more detailed-and-specific information for a hardware. To access it, you have to check the hardware type the instance is representing, with the "Type" property. Then, you have to convert that instance into the one denoted by the "Type" property.
 
