@@ -37,6 +37,12 @@ EMNSystemInfo.HardwareAPI is a hardware library for Windows based on [Libre Hard
   - SSDs Samsung
   - SSDs Sandforce
 
+- Coolers:
+  - AeroCool P7-H1
+  - AquaComputer (Aquastream XT, D5Next, MPS) (water cooling)
+  - Heatmaster (water cooling)
+  - NZXT Kraken X3 (water cooling)
+
 ## Where can I download it?
 You can download the latest version from NuGet [here](https://www.nuget.org/packages/EMNSystemInfo.HardwareAPI/).
 Alternatively, you can download the NuGet package from [Releases](https://github.com/EMN-CSharp/EMNSystemInfo.HardwareAPI/releases) page.
