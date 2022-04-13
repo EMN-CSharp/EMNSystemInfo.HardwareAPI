@@ -5,6 +5,7 @@
 
 using EMNSystemInfo.HardwareAPI;
 using EMNSystemInfo.HardwareAPI.Battery;
+using EMNSystemInfo.HardwareAPI.Cooler;
 using EMNSystemInfo.HardwareAPI.CPU;
 using EMNSystemInfo.HardwareAPI.GPU;
 using EMNSystemInfo.HardwareAPI.LPC;
@@ -1007,6 +1008,152 @@ namespace EMNSystemInfo.HardwareAPITest
                 #endregion
             }
             StorageDrives.DisposeDrives();
+
+            #endregion
+
+            output.AppendLine();
+
+            #region Coolers Information
+
+            Coolers.LoadInstalledCoolers();
+            count = 1;
+            foreach (ICooler cooler in Coolers.List)
+            {
+                cooler.Update();
+                output.AppendFormat("Cooler #{0}:", count).AppendLine();
+                output.AppendFormat(" · Name: {0}", cooler.Name).AppendLine();
+                output.AppendFormat(" · Type: {0}", cooler.Type).AppendLine();
+                output.AppendFormat(" · Is Water Cooling System: {0}", cooler.IsWaterCoolingSystem).AppendLine();
+
+                #region AeroCool P7-H1
+
+                if (cooler.Type == CoolerType.AeroCoolP7H1)
+                {
+                    output.Append(" · AeroCool P7-H1 Specific Information:").AppendLine();
+                    AeroCoolP7H1 p7h1 = (AeroCoolP7H1)cooler;
+
+                    output.Append("   · Fan Speeds:").AppendLine();
+                    for (int i = 0; i < p7h1.FanRPMs.Length; i++)
+                    {
+                        output.AppendFormat("     · Fan #{0}: {1:F2} RPM", i, p7h1.FanRPMs[i]).AppendLine();
+                    }
+                }
+
+                #endregion
+
+                #region AquaComputer Aquastream XT
+
+                else if (cooler.Type == CoolerType.AquaComputerAquastreamXT)
+                {
+                    output.Append(" · AquaComputer Aquastream XT Specific Info:").AppendLine();
+                    AquaComputerAquastreamXT aquastreamXT = (AquaComputerAquastreamXT)cooler;
+                    output.AppendFormat("   · Firmware Version: {0}", aquastreamXT.FirmwareVersion).AppendLine();
+                    output.AppendFormat("   · Variant: {0}", aquastreamXT.Variant).AppendLine();
+                    output.AppendFormat("   · Fan Control: {0:F2} %", aquastreamXT.FanControl.Value.Value).AppendLine();
+                    output.AppendFormat("   · Water Flow: {0:F2} L/h", aquastreamXT.WaterFlow).AppendLine();
+                    output.AppendFormat("   · Pump Power: {0:F2} W", aquastreamXT.PumpPower).AppendLine();
+                    output.Append("   · Temperatures:").AppendLine();
+                    output.AppendFormat("     · External: {0:F2} °C", aquastreamXT.Temperatures.External).AppendLine();
+                    output.AppendFormat("     · External Fan VRM: {0:F2} °C", aquastreamXT.Temperatures.ExternalFanVRM).AppendLine();
+                    output.AppendFormat("     · Internal Water: {0:F2} °C", aquastreamXT.Temperatures.InternalWater).AppendLine();
+                    output.Append("   · Motor Speeds:").AppendLine();
+                    output.AppendFormat("     · External Fan: {0:F2} RPM", aquastreamXT.MotorSpeeds.ExternalFan).AppendLine();
+                    output.AppendFormat("     · Pump: {0:F2} RPM", aquastreamXT.MotorSpeeds.Pump).AppendLine();
+                    output.Append("   · Frequencies:").AppendLine();
+                    output.AppendFormat("     · Pump Frequency: {0:F2} Hz", aquastreamXT.Frequencies.PumpFrequency).AppendLine();
+                    output.AppendFormat("     · Pump Max Frequency: {0:F2} Hz", aquastreamXT.Frequencies.PumpMaxFrequency).AppendLine();
+                    output.Append("   · Voltages:").AppendLine();
+                    output.AppendFormat("     · External Fan: {0:F2} V", aquastreamXT.Voltages.ExternalFan).AppendLine();
+                    output.AppendFormat("     · Pump: {0:F2} V", aquastreamXT.Voltages.Pump).AppendLine();
+                }
+
+                #endregion
+
+                #region AquaComputer D5Next
+
+                else if (cooler.Type == CoolerType.AquaComputerD5Next)
+                {
+                    output.Append(" · AquaComputer D5Next Specific Info:").AppendLine();
+                    AquaComputerD5Next d5Next = (AquaComputerD5Next)cooler;
+                    output.AppendFormat("   · Firmware Version: {0}", d5Next.FirmwareVersion).AppendLine();
+                    output.AppendFormat("   · Water Temperature: {0:F2} °C", d5Next.WaterTemperature).AppendLine();
+                    output.AppendFormat("   · Pump RPM: {0:F2} RPM", d5Next.PumpRPM).AppendLine();
+                }
+
+                #endregion
+
+                #region AquaComputer MPS
+
+                else if (cooler.Type == CoolerType.AquaComputerMPS)
+                {
+                    output.Append(" · AquaComputer MPS Specific Info:").AppendLine();
+                    AquaComputerMPS mps = (AquaComputerMPS)cooler;
+                    output.AppendFormat("   · Firmware Version: {0}", mps.FirmwareVersion).AppendLine();
+                    output.AppendFormat("   · Water Flow: {0:F2} L/h", mps.WaterFlow).AppendLine();
+                    output.AppendFormat("   · Internal Water Temperature: {0:F2} °C", mps.InternalWaterTemperature).AppendLine();
+                    if (mps.ExternalTemperature.HasValue)
+                        output.AppendFormat("   · External Temperature: {0:F2} °C", mps.ExternalTemperature.Value).AppendLine();
+
+                }
+
+                #endregion
+
+                #region Heatmaster
+
+                else if (cooler.Type == CoolerType.Heatmaster)
+                {
+                    output.Append(" · Heatmaster Specific Info:").AppendLine();
+                    Heatmaster heatmaster = (Heatmaster)cooler;
+                    output.AppendFormat("   · Firmware Revision: {0}", heatmaster.FirmwareRevision).AppendLine();
+                    output.AppendFormat("   · Hardware Revision: {0}", heatmaster.HardwareRevision).AppendLine();
+                    output.AppendFormat("   · Firmware CRC: 0x{0:X}", heatmaster.FirmwareCRC).AppendLine();
+                    output.AppendFormat("   · Port Name: {0}", heatmaster.PortName).AppendLine();
+                    output.Append("   · Fan Speeds:").AppendLine();
+                    foreach (HeatmasterSensor hmSensor in heatmaster.FanSpeeds)
+                    {
+                        output.AppendFormat("     · {0}: {1:F2} RPM", hmSensor.Name, hmSensor.Value).AppendLine();
+                    }
+                    output.Append("   · Fan Controls:").AppendLine();
+                    foreach (HeatmasterSensor hmSensor in heatmaster.FanControls)
+                    {
+                        output.AppendFormat("     · {0}: {1:F2} %", hmSensor.Name, hmSensor.Value).AppendLine();
+                    }
+                    output.Append("   · Flows:").AppendLine();
+                    foreach (HeatmasterSensor hmSensor in heatmaster.Flows)
+                    {
+                        output.AppendFormat("     · {0}: {1:F2} L/h", hmSensor.Name, hmSensor.Value).AppendLine();
+                    }
+                    output.Append("   · Relay Controls:").AppendLine();
+                    foreach (HeatmasterSensor hmSensor in heatmaster.RelayControls)
+                    {
+                        output.AppendFormat("     · {0}: {1:F2} %", hmSensor.Name, hmSensor.Value).AppendLine();
+                    }
+                    output.Append("   · Temperatures:").AppendLine();
+                    foreach (HeatmasterSensor hmSensor in heatmaster.Temperatures)
+                    {
+                        output.AppendFormat("     · {0}: {1:F2} °C", hmSensor.Name, hmSensor.Value).AppendLine();
+                    }
+                }
+
+                #endregion
+
+                #region NZXT Kraken X3
+
+                else if (cooler.Type == CoolerType.NZXTKrakenX3)
+                {
+                    output.Append(" · NZXT Kraken X3 Specific Info:").AppendLine();
+                    NZXTKrakenX3 krakenX3 = (NZXTKrakenX3)cooler;
+                    output.AppendFormat("   · Firmware Version: {0}", krakenX3.FirmwareVersion).AppendLine();
+                    output.AppendFormat("   · Pump Control: {0:F2} %", krakenX3.PumpControlSensor).AppendLine();
+                    output.AppendFormat("   · Pump Speed: {0:F2} RPM", krakenX3.PumpRPM).AppendLine();
+                    output.AppendFormat("   · Internal Water Temperature: {0:F2} °C", krakenX3.InternalWaterTemperature).AppendLine();
+                }
+
+                #endregion
+
+                count++;
+            }
+            Coolers.DisposeCoolers();
 
             #endregion
 
