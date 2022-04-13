@@ -18,7 +18,8 @@
     <Description>EMNSystemInfo.HardwareAPI is a hardware library for Windows based on Libre Hardware Monitor. It provides a base model to access hardware information.</Description>
     <PackageProjectUrl />
     <RepositoryUrl>https://github.com/EMN-CSharp/EMNSystemInfo.HardwareAPI/</RepositoryUrl>
-    <PackageReleaseNotes />
+    <PackageReleaseNotes>· Added support for coolers and water cooling systems (from Libre Hardware Monitor)
+· Added .NET Core 3.1 target framework</PackageReleaseNotes>
     <PackageTags>open-source opensource csharp dotnet hardware information monitoring library</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
