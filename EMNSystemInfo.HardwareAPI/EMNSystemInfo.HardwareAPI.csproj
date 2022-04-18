@@ -20,6 +20,7 @@
     <PackageReleaseNotes>· Extend SMBIOS memory devices info (form factor, type, type detail, configured and maximum voltage added)</PackageReleaseNotes>
     <PackageTags>open-source opensource csharp dotnet hardware information monitoring library</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
   
   <ItemGroup>
