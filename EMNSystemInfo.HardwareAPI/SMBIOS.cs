@@ -421,6 +421,94 @@ namespace EMNSystemInfo.HardwareAPI
         L3
     }
 
+    /// <summary>
+    /// RAM module form factor, based on <see href="https://www.dmtf.org/dsp/DSP0134">DMTF SMBIOS Reference Specification v.3.5.0, Chapter 7.18.1</see>.
+    /// </summary>
+    public enum RAMFormFactor : byte
+    {
+        Unknown = 1,
+        Other = 2,
+        SIMM = 3,
+        SIP = 4,
+        DIP = 5,
+        ZIP = 6,
+        SOJ = 7,
+        Proprietary = 8,
+        DIMM = 9,
+        TSOP = 10,
+        RowOfChips = 11,
+        RIMM = 12,
+        SODIMM = 13,
+        SRIMM = 14,
+        FBDIMM = 15,
+        Die = 16
+    }
+
+    /// <summary>
+    /// RAM module type, based on <see href="https://www.dmtf.org/dsp/DSP0134">DMTF SMBIOS Reference Specification v.3.5.0, Chapter 7.18.2</see>.
+    /// </summary>
+    public enum RAMType : byte
+    {
+        Unknown = 0,
+        Other = 1,
+        DRAM = 2,
+        SyncDRAM = 3,
+        CacheDRAM = 4,
+        EDO = 5,
+        EDRAM = 6,
+        VRAM = 7,
+        SRAM = 8,
+        RAM = 9,
+        ROM = 10,
+        Flash = 11,
+        EEPROM = 12,
+        FEPROM = 13,
+        EPROM = 14,
+        CDRAM = 15,
+        ThreeDRAM = 16,
+        SDRAM = 17,
+        SGRAM = 18,
+        RDRAM = 19,
+        DDR = 20,
+        DDR2 = 21,
+        DDR2_FBDIMM = 22,
+        DDR3 = 24,
+        FBD2 = 25,
+        DDR4 = 26,
+        LPDDR = 0x1B,
+        LPDDR2 = 0x1C,
+        LPDDR3 = 0x1D,
+        LPDDR4 = 0x1E,
+        LogicalNonVolatileDevice = 0x1F,
+        HBM = 0x20,
+        HBM2 = 0x21,
+        DDR5 = 0x22,
+        LPDDR5 = 0x23,
+    }
+
+    /// <summary>
+    /// Additional detail on the RAM module type, based on <see href="https://www.dmtf.org/dsp/DSP0134">DMTF SMBIOS Reference Specification v.3.5.0, Chapter 7.18.3</see>.
+    /// </summary>
+    public enum RAMTypeDetail : ushort
+    {
+        Reserved = 1,
+        Other = 2,
+        Unknown = 4,
+        FastPaged = 8,
+        StaticColumn = 16,
+        PseudoStatic = 32,
+        Rambus = 64,
+        Synchronous = 128,
+        CMOS = 256,
+        EDO = 512,
+        WindowDRAM = 1024,
+        CacheDRAM = 2048,
+        NVRAM = 4096,
+        RegisteredBuffered = 8192,
+        UnbufferedRegistered = 16384,
+        LRDIMM = 32768
+    }
+
     public class InformationBase
     {
         private readonly byte[] _data;
@@ -923,17 +1011,47 @@ namespace EMNSystemInfo.HardwareAPI
     {
         internal MemoryDevice(byte[] data, IList<string> strings) : base(data, strings)
         {
+            Size = GetWord(0x0C);
+            FormFactor = (RAMFormFactor)GetByte(0x0E);
             DeviceLocator = GetString(0x10).Trim();
             BankLocator = GetString(0x11).Trim();
+            Type = (RAMType)GetByte(0x12);
+            TypeDetail = (RAMTypeDetail)GetWord(0x13);
+            Speed = GetWord(0x15);
             ManufacturerName = GetString(0x17).Trim();
             SerialNumber = GetString(0x18).Trim();
             PartNumber = GetString(0x1A).Trim();
-            Speed = GetWord(0x15);
-            Size = GetWord(0x0C);
+            MaxVoltage = GetWord(0x24);
+            ConfiguredVoltage = GetWord(0x26);
 
             if (GetWord(0x1C) > 0)
                 Size += GetWord(0x1C);
         }
+
+        /// <summary>
+        /// Gets an <see cref="RAMFormFactor"/> enum that represents the RAM module form factor.
+        /// </summary>
+        public RAMFormFactor FormFactor { get; }
+
+        /// <summary>
+        /// Gets an <see cref="RAMType"/> enum that represents the RAM module type.
+        /// </summary>
+        public RAMType Type { get; }
+
+        /// <summary>
+        /// Gets an <see cref="RAMTypeDetail"/> enum that represents an additional detail on the RAM module type.
+        /// </summary>
+        public RAMTypeDetail TypeDetail { get; }
+
+        /// <summary>
+        /// Gets the value that represents the configured voltage for this RAM module, in millivolts (mV).
+        /// </summary>
+        public int ConfiguredVoltage { get; }
+
+        /// <summary>
+        /// Gets the value that represents the maximum voltage for this RAM module, in millivolts (mV).
+        /// </summary>
+        public int MaxVoltage { get; }
 
         /// <summary>
         /// Gets the string number of the string that identifies the physically labeled bank where the memory device is located.
@@ -966,7 +1084,7 @@ namespace EMNSystemInfo.HardwareAPI
         public int Size { get; }
 
         /// <summary>
-        /// Gets the the value that identifies the maximum capable speed of the device, in mega transfers per second (MT/s).
+        /// Gets the value that identifies the maximum capable speed of the device, in mega transfers per second (MT/s).
         /// </summary>
         public int Speed { get; }
     }
