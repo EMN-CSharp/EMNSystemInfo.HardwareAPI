@@ -275,7 +275,7 @@ namespace EMNSystemInfo.HardwareAPI.Battery
         }
 
         /// <summary>
-        /// Frees the resources used in <see cref="Battery"/> classes.
+        /// Frees the resources used by <see cref="Battery"/> instances.
         /// </summary>
         public static void DisposeAllBatteries()
         {

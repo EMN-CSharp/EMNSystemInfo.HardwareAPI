@@ -92,7 +92,7 @@ namespace EMNSystemInfo.HardwareAPI.LPC
         }
 
         /// <summary>
-        /// Frees the resources used by <see cref="LPC"/> classes.
+        /// Frees the resources used by <see cref="LPC"/> instances.
         /// </summary>
         public static void DisposeLPCChips()
         {

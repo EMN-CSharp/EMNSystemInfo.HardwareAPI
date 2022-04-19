@@ -161,7 +161,7 @@ namespace EMNSystemInfo.HardwareAPI.GPU
         }
 
         /// <summary>
-        /// Frees the resources used in <see cref="GPU"/> classes.
+        /// Frees the resources used by <see cref="GPU"/> instances.
         /// </summary>
         public static void DisposeGPUs()
         {
