@@ -799,7 +799,8 @@ namespace EMNSystemInfo.HardwareAPITest
                 output.AppendFormat(" · Firmware Revision: {0}", drive.FirmwareRevision).AppendLine();
                 output.AppendFormat(" · Device Id.: {0}", drive.DeviceId).AppendLine();
                 output.AppendFormat(" · Type: {0}", drive.Type).AppendLine();
-                output.AppendFormat(" · Removable?: {0}", drive.IsRemovable).AppendLine();
+                if (drive.IsRemovable.HasValue)
+                    output.AppendFormat(" · Removable?: {0}", drive.IsRemovable.Value).AppendLine();
                 output.AppendFormat(" · Used Capacity: {0:F2} %", drive.UsedCapacityPercentage).AppendLine();
 
                 #region Logical Drives Info

@@ -33,17 +33,12 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
             List<Drive> drives = new();
             foreach (ManagementBaseObject diskDrive in diskDrives)
             {
-                string deviceId = (string)diskDrive.Properties["DeviceId"].Value; // is \\.\PhysicalDrive0..n
-                uint idx = Convert.ToUInt32(diskDrive.Properties["Index"].Value);
-                ulong diskSize = Convert.ToUInt64(diskDrive.Properties["Size"].Value);
-                int scsi = Convert.ToInt32(diskDrive.Properties["SCSIPort"].Value);
-                uint heads = Convert.ToUInt32(diskDrive.Properties["TotalHeads"].Value);
-                ulong tracks = Convert.ToUInt64(diskDrive.Properties["TotalTracks"].Value);
-                ulong sectors = Convert.ToUInt64(diskDrive.Properties["TotalSectors"].Value);
+                // Use WMIStorageInfo when Win32 info can't be accessed because of privileges
+                WMIStorageInfo wmiInfo = new(diskDrive);
 
-                if (deviceId != null)
+                if (wmiInfo.DeviceId != null)
                 {
-                    var instance = Drive.CreateInstance(deviceId, idx, diskSize, scsi, heads, tracks, sectors);
+                    var instance = Drive.CreateInstance(wmiInfo);
                     if (instance != null)
                     {
                         drives.Add(instance);
@@ -55,7 +50,7 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
         }
 
         /// <summary>
-        /// Frees the resources used by the <see cref="Drive"/> classes.
+        /// Frees the resources used by <see cref="Drive"/> instances.
         /// </summary>
         public static void DisposeDrives()
         {
@@ -63,6 +58,29 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
                 storage.Close();
 
             List = Array.Empty<Drive>();
+        }
+
+        internal class WMIStorageInfo : StorageInfo
+        {
+            public WMIStorageInfo(ManagementBaseObject diskDrive)
+            {
+                BusType = NativeInterop.Kernel32.STORAGE_BUS_TYPE.BusTypeUnknown;
+                Product = ((string)diskDrive.Properties["Caption"].Value).Trim();
+                Serial = ((string)diskDrive.Properties["SerialNumber"].Value).Trim();
+                Revision = ((string)diskDrive.Properties["FirmwareRevision"].Value).Trim();
+                DeviceId = (string)diskDrive.Properties["DeviceId"].Value; // is \\.\PhysicalDrive0..n
+                Index = (int)Convert.ToUInt32(diskDrive.Properties["Index"].Value);
+                DiskSize = Convert.ToUInt64(diskDrive.Properties["Size"].Value);
+                int scsiPort = Convert.ToInt32(diskDrive.Properties["SCSIPort"].Value);
+                Scsi = $@"\\.\SCSI{scsiPort}:";
+                DriveGeometry.Cylinders = Convert.ToUInt64(diskDrive.Properties["TotalCylinders"].Value);
+                DriveGeometry.Heads = Convert.ToUInt32(diskDrive.Properties["TotalHeads"].Value);
+                DriveGeometry.Tracks = Convert.ToUInt64(diskDrive.Properties["TotalTracks"].Value);
+                DriveGeometry.Sectors = Convert.ToUInt64(diskDrive.Properties["TotalSectors"].Value);
+                DriveGeometry.TracksPerCylinder = Convert.ToUInt32(diskDrive.Properties["TracksPerCylinder"].Value);
+                DriveGeometry.SectorsPerTrack = Convert.ToUInt32(diskDrive.Properties["SectorsPerTrack"].Value);
+                DriveGeometry.BytesPerSector = Convert.ToUInt32(diskDrive.Properties["BytesPerSector"].Value);
+            }
         }
     }
 }

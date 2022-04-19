@@ -25,7 +25,7 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
 
         public byte[] RawData { get; protected set; }
 
-        public bool Removable { get; protected set; }
+        public bool? Removable { get; protected set; }
 
         public string Revision { get; protected set; }
 

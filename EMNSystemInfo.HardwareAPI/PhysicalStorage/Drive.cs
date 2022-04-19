@@ -77,9 +77,9 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
         public bool IsATADrive { get; protected set; }
 
         /// <summary>
-        /// Gets if this drive is removable
+        /// Gets if this drive is removable. This property is nullable
         /// </summary>
-        public bool IsRemovable => _storageInfo.Removable;
+        public bool? IsRemovable => _storageInfo.Removable;
 
         /// <summary>
         /// Gets the logical drives of this drive.
@@ -121,15 +121,15 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
 
         internal Drive(StorageInfo storageInfo)
         {
-            Geometry = storageInfo.DriveGeometry;
             _storageInfo = storageInfo;
+            Geometry = storageInfo.DriveGeometry;
             Name = storageInfo.Name;
             SerialNumber = storageInfo.Serial;
             FirmwareRevision = storageInfo.Revision;
 
             try
             {
-                _drivePCs = new(storageInfo.Index);
+                _drivePCs = new DrivePerformanceCounters(storageInfo.Index);
             }
             catch (Exception)
             { }
@@ -156,29 +156,28 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
             LogicalDrives = driveInfoList.ToArray();
         }
 
-        internal static Drive CreateInstance(string deviceId, uint driveNumber, ulong diskSize, int scsiPort, uint heads, ulong tracks, ulong sectors)
+        internal static Drive CreateInstance(StorageDrives.WMIStorageInfo wmiInfo)
         {
-            StorageInfo info = WindowsStorage.GetStorageInfo(deviceId, driveNumber);
+            StorageInfo info = WindowsStorage.GetStorageInfo(wmiInfo.DeviceId, (uint)wmiInfo.Index);
+
+            // Win32 storage info is not available, try with WMI storage info
+            if (info == null)
+            {
+                info = wmiInfo;
+            }
+            else // Set some info WindowsStorage didn't provide
+            {
+                info.DeviceId = wmiInfo.DeviceId;
+                info.DiskSize = wmiInfo.DiskSize;
+                info.DriveGeometry.Heads = wmiInfo.DriveGeometry.Heads;
+                info.DriveGeometry.Tracks = wmiInfo.DriveGeometry.Tracks;
+                info.DriveGeometry.Sectors = wmiInfo.DriveGeometry.Sectors;
+            }
             if (info == null)
                 return null;
 
-            info.DiskSize = diskSize;
-            info.DeviceId = deviceId;
-            info.Scsi = $@"\\.\SCSI{scsiPort}:";
-
-            info.DriveGeometry.Heads = heads;
-            info.DriveGeometry.Tracks = tracks;
-            info.DriveGeometry.Sectors = sectors;
-
             if (info.BusType is Kernel32.STORAGE_BUS_TYPE.BusTypeVirtual or Kernel32.STORAGE_BUS_TYPE.BusTypeFileBackedVirtual)
                 return null;
-
-            if (info.Removable)
-            {
-                Drive drive = new(info);
-                if (drive != null)
-                    return drive;
-            }
 
             // Fallback, when it is not possible to read out with the NVMe implementation,
             // Try it with the SATA S.M.A.R.T. implementation
@@ -192,10 +191,16 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
             if (info.BusType == Kernel32.STORAGE_BUS_TYPE.BusTypeAta ||
                 info.BusType == Kernel32.STORAGE_BUS_TYPE.BusTypeSata ||
                 info.BusType == Kernel32.STORAGE_BUS_TYPE.BusTypeNvme ||
+                /*
+                 * It may seem strange to accept RAID drives, but for some reason
+                 * my system recognizes my main drive (HDD) bus type as RAID, when
+                 * actually it's a SATA drive.
+                */
                 info.BusType == Kernel32.STORAGE_BUS_TYPE.BusTypeRAID)
             {
                 return ATADrive.CreateInstance(info);
             }
+
 
             return new Drive(info);
         }
