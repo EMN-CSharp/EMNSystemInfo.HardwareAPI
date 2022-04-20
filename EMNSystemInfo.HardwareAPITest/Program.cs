@@ -905,7 +905,7 @@ namespace EMNSystemInfo.HardwareAPITest
                         output.AppendFormat("    | {0,-11}", sensor.NormalizedValue);
                         output.AppendFormat("    | {0,-9}", sensor.WorstValue);
                         output.AppendFormat("    | {0,-6}", sensor.Threshold);
-                        output.AppendFormat("    | {0,-16}", sensor.Value);
+                        output.AppendFormat("    | {0,-15}", sensor.Value);
                         output.AppendFormat("    | {0}", ConvertBytesToHexString(sensor.RawValue));
 
                         output.AppendLine("\n     ———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————");

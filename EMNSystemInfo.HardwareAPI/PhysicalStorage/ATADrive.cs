@@ -58,40 +58,36 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
                     {
                         byte[] smartIds = Smart.ReadSmartData().Select(x => x.Id).ToArray();
 
-                        IEnumerable<SMARTAttribute> smartAttrs = SmartAttributes
-                                              .Where(x => smartIds.Contains(x.Id));
+                        IEnumerable<SMARTAttribute> smartAttrs = 
+                            from attr in SmartAttributes
+                            where smartIds.Contains(attr.Id)
+                            select attr;
 
                         foreach (SMARTAttribute attr in smartAttrs)
                         {
-                            _sensors.Add(new() { Attribute = attr });
+                            _sensors.Add(new SMARTSensor() { Attribute = attr });
                         }
                     }
                 }
 
                 if (_sensors.Count > 0)
                 {
-                    Kernel32.SMART_ATTRIBUTE[] smartAttributes = Smart.ReadSmartData();
-                    Kernel32.SMART_THRESHOLD[] smartThresholds = Smart.ReadSmartThresholds();
-                    int count = 0;
-                    var smartAttrsThrs = smartThresholds.ToDictionary((thr) =>
-                    {
-                        count++;
-                        return smartAttributes[count - 1];
-                    });
+                    var smartAttributes = Smart.ReadSmartData();
+                    var smartThresholds = Smart.ReadSmartThresholds();
 
                     foreach (SMARTSensor smartSensor in _sensors)
                     {
-                        foreach (var smartAttrThr in smartAttrsThrs)
-                        {
-                            if (smartAttrThr.Key.Id == smartSensor.Attribute.Id)
-                            {
-                                smartSensor.NormalizedValue = smartAttrThr.Key.CurrentValue;
-                                smartSensor.WorstValue = smartAttrThr.Key.WorstValue;
-                                smartSensor.Threshold = smartAttrThr.Value.Threshold;
-                                smartSensor.RawValue = smartAttrThr.Key.RawValue;
-                                smartSensor.Value = smartSensor.Attribute.ConvertValue(smartAttrThr.Key, smartSensor.Attribute.Parameter);
-                            }
-                        }
+                        Kernel32.SMART_ATTRIBUTE smartAttrib = (from attr in smartAttributes
+                                                                where attr.Id == smartSensor.Attribute.Id
+                                                                select attr).First();
+                        Kernel32.SMART_THRESHOLD smartThreshold = (from thres in smartThresholds
+                                                                   where thres.Id == smartSensor.Attribute.Id
+                                                                   select thres).First();
+                        smartSensor.NormalizedValue = smartAttrib.CurrentValue;
+                        smartSensor.WorstValue = smartAttrib.WorstValue;
+                        smartSensor.Threshold = smartThreshold.Threshold;
+                        smartSensor.RawValue = smartAttrib.RawValue;
+                        smartSensor.Value = smartSensor.Attribute.ConvertValue(smartAttrib, smartSensor.Attribute.Parameter);
                     }
                 }
 
