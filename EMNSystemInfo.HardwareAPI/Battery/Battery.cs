@@ -163,7 +163,7 @@ namespace EMNSystemInfo.HardwareAPI.Battery
         public double? ChargeDischargeRate { get; internal set; }
 
         /// <summary>
-        /// Gets the battery cherge/discharge current, in amperes (A). This property is nullable.
+        /// Gets the battery charge/discharge current, in amperes (A). This property is nullable.
         /// </summary>
         /// <remarks>If the returned value is greater than 0, the battery is charging; if it's less than 0, the battery is discharging.</remarks>
         public double? ChargeDischargeCurrent { get; internal set; }
