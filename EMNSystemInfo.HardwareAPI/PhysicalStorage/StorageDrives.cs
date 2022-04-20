@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Management;
+using static EMNSystemInfo.HardwareAPI.NativeInterop.Kernel32;
 
 namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
 {
@@ -30,7 +31,7 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
         /// <summary>
         /// Drives list
         /// </summary>
-        public static Drive[] List { get; private set; } = _drives.ToArray();
+        public static Drive[] List => _drives.ToArray();
 
         /// <summary>
         /// Loads all the connected drives into the <see cref="List"/> property.
@@ -53,7 +54,6 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
             {
                 // Use WMIStorageInfo when Win32 info can't be accessed because of privileges
                 WMIStorageInfo wmiInfo = new(diskDrive);
-
                 if (wmiInfo.DeviceId != null)
                 {
                     var instance = Drive.CreateInstance(wmiInfo);
@@ -132,13 +132,18 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
         {
             public WMIStorageInfo(ManagementBaseObject diskDrive)
             {
-                BusType = NativeInterop.Kernel32.STORAGE_BUS_TYPE.BusTypeUnknown;
-                Product = ((string)diskDrive.Properties["Caption"].Value).Trim();
-                Serial = ((string)diskDrive.Properties["SerialNumber"].Value).Trim();
-                Revision = ((string)diskDrive.Properties["FirmwareRevision"].Value).Trim();
+                // PnP device IDs of virtual drives are like this:
+                // SCSI\DISK&VEN_MSFT&PROD_VIRTUAL_DISK\2&1F4ADFFE&0&000002
+                string pnpDevId = ((string)(diskDrive.Properties["PnPDeviceId"].Value ?? "")).Trim();
+                BusType = pnpDevId.Contains("PROD_VIRTUAL_DISK") ? STORAGE_BUS_TYPE.BusTypeVirtual : STORAGE_BUS_TYPE.BusTypeUnknown;
+                
+                Product = ((string)(diskDrive.Properties["Caption"].Value ?? "")).Trim();
+                Revision = ((string)(diskDrive.Properties["FirmwareRevision"].Value ?? "")).Trim();
+                Serial = ((string)(diskDrive.Properties["SerialNumber"].Value ?? "")).Trim();
                 DeviceId = (string)diskDrive.Properties["DeviceId"].Value; // is \\.\PhysicalDrive0..n
                 Index = (int)Convert.ToUInt32(diskDrive.Properties["Index"].Value);
                 DiskSize = Convert.ToUInt64(diskDrive.Properties["Size"].Value);
+
                 int scsiPort = Convert.ToInt32(diskDrive.Properties["SCSIPort"].Value);
                 Scsi = $@"\\.\SCSI{scsiPort}:";
                 DriveGeometry.Cylinders = Convert.ToUInt64(diskDrive.Properties["TotalCylinders"].Value);
