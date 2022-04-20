@@ -93,6 +93,11 @@ namespace EMNSystemInfo.HardwareAPI.Battery
     public static partial class Batteries
     {
         /// <summary>
+        /// Gets a value that represents if the batteries are loaded on the <see cref="List"/> property. Returns <see langword="true"/> if batteries are loaded, otherwise, <see langword="false"/>.
+        /// </summary>
+        public static bool BatteriesAreLoaded { get; private set; } = false;
+
+        /// <summary>
         /// Gets if there is a battery or multiple batteries installed.
         /// </summary>
         public static bool Exist
@@ -115,163 +120,168 @@ namespace EMNSystemInfo.HardwareAPI.Battery
         /// </summary>
         public unsafe static void LoadInstalledBatteries()
         {
-            List<Battery> batteries = new();
-
-            IntPtr hDevice = SetupDiGetClassDevs(ref GUID_DEVCLASS_BATTERY,
-                                                 IntPtr.Zero,
-                                                 IntPtr.Zero,
-                                                 DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
-            if (hDevice != INVALID_HANDLE_VALUE)
+            if (!BatteriesAreLoaded)
             {
-                for (uint i = 0; ; i++)
-                {
-                    SP_DEVICE_INTERFACE_DATA did = default;
-                    did.cbSize = (uint)Marshal.SizeOf<SP_DEVICE_INTERFACE_DATA>();
+                List<Battery> batteries = new();
 
-                    if (!SetupDiEnumDeviceInterfaces(hDevice,
+                IntPtr hDevice = SetupDiGetClassDevs(ref GUID_DEVCLASS_BATTERY,
                                                      IntPtr.Zero,
-                                                     ref GUID_DEVCLASS_BATTERY,
-                                                     i,
-                                                     ref did))
+                                                     IntPtr.Zero,
+                                                     DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
+                if (hDevice != INVALID_HANDLE_VALUE)
+                {
+                    for (uint i = 0; ; i++)
                     {
-                        if (Marshal.GetLastWin32Error() == ERROR_NO_MORE_ITEMS)
-                            break;
-                    }
-                    else
-                    {
-                        SetupDiGetDeviceInterfaceDetail(hDevice,
-                                                        did,
-                                                        IntPtr.Zero,
-                                                        0,
-                                                        out uint cbRequired,
-                                                        IntPtr.Zero);
+                        SP_DEVICE_INTERFACE_DATA did = default;
+                        did.cbSize = (uint)Marshal.SizeOf<SP_DEVICE_INTERFACE_DATA>();
 
-                        if (Marshal.GetLastWin32Error() == ERROR_INSUFFICIENT_BUFFER)
+                        if (!SetupDiEnumDeviceInterfaces(hDevice,
+                                                         IntPtr.Zero,
+                                                         ref GUID_DEVCLASS_BATTERY,
+                                                         i,
+                                                         ref did))
                         {
-                            IntPtr pdidd = LocalAlloc(LPTR, cbRequired);
-                            Marshal.WriteInt32(pdidd, Environment.Is64BitOperatingSystem ? 8 : 4); // cbSize.
+                            if (Marshal.GetLastWin32Error() == ERROR_NO_MORE_ITEMS)
+                                break;
+                        }
+                        else
+                        {
+                            SetupDiGetDeviceInterfaceDetail(hDevice,
+                                                            did,
+                                                            IntPtr.Zero,
+                                                            0,
+                                                            out uint cbRequired,
+                                                            IntPtr.Zero);
 
-                            if (SetupDiGetDeviceInterfaceDetail(hDevice,
-                                                                did,
-                                                                pdidd,
-                                                                cbRequired,
-                                                                out _,
-                                                                IntPtr.Zero))
+                            if (Marshal.GetLastWin32Error() == ERROR_INSUFFICIENT_BUFFER)
                             {
-                                string devicePath = new string((char*)(pdidd + 4));
+                                IntPtr pdidd = LocalAlloc(LPTR, cbRequired);
+                                Marshal.WriteInt32(pdidd, Environment.Is64BitOperatingSystem ? 8 : 4); // cbSize.
 
-                                SafeFileHandle battery = CreateFile(devicePath, FileAccess.ReadWrite, FileShare.ReadWrite, IntPtr.Zero, FileMode.Open, FileAttributes.Normal, IntPtr.Zero);
-                                if (!battery.IsInvalid)
+                                if (SetupDiGetDeviceInterfaceDetail(hDevice,
+                                                                    did,
+                                                                    pdidd,
+                                                                    cbRequired,
+                                                                    out _,
+                                                                    IntPtr.Zero))
                                 {
-                                    BATTERY_QUERY_INFORMATION bqi = default;
+                                    string devicePath = new string((char*)(pdidd + 4));
 
-                                    uint dwWait = 0;
-                                    if (DeviceIoControl(battery,
-                                                        IOCTL_BATTERY.QUERY_TAG,
-                                                        ref dwWait,
-                                                        Marshal.SizeOf(dwWait),
-                                                        ref bqi.BatteryTag,
-                                                        Marshal.SizeOf(bqi.BatteryTag),
-                                                        out _,
-                                                        IntPtr.Zero))
+                                    SafeFileHandle battery = CreateFile(devicePath, FileAccess.ReadWrite, FileShare.ReadWrite, IntPtr.Zero, FileMode.Open, FileAttributes.Normal, IntPtr.Zero);
+                                    if (!battery.IsInvalid)
                                     {
-                                        BATTERY_INFORMATION bi = default;
-                                        bqi.InformationLevel = BATTERY_QUERY_INFORMATION_LEVEL.BatteryInformation;
+                                        BATTERY_QUERY_INFORMATION bqi = default;
 
+                                        uint dwWait = 0;
                                         if (DeviceIoControl(battery,
-                                                            IOCTL_BATTERY.QUERY_INFORMATION,
-                                                            ref bqi,
-                                                            Marshal.SizeOf(bqi),
-                                                            ref bi,
-                                                            Marshal.SizeOf(bi),
+                                                            IOCTL_BATTERY.QUERY_TAG,
+                                                            ref dwWait,
+                                                            Marshal.SizeOf(dwWait),
+                                                            ref bqi.BatteryTag,
+                                                            Marshal.SizeOf(bqi.BatteryTag),
                                                             out _,
                                                             IntPtr.Zero))
                                         {
-                                            if (bi.Capabilities == BatteryCapabilities.BATTERY_SYSTEM_BATTERY)
+                                            BATTERY_INFORMATION bi = default;
+                                            bqi.InformationLevel = BATTERY_QUERY_INFORMATION_LEVEL.BatteryInformation;
+
+                                            if (DeviceIoControl(battery,
+                                                                IOCTL_BATTERY.QUERY_INFORMATION,
+                                                                ref bqi,
+                                                                Marshal.SizeOf(bqi),
+                                                                ref bi,
+                                                                Marshal.SizeOf(bi),
+                                                                out _,
+                                                                IntPtr.Zero))
                                             {
-                                                const int MAX_LOADSTRING = 100;
-
-                                                IntPtr ptrDeviceName = Marshal.AllocHGlobal(MAX_LOADSTRING);
-                                                bqi.InformationLevel = BATTERY_QUERY_INFORMATION_LEVEL.BatteryDeviceName;
-
-                                                if (DeviceIoControl(battery,
-                                                                    IOCTL_BATTERY.QUERY_INFORMATION,
-                                                                    ref bqi,
-                                                                    Marshal.SizeOf(bqi),
-                                                                    ptrDeviceName,
-                                                                    MAX_LOADSTRING,
-                                                                    out _,
-                                                                    IntPtr.Zero))
+                                                if (bi.Capabilities == BatteryCapabilities.BATTERY_SYSTEM_BATTERY)
                                                 {
-                                                    IntPtr ptrManufactureName = Marshal.AllocHGlobal(MAX_LOADSTRING);
-                                                    bqi.InformationLevel = BATTERY_QUERY_INFORMATION_LEVEL.BatteryManufactureName;
+                                                    const int MAX_LOADSTRING = 100;
+
+                                                    IntPtr ptrDeviceName = Marshal.AllocHGlobal(MAX_LOADSTRING);
+                                                    bqi.InformationLevel = BATTERY_QUERY_INFORMATION_LEVEL.BatteryDeviceName;
 
                                                     if (DeviceIoControl(battery,
                                                                         IOCTL_BATTERY.QUERY_INFORMATION,
                                                                         ref bqi,
                                                                         Marshal.SizeOf(bqi),
-                                                                        ptrManufactureName,
+                                                                        ptrDeviceName,
                                                                         MAX_LOADSTRING,
                                                                         out _,
                                                                         IntPtr.Zero))
                                                     {
-                                                        string name = Marshal.PtrToStringUni(ptrDeviceName);
-                                                        string manufacturer = Marshal.PtrToStringUni(ptrManufactureName);
+                                                        IntPtr ptrManufactureName = Marshal.AllocHGlobal(MAX_LOADSTRING);
+                                                        bqi.InformationLevel = BATTERY_QUERY_INFORMATION_LEVEL.BatteryManufactureName;
 
-                                                        BatteryChemistry chemistry = BatteryChemistry.Unknown;
-                                                        if (bi.Chemistry.SequenceEqual(new[] { 'P', 'b', 'A', 'c' }))
+                                                        if (DeviceIoControl(battery,
+                                                                            IOCTL_BATTERY.QUERY_INFORMATION,
+                                                                            ref bqi,
+                                                                            Marshal.SizeOf(bqi),
+                                                                            ptrManufactureName,
+                                                                            MAX_LOADSTRING,
+                                                                            out _,
+                                                                            IntPtr.Zero))
                                                         {
-                                                            chemistry = BatteryChemistry.LeadAcid;
-                                                        }
-                                                        else if (bi.Chemistry.SequenceEqual(new[] { 'L', 'I', 'O', 'N' }) || bi.Chemistry.SequenceEqual(new[] { 'L', 'i', '-', 'I' }))
-                                                        {
-                                                            chemistry = BatteryChemistry.LithiumIon;
-                                                        }
-                                                        else if (bi.Chemistry.SequenceEqual(new[] { 'N', 'i', 'C', 'd' }))
-                                                        {
-                                                            chemistry = BatteryChemistry.NickelCadmium;
-                                                        }
-                                                        else if (bi.Chemistry.SequenceEqual(new[] { 'N', 'i', 'M', 'H' }))
-                                                        {
-                                                            chemistry = BatteryChemistry.NickelMetalHydride;
-                                                        }
-                                                        else if (bi.Chemistry.SequenceEqual(new[] { 'N', 'i', 'Z', 'n' }))
-                                                        {
-                                                            chemistry = BatteryChemistry.NickelZinc;
-                                                        }
-                                                        else if (bi.Chemistry.SequenceEqual(new[] { 'R', 'A', 'M', '\x00' }))
-                                                        {
-                                                            chemistry = BatteryChemistry.AlkalineManganese;
+                                                            string name = Marshal.PtrToStringUni(ptrDeviceName);
+                                                            string manufacturer = Marshal.PtrToStringUni(ptrManufactureName);
+
+                                                            BatteryChemistry chemistry = BatteryChemistry.Unknown;
+                                                            if (bi.Chemistry.SequenceEqual(new[] { 'P', 'b', 'A', 'c' }))
+                                                            {
+                                                                chemistry = BatteryChemistry.LeadAcid;
+                                                            }
+                                                            else if (bi.Chemistry.SequenceEqual(new[] { 'L', 'I', 'O', 'N' }) || bi.Chemistry.SequenceEqual(new[] { 'L', 'i', '-', 'I' }))
+                                                            {
+                                                                chemistry = BatteryChemistry.LithiumIon;
+                                                            }
+                                                            else if (bi.Chemistry.SequenceEqual(new[] { 'N', 'i', 'C', 'd' }))
+                                                            {
+                                                                chemistry = BatteryChemistry.NickelCadmium;
+                                                            }
+                                                            else if (bi.Chemistry.SequenceEqual(new[] { 'N', 'i', 'M', 'H' }))
+                                                            {
+                                                                chemistry = BatteryChemistry.NickelMetalHydride;
+                                                            }
+                                                            else if (bi.Chemistry.SequenceEqual(new[] { 'N', 'i', 'Z', 'n' }))
+                                                            {
+                                                                chemistry = BatteryChemistry.NickelZinc;
+                                                            }
+                                                            else if (bi.Chemistry.SequenceEqual(new[] { 'R', 'A', 'M', '\x00' }))
+                                                            {
+                                                                chemistry = BatteryChemistry.AlkalineManganese;
+                                                            }
+
+                                                            batteries.Add(new Battery(name,
+                                                                                 manufacturer,
+                                                                                 bqi.BatteryTag,
+                                                                                 battery,
+                                                                                 chemistry,
+                                                                                 bi.DesignedCapacity,
+                                                                                 bi.FullChargedCapacity));
                                                         }
 
-                                                        batteries.Add(new Battery(name,
-                                                                             manufacturer,
-                                                                             bqi.BatteryTag,
-                                                                             battery,
-                                                                             chemistry,
-                                                                             bi.DesignedCapacity,
-                                                                             bi.FullChargedCapacity));
+                                                        Marshal.FreeHGlobal(ptrManufactureName);
                                                     }
 
-                                                    Marshal.FreeHGlobal(ptrManufactureName);
+                                                    Marshal.FreeHGlobal(ptrDeviceName);
                                                 }
-
-                                                Marshal.FreeHGlobal(ptrDeviceName);
                                             }
                                         }
                                     }
                                 }
-                            }
 
-                            LocalFree(pdidd);
+                                LocalFree(pdidd);
+                            }
                         }
                     }
+
+                    SetupDiDestroyDeviceInfoList(hDevice);
                 }
 
-                SetupDiDestroyDeviceInfoList(hDevice);
-            }
+                List = batteries.ToArray();
 
-            List = batteries.ToArray();
+                BatteriesAreLoaded = true;
+            }
         }
 
         /// <summary>
@@ -279,11 +289,16 @@ namespace EMNSystemInfo.HardwareAPI.Battery
         /// </summary>
         public static void DisposeAllBatteries()
         {
-            foreach (Battery bat in List)
+            if (BatteriesAreLoaded)
             {
-                bat.Dispose();
+                foreach (Battery bat in List)
+                {
+                    bat.Dispose();
+                }
+                List = Array.Empty<Battery>();
+
+                BatteriesAreLoaded = false;
             }
-            List = Array.Empty<Battery>();
         }
 
         /// <summary>

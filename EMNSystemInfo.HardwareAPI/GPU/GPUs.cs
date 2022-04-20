@@ -18,8 +18,12 @@ namespace EMNSystemInfo.HardwareAPI.GPU
     /// </summary>
     public static class GPUs
     {
-        private static bool _gpusAreLoaded = false;
         private static ATIADLxx.ADLStatus _status;
+
+        /// <summary>
+        /// Gets a value that represents if the GPUs are loaded on the <see cref="List"/> property. Returns <see langword="true"/> if GPUs are loaded, otherwise, <see langword="false"/>.
+        /// </summary>
+        public static bool GPUsAreLoaded { get; private set; } = false;
 
         /// <summary>
         /// GPUs list
@@ -31,7 +35,7 @@ namespace EMNSystemInfo.HardwareAPI.GPU
         /// </summary>
         public static void LoadGPUs()
         {
-            if (!_gpusAreLoaded)
+            if (!GPUsAreLoaded)
             {
                 List<GPU> gpus = new();
 
@@ -156,7 +160,7 @@ namespace EMNSystemInfo.HardwareAPI.GPU
                 #endregion
 
                 List = gpus.ToArray();
-                _gpusAreLoaded = true;
+                GPUsAreLoaded = true;
             }
         }
 
@@ -165,7 +169,7 @@ namespace EMNSystemInfo.HardwareAPI.GPU
         /// </summary>
         public static void DisposeGPUs()
         {
-            if (_gpusAreLoaded)
+            if (GPUsAreLoaded)
             {
                 try
                 {
@@ -180,6 +184,8 @@ namespace EMNSystemInfo.HardwareAPI.GPU
                     gpu.Close();
                 }
                 List = Array.Empty<GPU>();
+
+                GPUsAreLoaded = false;
             }
         }
     }

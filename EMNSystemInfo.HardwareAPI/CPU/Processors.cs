@@ -18,6 +18,9 @@ namespace EMNSystemInfo.HardwareAPI.CPU
         private static CPUID[][][] _threads;
         private static bool _processorsAreLoaded = false;
 
+        /// <summary>
+        /// Gets a value that represents if the installed processors are loaded on the <see cref="List"/> property. Returns <see langword="true"/> if processors are loaded, otherwise, <see langword="false"/>.
+        /// </summary>
         public static bool ProcessorsAreLoaded => _processorsAreLoaded;
 
         /// <summary>

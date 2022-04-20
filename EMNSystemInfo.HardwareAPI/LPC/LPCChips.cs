@@ -53,7 +53,10 @@ namespace EMNSystemInfo.HardwareAPI.LPC
     /// </summary>
     public static class LPCChips
     {
-        private static bool _lpcsAreLoaded = false;
+        /// <summary>
+        /// Gets a value that represents if the LPC chips are loaded on the <see cref="List"/> property. Returns <see langword="true"/> if LPCs are loaded, otherwise, <see langword="false"/>.
+        /// </summary>
+        public static bool LPCsAreLoaded { get; private set; } = false;
 
         /// <summary>
         /// LPC chips list
@@ -66,7 +69,7 @@ namespace EMNSystemInfo.HardwareAPI.LPC
         /// <returns><see langword="false"/> if the library is not initialized, the user is not an administrator, or LPC chips were loaded before. Otherwise, <see langword="true"/>.</returns>
         public static bool LoadLPCChips()
         {
-            if (!LibrarySettings.IsInitialized || !LibrarySettings.UserIsAdmin || _lpcsAreLoaded)
+            if (!LibrarySettings.IsInitialized || !LibrarySettings.UserIsAdmin || LPCsAreLoaded)
             {
                 return false;
             }
@@ -87,7 +90,7 @@ namespace EMNSystemInfo.HardwareAPI.LPC
             if (ec != null)
                 List[superIO.Count] = ec;
 
-            _lpcsAreLoaded = true;
+            LPCsAreLoaded = true;
             return true;
         }
 
@@ -100,7 +103,7 @@ namespace EMNSystemInfo.HardwareAPI.LPC
             {
                 lpc.Close();
             }
-            _lpcsAreLoaded = false;
+            LPCsAreLoaded = false;
             List = Array.Empty<LPC>();
         }
     }

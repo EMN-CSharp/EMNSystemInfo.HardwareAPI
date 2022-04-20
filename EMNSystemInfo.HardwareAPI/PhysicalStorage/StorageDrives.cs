@@ -34,34 +34,44 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
         public static Drive[] List => _drives.ToArray();
 
         /// <summary>
+        /// Gets a value that represents if the drives are loaded on the <see cref="List"/> property. Returns <see langword="true"/> if drives are loaded, otherwise, <see langword="false"/>.
+        /// </summary>
+        public static bool DrivesAreLoaded { get; private set; } = false;
+
+        /// <summary>
         /// Loads all the connected drives into the <see cref="List"/> property.
         /// </summary>
         public static void LoadDrives()
         {
-            _drvInsertedEvent = new ManagementEventWatcher("SELECT * FROM __InstanceCreationEvent WITHIN 1 WHERE TargetInstance ISA 'Win32_DiskDrive'");
-            _drvInsertedEvent.EventArrived += _drvInsertedEvent_EventArrived;
-            _drvInsertedEvent.Start();
-
-            _drvRemovedEvent = new ManagementEventWatcher("SELECT * FROM __InstanceDeletionEvent WITHIN 1 WHERE TargetInstance ISA 'Win32_DiskDrive'");
-            _drvRemovedEvent.EventArrived += _drvRemovedEvent_EventArrived;
-            _drvRemovedEvent.Start();
-
-            //https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-diskdrive
-            using var diskDriveSearcher = new ManagementObjectSearcher("SELECT * FROM Win32_DiskDrive") { Options = { Timeout = TimeSpan.FromSeconds(10) } };
-            using ManagementObjectCollection diskDrives = diskDriveSearcher.Get();
-
-            foreach (ManagementBaseObject diskDrive in diskDrives)
+            if (!DrivesAreLoaded)
             {
-                // Use WMIStorageInfo when Win32 info can't be accessed because of privileges
-                WMIStorageInfo wmiInfo = new(diskDrive);
-                if (wmiInfo.DeviceId != null)
+                _drvInsertedEvent = new ManagementEventWatcher("SELECT * FROM __InstanceCreationEvent WITHIN 1 WHERE TargetInstance ISA 'Win32_DiskDrive'");
+                _drvInsertedEvent.EventArrived += _drvInsertedEvent_EventArrived;
+                _drvInsertedEvent.Start();
+
+                _drvRemovedEvent = new ManagementEventWatcher("SELECT * FROM __InstanceDeletionEvent WITHIN 1 WHERE TargetInstance ISA 'Win32_DiskDrive'");
+                _drvRemovedEvent.EventArrived += _drvRemovedEvent_EventArrived;
+                _drvRemovedEvent.Start();
+
+                //https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-diskdrive
+                using var diskDriveSearcher = new ManagementObjectSearcher("SELECT * FROM Win32_DiskDrive") { Options = { Timeout = TimeSpan.FromSeconds(10) } };
+                using ManagementObjectCollection diskDrives = diskDriveSearcher.Get();
+
+                foreach (ManagementBaseObject diskDrive in diskDrives)
                 {
-                    var instance = Drive.CreateInstance(wmiInfo);
-                    if (instance != null)
+                    // Use WMIStorageInfo when Win32 info can't be accessed because of privileges
+                    WMIStorageInfo wmiInfo = new(diskDrive);
+                    if (wmiInfo.DeviceId != null)
                     {
-                        _drives.Add(instance);
+                        var instance = Drive.CreateInstance(wmiInfo);
+                        if (instance != null)
+                        {
+                            _drives.Add(instance);
+                        }
                     }
                 }
+
+                DrivesAreLoaded = true;
             }
         }
 
@@ -70,20 +80,25 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
         /// </summary>
         public static void DisposeDrives()
         {
-            _drvInsertedEvent?.Stop();
-            if (_drvInsertedEvent != null)
-                _drvInsertedEvent.EventArrived -= _drvInsertedEvent_EventArrived;
-            _drvInsertedEvent?.Dispose();
+            if (DrivesAreLoaded)
+            {
+                _drvInsertedEvent?.Stop();
+                if (_drvInsertedEvent != null)
+                    _drvInsertedEvent.EventArrived -= _drvInsertedEvent_EventArrived;
+                _drvInsertedEvent?.Dispose();
 
-            _drvRemovedEvent?.Stop();
-            if (_drvRemovedEvent != null)
-                _drvRemovedEvent.EventArrived -= _drvRemovedEvent_EventArrived;
-            _drvRemovedEvent?.Dispose();
+                _drvRemovedEvent?.Stop();
+                if (_drvRemovedEvent != null)
+                    _drvRemovedEvent.EventArrived -= _drvRemovedEvent_EventArrived;
+                _drvRemovedEvent?.Dispose();
 
-            foreach (Drive storage in List)
-                storage.Close();
+                foreach (Drive storage in List)
+                    storage.Close();
 
-            _drives.Clear();
+                _drives.Clear();
+
+                DrivesAreLoaded = false;
+            }
         }
 
         private static void _drvInsertedEvent_EventArrived(object sender, EventArrivedEventArgs e)

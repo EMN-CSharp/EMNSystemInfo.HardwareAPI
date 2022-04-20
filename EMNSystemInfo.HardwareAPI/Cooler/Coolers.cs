@@ -19,165 +19,175 @@ namespace EMNSystemInfo.HardwareAPI.Cooler
 {
     public static class Coolers
     {
+        /// <summary>
+        /// Gets a value that represents if the cooler devices are loaded on the <see cref="List"/> property. Returns <see langword="true"/> if coolers are loaded, otherwise, <see langword="false"/>.
+        /// </summary>
+        public static bool CoolersAreLoaded { get; private set; } = false;
+
         public static ICooler[] List { get; internal set; } = Array.Empty<ICooler>();
 
         public static void LoadInstalledCoolers()
         {
-            List<ICooler> coolers = new();
-
-            #region AeroCool P7-H1 cooler listing
-
-            foreach (HidDevice dev in DeviceList.Local.GetHidDevices(0x2E97))
+            if (!CoolersAreLoaded)
             {
-                int hubno = dev.ProductID - 0x1000;
-                if (dev.DevicePath.Contains("mi_02") && (hubno >= 1) && (hubno <= 8))
+                List<ICooler> coolers = new();
+
+                #region AeroCool P7-H1 cooler listing
+
+                foreach (HidDevice dev in DeviceList.Local.GetHidDevices(0x2E97))
                 {
-                    var device = new AeroCoolP7H1(dev);
-                    coolers.Add(device);
-                }
-            }
-
-            #endregion
-
-            #region AquaComputer coolers listing
-
-            foreach (HidDevice dev in DeviceList.Local.GetHidDevices(0x0c70))
-            {
-                switch (dev.ProductID)
-                {
-                    case 0xF00E:
-                        {
-                            var device = new AquaComputerD5Next(dev);
-                            coolers.Add(device);
-                            break;
-                        }
-                    case 0xf0b6:
-                        {
-                            var device = new AquaComputerAquastreamXT(dev);
-                            coolers.Add(device);
-                            break;
-                        }
-                    case 0xf003:
-                        {
-                            var device = new AquaComputerMPS(dev);
-                            coolers.Add(device);
-                            break;
-                        }
-                }
-            }
-
-            #endregion
-
-            #region Heatmaster cooler listing
-
-            string[] portNames = GetRegistryPortNames();
-            for (int i = 0; i < portNames.Length; i++)
-            {
-                bool isValid = false;
-                try
-                {
-                    using (SerialPort serialPort = new SerialPort(portNames[i], 38400, Parity.None, 8, StopBits.One))
+                    int hubno = dev.ProductID - 0x1000;
+                    if (dev.DevicePath.Contains("mi_02") && (hubno >= 1) && (hubno <= 8))
                     {
-                        serialPort.NewLine = ((char)0x0D).ToString();
-                        try
-                        {
-                            serialPort.Open();
-                        }
-                        catch (UnauthorizedAccessException)
-                        {
-                        }
+                        var device = new AeroCoolP7H1(dev);
+                        coolers.Add(device);
+                    }
+                }
 
-                        if (serialPort.IsOpen)
-                        {
-                            serialPort.DiscardInBuffer();
-                            serialPort.DiscardOutBuffer();
-                            serialPort.Write(new byte[] { 0xAA }, 0, 1);
+                #endregion
 
-                            int j = 0;
-                            while (serialPort.BytesToRead == 0 && j < 10)
+                #region AquaComputer coolers listing
+
+                foreach (HidDevice dev in DeviceList.Local.GetHidDevices(0x0c70))
+                {
+                    switch (dev.ProductID)
+                    {
+                        case 0xF00E:
                             {
-                                Thread.Sleep(20);
-                                j++;
+                                var device = new AquaComputerD5Next(dev);
+                                coolers.Add(device);
+                                break;
+                            }
+                        case 0xf0b6:
+                            {
+                                var device = new AquaComputerAquastreamXT(dev);
+                                coolers.Add(device);
+                                break;
+                            }
+                        case 0xf003:
+                            {
+                                var device = new AquaComputerMPS(dev);
+                                coolers.Add(device);
+                                break;
+                            }
+                    }
+                }
+
+                #endregion
+
+                #region Heatmaster cooler listing
+
+                string[] portNames = GetRegistryPortNames();
+                for (int i = 0; i < portNames.Length; i++)
+                {
+                    bool isValid = false;
+                    try
+                    {
+                        using (SerialPort serialPort = new SerialPort(portNames[i], 38400, Parity.None, 8, StopBits.One))
+                        {
+                            serialPort.NewLine = ((char)0x0D).ToString();
+                            try
+                            {
+                                serialPort.Open();
+                            }
+                            catch (UnauthorizedAccessException)
+                            {
                             }
 
-                            if (serialPort.BytesToRead > 0)
+                            if (serialPort.IsOpen)
                             {
-                                bool flag = false;
-                                while (serialPort.BytesToRead > 0 && !flag)
+                                serialPort.DiscardInBuffer();
+                                serialPort.DiscardOutBuffer();
+                                serialPort.Write(new byte[] { 0xAA }, 0, 1);
+
+                                int j = 0;
+                                while (serialPort.BytesToRead == 0 && j < 10)
                                 {
-                                    flag |= serialPort.ReadByte() == 0xAA;
+                                    Thread.Sleep(20);
+                                    j++;
                                 }
 
-                                if (flag)
+                                if (serialPort.BytesToRead > 0)
                                 {
-                                    serialPort.WriteLine("[0:0]RH");
-                                    try
+                                    bool flag = false;
+                                    while (serialPort.BytesToRead > 0 && !flag)
                                     {
-                                        int k = 0;
-                                        int revision = 0;
-                                        while (k < 5)
+                                        flag |= serialPort.ReadByte() == 0xAA;
+                                    }
+
+                                    if (flag)
+                                    {
+                                        serialPort.WriteLine("[0:0]RH");
+                                        try
                                         {
-                                            string line = ReadLine(serialPort, 100);
-                                            if (line.StartsWith("-[0:0]RH:", StringComparison.Ordinal))
+                                            int k = 0;
+                                            int revision = 0;
+                                            while (k < 5)
                                             {
-                                                revision = int.Parse(line.Substring(9), CultureInfo.InvariantCulture);
-                                                break;
+                                                string line = ReadLine(serialPort, 100);
+                                                if (line.StartsWith("-[0:0]RH:", StringComparison.Ordinal))
+                                                {
+                                                    revision = int.Parse(line.Substring(9), CultureInfo.InvariantCulture);
+                                                    break;
+                                                }
+
+                                                k++;
                                             }
 
-                                            k++;
+                                            isValid = revision == 770;
                                         }
-
-                                        isValid = revision == 770;
+                                        catch (TimeoutException)
+                                        {
+                                        }
                                     }
-                                    catch (TimeoutException)
+                                    else
                                     {
                                     }
                                 }
                                 else
                                 {
                                 }
+
+                                serialPort.DiscardInBuffer();
                             }
                             else
                             {
                             }
-
-                            serialPort.DiscardInBuffer();
-                        }
-                        else
-                        {
                         }
                     }
-                }
-                catch (Exception)
-                {
+                    catch (Exception)
+                    {
+                    }
+
+                    if (isValid)
+                    {
+                        coolers.Add(new Heatmaster(portNames[i]));
+                    }
                 }
 
-                if (isValid)
+                #endregion
+
+                #region NZXT Kraken X3 cooler listing
+
+                foreach (HidDevice dev in DeviceList.Local.GetHidDevices(0x1e71))
                 {
-                    coolers.Add(new Heatmaster(portNames[i]));
+                    switch (dev.ProductID)
+                    {
+                        case 0x2007:
+                            {
+                                var device = new NZXTKrakenX3(dev);
+                                coolers.Add(device);
+                                break;
+                            }
+                    }
                 }
+
+                #endregion
+
+                List = coolers.ToArray();
+
+                CoolersAreLoaded = true;
             }
-
-            #endregion
-
-            #region NZXT Kraken X3 cooler listing
-
-            foreach (HidDevice dev in DeviceList.Local.GetHidDevices(0x1e71))
-            {
-                switch (dev.ProductID)
-                {
-                    case 0x2007:
-                        {
-                            var device = new NZXTKrakenX3(dev);
-                            coolers.Add(device);
-                            break;
-                        }
-                }
-            }
-
-            #endregion
-
-            List = coolers.ToArray();
         }
 
         private static string ReadLine(SerialPort port, int timeout)
@@ -234,11 +244,16 @@ namespace EMNSystemInfo.HardwareAPI.Cooler
 
         public static void DisposeCoolers()
         {
-            foreach (ICooler cooler in List)
+            if (CoolersAreLoaded)
             {
-                cooler.Close();
+                foreach (ICooler cooler in List)
+                {
+                    cooler.Close();
+                }
+                List = Array.Empty<ICooler>();
+
+                CoolersAreLoaded = false;
             }
-            List = Array.Empty<ICooler>();
         }
     }
 }
