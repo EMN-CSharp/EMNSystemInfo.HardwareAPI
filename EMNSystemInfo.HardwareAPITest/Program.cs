@@ -891,26 +891,29 @@ namespace EMNSystemInfo.HardwareAPITest
                     }
 
                     output.Append("   · S.M.A.R.T. Information:").AppendLine();
-                    output.Append("     ———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————").AppendLine();
-                    output.Append("     Index    | Identifier      | Attribute Name                                    | Current Value  | Worst Value  | Threshold | Converted Value    | Raw Value        ").AppendLine();
-                    output.Append("     ———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————").AppendLine();
+                    output.Append("    ┌──────────┬─────────────────┬───────────────────────────────────────────────────┬────────────────┬──────────────┬───────────┬────────────────────┬─────────────────┐").AppendLine();
+                    output.Append("    │ Index    │ Identifier      │ Attribute Name                                    │ Current Value  │ Worst Value  │ Threshold │ Converted Value    │ Raw Value       │").AppendLine();
+                    output.Append("    ├──────────┼─────────────────┼───────────────────────────────────────────────────┼────────────────┼──────────────┼───────────┼────────────────────┼─────────────────┤").AppendLine();
                     count = 1;
                     foreach (SMARTSensor sensor in from s in ataDrive.SMARTSensors
                                                    orderby s.Attribute.Id ascending
                                                    select s)
                     {
-                        output.AppendFormat("     {0,-5}", count);
-                        output.AppendFormat("    | {0,-12:X2}", sensor.Attribute.Id);
-                        output.AppendFormat("    | {0,-46}", sensor.Attribute.Name);
-                        output.AppendFormat("    | {0,-11}", sensor.NormalizedValue);
-                        output.AppendFormat("    | {0,-9}", sensor.WorstValue);
-                        output.AppendFormat("    | {0,-6}", sensor.Threshold);
-                        output.AppendFormat("    | {0,-15}", sensor.Value);
-                        output.AppendFormat("    | {0}", ConvertBytesToHexString(sensor.RawValue));
+                        if (count > 1)
+                            output.AppendLine("\n    ├──────────┼─────────────────┼───────────────────────────────────────────────────┼────────────────┼──────────────┼───────────┼────────────────────┼─────────────────┤");
 
-                        output.AppendLine("\n     ———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————");
+                        output.AppendFormat("    │ {0,-5}", count);
+                        output.AppendFormat("    │ {0,-12:X2}", sensor.Attribute.Id);
+                        output.AppendFormat("    │ {0,-46}", sensor.Attribute.Name);
+                        output.AppendFormat("    │ {0,-11}", sensor.NormalizedValue);
+                        output.AppendFormat("    │ {0,-9}", sensor.WorstValue);
+                        output.AppendFormat("    │ {0,-6}", sensor.Threshold);
+                        output.AppendFormat("    │ {0,-15}", sensor.Value);
+                        output.AppendFormat("    │ {0,-15} │", ConvertBytesToHexString(sensor.RawValue));
+
                         count++;
                     }
+                    output.AppendLine("\n    └──────────┴─────────────────┴───────────────────────────────────────────────────┴────────────────┴──────────────┴───────────┴────────────────────┴─────────────────┘");
                 }
 
                 #endregion
