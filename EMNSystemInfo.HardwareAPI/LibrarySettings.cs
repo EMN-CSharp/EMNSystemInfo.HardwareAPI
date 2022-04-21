@@ -4,6 +4,7 @@
 // All Rights Reserved.
 
 using EMNSystemInfo.HardwareAPI.Battery;
+using EMNSystemInfo.HardwareAPI.Cooler;
 using EMNSystemInfo.HardwareAPI.CPU;
 using EMNSystemInfo.HardwareAPI.GPU;
 using EMNSystemInfo.HardwareAPI.LPC;
@@ -97,6 +98,7 @@ namespace EMNSystemInfo.HardwareAPI
             if (IsInitialized)
             {
                 Batteries.DisposeAllBatteries();
+                Coolers.DisposeCoolers();
                 Processors.DisposeAllProcessors();
                 GPUs.DisposeGPUs();
                 LPCChips.DisposeLPCChips();
