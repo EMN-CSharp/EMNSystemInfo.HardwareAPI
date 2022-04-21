@@ -11,14 +11,15 @@
     <Product>EMNSystemInfo.HardwareAPI</Product>
     <Company>EMN-CSharp</Company>
     <Copyright>Copyright © EMN-CSharp and Contributors. | Partial Copyright © LibreHardwareMonitor and Contributors. | Partial Copyright © Michael Möller &lt;mmoeller@openhardwaremonitor.org&gt; and Contributors.</Copyright>
-    <Version>0.1.48.14</Version>
-    <FileVersion>0.1.48.14</FileVersion>
-    <ProductVersion>0.1.48.14</ProductVersion>
+    <Version>0.1.50.16</Version>
+    <FileVersion>0.1.50.16</FileVersion>
+    <ProductVersion>0.1.50.16</ProductVersion>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <Description>EMNSystemInfo.HardwareAPI is a hardware library for Windows based on Libre Hardware Monitor. It provides a base model to access hardware information.</Description>
     <RepositoryUrl>https://github.com/EMN-CSharp/EMNSystemInfo.HardwareAPI/</RepositoryUrl>
-    <PackageReleaseNotes>· Extend SMBIOS memory devices info (form factor, type, type detail, configured and maximum voltage added)
-· Now StorageDrives can provide generic drive info with user privileges</PackageReleaseNotes>
+    <PackageReleaseNotes>· Added support for drive events (DriveInserted, DriveRemoved)
+· Added properties to check if hardware group classes are loaded (ProcessorsAreLoaded, GPUsAreLoaded, etc.).
+· Errors fixed</PackageReleaseNotes>
     <PackageTags>open-source opensource csharp dotnet hardware information monitoring library</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
