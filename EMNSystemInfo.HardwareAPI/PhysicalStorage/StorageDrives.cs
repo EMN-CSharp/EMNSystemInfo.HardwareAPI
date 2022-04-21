@@ -20,7 +20,8 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
     public delegate void DriveEventHandler(Drive drive);
 
     /// <summary>
-    /// Class that represents a list of physical drives connected to the system. Administrator privileges are required.
+    /// Class that represents a list of physical drives connected to the system.<br/>
+    /// Administrator privileges are not required, but, if the library is not executing with admin privileges, only generic storage info can be accessed, regardless of the drive type
     /// </summary>
     public static class StorageDrives
     {
@@ -39,7 +40,7 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
         public static bool DrivesAreLoaded { get; private set; } = false;
 
         /// <summary>
-        /// Loads all the connected drives into the <see cref="List"/> property.
+        /// Loads all the connected drives into the <see cref="List"/> property and starts the listeners for drive events.
         /// </summary>
         public static void LoadDrives()
         {
