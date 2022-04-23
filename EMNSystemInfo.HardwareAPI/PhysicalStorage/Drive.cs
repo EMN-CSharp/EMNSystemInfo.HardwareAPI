@@ -101,22 +101,54 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
         /// </summary>
         public PhysicalDriveType Type { get; internal set; } = PhysicalDriveType.Generic;
 
+        /// <summary>
+        /// Gets the used capacity percentage of the drive. Does not include hidden partitions.
+        /// </summary>
         public double UsedCapacityPercentage => _usageSensor;
 
+        /// <summary>
+        /// Gets the total activity percentage of the drive. This property is nullable.
+        /// </summary>
         public double? TotalActivityPercentage { get; internal set; }
 
+        /// <summary>
+        /// Gets the total read activity percentage of the drive. This property is nullable.
+        /// </summary>
         public double? TotalReadActivityPercentage { get; internal set; }
 
+        /// <summary>
+        /// Gets the total write activity percentage of the drive. This property is nullable.
+        /// </summary>
         public double? TotalWriteActivityPercentage { get; internal set; }
 
+        /// <summary>
+        /// Gets the idle time percentage of the drive. This property is nullable.
+        /// </summary>
+        public double? IdleTimePercentage { get; internal set; }
+
+        /// <summary>
+        /// Gets the drive read speed, in bytes per second (B/s). This property is nullable.
+        /// </summary>
         public double? ReadSpeed { get; internal set; }
 
+        /// <summary>
+        /// Gets the drive write speed, in bytes per second (B/s). This property is nullable.
+        /// </summary>
         public double? WriteSpeed { get; internal set; }
 
+        /// <summary>
+        /// Gets the average response time per transfer of the drive, in seconds (s). This property is nullable.
+        /// </summary>
         public double? AverageResponseTimePerTransfer { get; internal set; }
 
+        /// <summary>
+        /// Gets the average response time per read of the drive, in seconds (s). This property is nullable.
+        /// </summary>
         public double? AverageResponseTimePerRead { get; internal set; }
 
+        /// <summary>
+        /// Gets the average response time per write of the drive, in seconds (s). This property is nullable.
+        /// </summary>
         public double? AverageResponseTimePerWrite { get; internal set; }
 
         internal Drive(StorageInfo storageInfo)
@@ -217,6 +249,7 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
                 TotalActivityPercentage = _drivePCs?.DriveTime;
                 TotalReadActivityPercentage = _drivePCs?.ReadTime;
                 TotalWriteActivityPercentage = _drivePCs?.WriteTime;
+                IdleTimePercentage = _drivePCs?.IdleTime;
                 ReadSpeed = _drivePCs?.ReadSpeed;
                 WriteSpeed = _drivePCs?.WriteSpeed;
                 AverageResponseTimePerTransfer = _drivePCs?.AverageResponseTimePerTransfer;
