@@ -72,7 +72,7 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
         public DriveGeometry Geometry { get; protected set; }
 
         /// <summary>
-        /// Gets if this drive is an ATA drive. If it's <see langword="true"/>, you can convert yout <see cref="Drive"/> instance into <see cref="ATADrive"/>
+        /// Gets if this drive is an ATA drive. If it's <see langword="true"/>, you can convert your <see cref="Drive"/> instance into <see cref="ATADrive"/>
         /// </summary>
         public bool IsATADrive { get; protected set; }
 
