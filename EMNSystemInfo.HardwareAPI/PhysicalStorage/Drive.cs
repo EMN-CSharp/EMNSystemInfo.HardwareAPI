@@ -41,7 +41,7 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
     {
         private readonly DrivePerformanceCounters _drivePCs;
         private readonly StorageInfo _storageInfo;
-        private readonly TimeSpan _updateInterval = TimeSpan.FromSeconds(60);
+        private readonly TimeSpan _updateInterval = TimeSpan.FromMilliseconds(60);
 
         private DateTime _lastUpdate = DateTime.MinValue;
         private double _usageSensor;
