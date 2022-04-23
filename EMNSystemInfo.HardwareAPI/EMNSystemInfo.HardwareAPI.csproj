@@ -11,13 +11,14 @@
     <Product>EMNSystemInfo.HardwareAPI</Product>
     <Company>EMN-CSharp</Company>
     <Copyright>Copyright © EMN-CSharp and Contributors. | Partial Copyright © LibreHardwareMonitor and Contributors. | Partial Copyright © Michael Möller &lt;mmoeller@openhardwaremonitor.org&gt; and Contributors.</Copyright>
-    <Version>0.1.51.17</Version>
-    <FileVersion>0.1.51.17</FileVersion>
-    <ProductVersion>0.1.51.17</ProductVersion>
+    <Version>0.1.52.17</Version>
+    <FileVersion>0.1.52.17</FileVersion>
+    <ProductVersion>0.1.52.17</ProductVersion>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <Description>EMNSystemInfo.HardwareAPI is a hardware library for Windows based on Libre Hardware Monitor. It provides a base model to access hardware information.</Description>
     <RepositoryUrl>https://github.com/EMN-CSharp/EMNSystemInfo.HardwareAPI/</RepositoryUrl>
-    <PackageReleaseNotes>(IMPORTANT) Fixed a bug that prevented updating drives info in less than 60 seconds</PackageReleaseNotes>
+    <PackageReleaseNotes>· (IMPORTANT) Fixed a bug that prevented updating drives info in less than 60 seconds
+· Added idle time percentage sensor for storage drives</PackageReleaseNotes>
     <PackageTags>open-source opensource csharp dotnet hardware information monitoring library</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
