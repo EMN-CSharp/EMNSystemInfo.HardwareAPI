@@ -39,7 +39,7 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
     /// </summary>
     public class Drive
     {
-        private readonly DrivePerformanceCounters _drivePCs;
+        private DrivePerformanceCounters _drivePCs;
         private readonly StorageInfo _storageInfo;
         private readonly TimeSpan _updateInterval = TimeSpan.FromMilliseconds(60);
 
@@ -164,7 +164,13 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
                 _drivePCs = new DrivePerformanceCounters(storageInfo.Index);
             }
             catch (Exception)
-            { }
+            {
+                /*
+                 * For some reason (most likely the drive is not registered in perf counters)
+                 * we can't get an instance of DrivePerformanceCounters. Ignore the
+                 * exception, because we'll try to get an instance when Update() is called.
+                 */
+            }
 
             string[] logicalDrives = WindowsStorage.GetLogicalDrives(storageInfo.Index);
             var driveInfoList = new List<DriveInfo>(logicalDrives.Length);
@@ -246,6 +252,18 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
             TimeSpan tDiff = DateTime.UtcNow - _lastUpdate;
             if (tDiff > _updateInterval)
             {
+                if (_drivePCs == null)
+                {
+                    try
+                    {
+                        _drivePCs = new DrivePerformanceCounters(_storageInfo.Index);
+                    }
+                    catch (Exception)
+                    {
+                        // Try the next time...
+                    }
+                }
+
                 TotalActivityPercentage = _drivePCs?.DriveTime;
                 TotalReadActivityPercentage = _drivePCs?.ReadTime;
                 TotalWriteActivityPercentage = _drivePCs?.WriteTime;
