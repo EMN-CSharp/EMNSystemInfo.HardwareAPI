@@ -302,6 +302,9 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
             }
         }
 
-        public virtual void Close() { }
+        public virtual void Close()
+        {
+            _drivePCs?.Dispose();
+        }
     }
 }
