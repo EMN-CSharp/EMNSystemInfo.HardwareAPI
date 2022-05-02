@@ -74,15 +74,5 @@ namespace EMNSystemInfo.HardwareAPI
             ControlMode = ControlMode.Software;
             SoftwareValue = value;
         }
-
-        double IControl.SetDefault()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        double IControl.SetSoftware(double value)
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }

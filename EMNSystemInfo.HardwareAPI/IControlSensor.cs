@@ -7,27 +7,8 @@
 
 namespace EMNSystemInfo.HardwareAPI
 {
-    public enum ControlMode
+    public interface IControlSensor
     {
-        Undefined,
-        Software,
-        Default
-    }
-
-    public interface IControl
-    {
-        ControlMode ControlMode { get; }
-
-        double MaxSoftwareValue { get; }
-
-        double MinSoftwareValue { get; }
-
-        IControlSensor Sensor { get; }
-
-        double SoftwareValue { get; }
-
-        void SetDefault();
-
-        void SetSoftware(double value);
+        double? Value { get; }
     }
 }
