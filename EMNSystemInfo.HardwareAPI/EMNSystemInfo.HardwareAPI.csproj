@@ -11,13 +11,14 @@
     <Product>EMNSystemInfo.HardwareAPI</Product>
     <Company>EMN-CSharp</Company>
     <Copyright>Copyright © EMN-CSharp and Contributors. | Partial Copyright © LibreHardwareMonitor and Contributors. | Partial Copyright © Michael Möller &lt;mmoeller@openhardwaremonitor.org&gt; and Contributors.</Copyright>
-    <Version>0.1.54.18</Version>
-    <FileVersion>0.1.54.18</FileVersion>
-    <ProductVersion>0.1.54.18</ProductVersion>
+    <Version>0.1.55.19</Version>
+    <FileVersion>0.1.55.19</FileVersion>
+    <ProductVersion>0.1.55.19</ProductVersion>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <Description>EMNSystemInfo.HardwareAPI is a hardware library for Windows based on Libre Hardware Monitor. It provides a base model to access hardware information.</Description>
     <RepositoryUrl>https://github.com/EMN-CSharp/EMNSystemInfo.HardwareAPI/</RepositoryUrl>
-    <PackageReleaseNotes>· Fixed a bug that prevented disposing drive performance counters when Close() method is called</PackageReleaseNotes>
+    <PackageReleaseNotes>· Added base Update() method for LPC class
+· (Changes from unlisted version 0.1.53.18) Fixed a bug that could prevent loading drive performance counters when connecting a new drive</PackageReleaseNotes>
     <PackageTags>open-source opensource csharp dotnet hardware information monitoring library</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>

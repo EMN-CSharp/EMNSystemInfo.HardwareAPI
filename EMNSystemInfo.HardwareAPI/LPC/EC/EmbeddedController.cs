@@ -210,7 +210,8 @@ namespace EMNSystemInfo.HardwareAPI.LPC.EC
             return null;
         }
 
-        public void Update()
+        /// <inheritdoc/>
+        public override void Update()
         {
             if (!TryUpdateData())
             {

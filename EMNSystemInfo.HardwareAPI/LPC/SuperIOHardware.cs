@@ -3291,7 +3291,8 @@ namespace EMNSystemInfo.HardwareAPI.LPC
             }
         }
 
-        public void Update()
+        /// <inheritdoc/>
+        public override void Update()
         {
             _superIO.Update();
 

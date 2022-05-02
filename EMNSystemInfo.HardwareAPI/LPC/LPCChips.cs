@@ -28,27 +28,6 @@ namespace EMNSystemInfo.HardwareAPI.LPC
     }
 
     /// <summary>
-    /// Abstract class that represents a base LPC chip
-    /// </summary>
-    public abstract class LPC
-    {
-        /// <summary>
-        /// Gets the chip name
-        /// </summary>
-        public string ChipName { get; internal set; }
-
-        /// <summary>
-        /// Gets the LPC chip type
-        /// </summary>
-        public LPCType Type { get; internal set; }
-
-        /// <summary>
-        /// Frees the resources used in this class. It is not necessary to call this method, <see cref="LPCChips.DisposeLPCChips"/> does all the work.
-        /// </summary>
-        public virtual void Close() { }
-    }
-
-    /// <summary>
     /// LPC chips information. It is required to initialize the library to use this class.
     /// </summary>
     public static class LPCChips
