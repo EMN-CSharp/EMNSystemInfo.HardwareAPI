@@ -26,7 +26,7 @@ namespace EMNSystemInfo.HardwareAPI.Cooler
 
         public static ICooler[] List { get; internal set; } = Array.Empty<ICooler>();
 
-        public static void LoadInstalledCoolers()
+        public static void Load()
         {
             if (!CoolersAreLoaded)
             {
@@ -242,7 +242,7 @@ namespace EMNSystemInfo.HardwareAPI.Cooler
             return result.ToArray();
         }
 
-        public static void DisposeCoolers()
+        public static void Dispose()
         {
             if (CoolersAreLoaded)
             {

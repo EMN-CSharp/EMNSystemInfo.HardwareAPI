@@ -42,7 +42,7 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
         /// <summary>
         /// Loads all the connected drives into the <see cref="List"/> property and starts the listeners for drive events.
         /// </summary>
-        public static void LoadDrives()
+        public static void Load()
         {
             if (!DrivesAreLoaded)
             {
@@ -79,7 +79,7 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
         /// <summary>
         /// Frees the resources used by <see cref="Drive"/> instances and closes the listeners for drive events.
         /// </summary>
-        public static void DisposeDrives()
+        public static void Dispose()
         {
             if (DrivesAreLoaded)
             {

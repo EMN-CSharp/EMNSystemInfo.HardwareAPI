@@ -11,9 +11,9 @@
     <Product>EMNSystemInfo.HardwareAPI</Product>
     <Company>EMN-CSharp</Company>
     <Copyright>Copyright © EMN-CSharp and Contributors. | Partial Copyright © LibreHardwareMonitor and Contributors. | Partial Copyright © Michael Möller &lt;mmoeller@openhardwaremonitor.org&gt; and Contributors.</Copyright>
-    <Version>0.2.8.1</Version>
-    <FileVersion>0.2.8.1</FileVersion>
-    <ProductVersion>0.2.8.1</ProductVersion>
+    <Version>0.2.9.1</Version>
+    <FileVersion>0.2.9.1</FileVersion>
+    <ProductVersion>0.2.9.1</ProductVersion>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <Description>EMNSystemInfo.HardwareAPI is a hardware library for Windows based on Libre Hardware Monitor. It provides a base model to access hardware information.</Description>
     <RepositoryUrl>https://github.com/EMN-CSharp/EMNSystemInfo.HardwareAPI/</RepositoryUrl>
@@ -25,7 +25,8 @@
 · Changed the way of getting SMU sensors in AMD17CPU class
 · Add more properties to the Processor class (Family, Model, Stepping, PackageType, CoreCount, ThreadCount)
 · Now the library can provide generic processor info with user privileges
-· Fixed possible resource leak if the detected processor is an AMD17CPU</PackageReleaseNotes>
+· Fixed possible resource leak if the detected processor is an AMD17CPU
+· Rename load and dispose methods of hardware group classes so they are less obvious (Processors.LoadProcessors() is Processors.Load(), GPUs.DisposeGPUs() is GPUs.Dispose() and so on)</PackageReleaseNotes>
     <PackageTags>open-source opensource csharp dotnet hardware information monitoring library</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>

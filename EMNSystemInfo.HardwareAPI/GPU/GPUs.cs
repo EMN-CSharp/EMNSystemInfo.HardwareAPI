@@ -33,7 +33,7 @@ namespace EMNSystemInfo.HardwareAPI.GPU
         /// <summary>
         /// Loads the GPUs supported by this library into the <see cref="List"/> property.
         /// </summary>
-        public static void LoadGPUs()
+        public static void Load()
         {
             if (!GPUsAreLoaded)
             {
@@ -129,7 +129,7 @@ namespace EMNSystemInfo.HardwareAPI.GPU
 
                 if (!Processors.ProcessorsAreLoaded)
                 {
-                    Processors.LoadProcessors();
+                    Processors.Load();
                 }
                 IList<IntelCPU> intelCPUs = (from iCPU in Processors.List
                                              where iCPU.Type == ProcessorType.IntelCPU
@@ -167,7 +167,7 @@ namespace EMNSystemInfo.HardwareAPI.GPU
         /// <summary>
         /// Frees the resources used by <see cref="GPU"/> instances.
         /// </summary>
-        public static void DisposeGPUs()
+        public static void Dispose()
         {
             if (GPUsAreLoaded)
             {

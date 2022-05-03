@@ -97,12 +97,12 @@ namespace EMNSystemInfo.HardwareAPI
         {
             if (IsInitialized)
             {
-                Batteries.DisposeAllBatteries();
-                Coolers.DisposeCoolers();
-                Processors.DisposeAllProcessors();
-                GPUs.DisposeGPUs();
-                LPCChips.DisposeLPCChips();
-                StorageDrives.DisposeDrives();
+                Batteries.Dispose();
+                Coolers.Dispose();
+                Processors.Dispose();
+                GPUs.Dispose();
+                LPCChips.Dispose();
+                StorageDrives.Dispose();
 
                 if (Ring0.IsOpen)
                     Ring0.Close();

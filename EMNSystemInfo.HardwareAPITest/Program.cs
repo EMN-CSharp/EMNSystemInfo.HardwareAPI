@@ -96,7 +96,7 @@ namespace EMNSystemInfo.HardwareAPITest
             #region Batteries Information
 
             uint count = 1;
-            Batteries.LoadInstalledBatteries();
+            Batteries.Load();
             foreach (Battery bat in Batteries.List)
             {
                 bat.Update();
@@ -187,7 +187,7 @@ namespace EMNSystemInfo.HardwareAPITest
                 }
                 count++;
             }
-            Batteries.DisposeAllBatteries();
+            Batteries.Dispose();
 
             #endregion
 
@@ -195,7 +195,7 @@ namespace EMNSystemInfo.HardwareAPITest
 
             #region Processors Information
 
-            Processors.LoadProcessors();
+            Processors.Load();
             Processor[] processors = Processors.List;
             foreach (Processor p in processors)
             {
@@ -390,7 +390,7 @@ namespace EMNSystemInfo.HardwareAPITest
 
                 #endregion
             }
-            Processors.DisposeAllProcessors();
+            Processors.Dispose();
 
             #endregion
 
@@ -398,7 +398,7 @@ namespace EMNSystemInfo.HardwareAPITest
 
             #region GPUs Information
 
-            GPUs.LoadGPUs();
+            GPUs.Load();
             IList<GPU> gpus = GPUs.List;
             count = 1;
             foreach (GPU gpu in gpus)
@@ -656,7 +656,7 @@ namespace EMNSystemInfo.HardwareAPITest
 
                 count++;
             }
-            GPUs.DisposeGPUs();
+            GPUs.Dispose();
 
             #endregion
 
@@ -664,7 +664,7 @@ namespace EMNSystemInfo.HardwareAPITest
 
             #region LPC Chips Information
 
-            if (LPCChips.LoadLPCChips())
+            if (LPCChips.Load())
             {
                 LPC[] lpcChips = LPCChips.List;
                 count = 1;
@@ -788,7 +788,7 @@ namespace EMNSystemInfo.HardwareAPITest
 
             #region Storage Information
 
-            StorageDrives.LoadDrives();
+            StorageDrives.Load();
             foreach (Drive drive in from d in StorageDrives.List
                                     orderby d.Index ascending
                                     select d)
@@ -1013,7 +1013,7 @@ namespace EMNSystemInfo.HardwareAPITest
 
                 #endregion
             }
-            StorageDrives.DisposeDrives();
+            StorageDrives.Dispose();
 
             #endregion
 
@@ -1021,7 +1021,7 @@ namespace EMNSystemInfo.HardwareAPITest
 
             #region Coolers Information
 
-            Coolers.LoadInstalledCoolers();
+            Coolers.Load();
             count = 1;
             foreach (ICooler cooler in Coolers.List)
             {
@@ -1159,7 +1159,7 @@ namespace EMNSystemInfo.HardwareAPITest
 
                 count++;
             }
-            Coolers.DisposeCoolers();
+            Coolers.Dispose();
 
             #endregion
 

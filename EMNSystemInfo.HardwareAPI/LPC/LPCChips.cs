@@ -46,7 +46,7 @@ namespace EMNSystemInfo.HardwareAPI.LPC
         /// Loads all the motherboard LPC chips into the <see cref="List"/> property.
         /// </summary>
         /// <returns><see langword="false"/> if the library is not initialized, the user is not an administrator, or LPC chips were loaded before. Otherwise, <see langword="true"/>.</returns>
-        public static bool LoadLPCChips()
+        public static bool Load()
         {
             if (!LibrarySettings.IsInitialized || !LibrarySettings.UserIsAdmin || LPCsAreLoaded)
             {
@@ -76,7 +76,7 @@ namespace EMNSystemInfo.HardwareAPI.LPC
         /// <summary>
         /// Frees the resources used by <see cref="LPC"/> instances.
         /// </summary>
-        public static void DisposeLPCChips()
+        public static void Dispose()
         {
             foreach (LPC lpc in List)
             {

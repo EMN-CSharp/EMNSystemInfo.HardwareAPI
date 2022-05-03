@@ -174,7 +174,7 @@ namespace EMNSystemInfo.HardwareAPI.Battery
         public TimeSpan? EstimatedRemainingTime { get; internal set; }
 
         /// <summary>
-        /// Frees the resources used in this class. It is not necessary to call this method, <see cref="Batteries.DisposeAllBatteries"/> does all the work.
+        /// Frees the resources used in this class. It is not necessary to call this method, <see cref="Batteries.Dispose"/> does all the work.
         /// </summary>
         public void Dispose()
         {

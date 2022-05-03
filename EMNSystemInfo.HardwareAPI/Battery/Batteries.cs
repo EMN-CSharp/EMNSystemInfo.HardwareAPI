@@ -118,7 +118,7 @@ namespace EMNSystemInfo.HardwareAPI.Battery
         /// <summary>
         /// Loads all the installed batteries into the <see cref="List"/> property.
         /// </summary>
-        public unsafe static void LoadInstalledBatteries()
+        public unsafe static void Load()
         {
             if (!BatteriesAreLoaded)
             {
@@ -287,7 +287,7 @@ namespace EMNSystemInfo.HardwareAPI.Battery
         /// <summary>
         /// Frees the resources used by <see cref="Battery"/> instances.
         /// </summary>
-        public static void DisposeAllBatteries()
+        public static void Dispose()
         {
             if (BatteriesAreLoaded)
             {

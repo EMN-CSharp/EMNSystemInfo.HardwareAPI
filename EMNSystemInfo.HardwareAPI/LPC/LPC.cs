@@ -26,7 +26,7 @@ namespace EMNSystemInfo.HardwareAPI.LPC
         public virtual void Update() { }
 
         /// <summary>
-        /// Frees the resources used in this class. It is not necessary to call this method, <see cref="LPCChips.DisposeLPCChips"/> does all the work.
+        /// Frees the resources used in this class. It is not necessary to call this method, <see cref="LPCChips.Dispose"/> does all the work.
         /// </summary>
         public virtual void Close() { }
     }

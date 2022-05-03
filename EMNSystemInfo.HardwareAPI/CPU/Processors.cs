@@ -32,7 +32,7 @@ namespace EMNSystemInfo.HardwareAPI.CPU
         /// Loads all the installed processors into the <see cref="List"/> property.
         /// </summary>
         /// <returns><see langword="false"/> if the processors were loaded before or the library is not initialized. Otherwise, <see langword="true"/>.</returns>
-        public static bool LoadProcessors()
+        public static bool Load()
         {
             if (!LibrarySettings.IsInitialized || _processorsAreLoaded)
             {
@@ -108,7 +108,7 @@ namespace EMNSystemInfo.HardwareAPI.CPU
         /// <summary>
         /// Deletes all processors from the <see cref="List"/> property.
         /// </summary>
-        public static void DisposeAllProcessors()
+        public static void Dispose()
         {
             _processorsAreLoaded = false;
             List = Array.Empty<Processor>();
