@@ -59,7 +59,7 @@ Como principal componente, está la clase LibrarySettings, encargada de realizar
 | StorageDrives| No | No** |
 | Coolers| No | Yes (probablemente) |
 
-**: Pero, si la biblioteca no se está ejecutando con privilegios de administrador, solamente se puede acceder a la información genérica de las unidades de almacenamiento, sin importar el tipo de unidad.
+**: Pero, si la biblioteca no se está ejecutando con privilegios de administrador, solamente se puede acceder a la información genérica de las unidades de almacenamiento, sin importar el tipo de unidad.<br/>
 *: Es el mismo caso que StorageDrives. Si no hay permisos de administrador, solamente se accede a la información genérica de los procesadores, sin importar su tipo.
 
 Estas clases de grupos de hardware contienen una propiedad llamada List que contiene clases que representan cada elemento de hardware instalado, y métodos para cargarlos y eliminarlos de la propiedad mencionada.<br/>Finalmente, éstas clases que representan un elemento de hardware contienen propiedades que representan su información y valores de sensores, además de un método Update para actualizarlas. Algunas de estas instancias de clases ofrecen información más detallada y específica para un hardware. Para acceder a ella, hay que verificar el tipo de hardware que representa la instancia, indicado con la propiedad Type. Después, hay que convertir la instancia en la instancia indicada por la propiedad Type.
