@@ -238,7 +238,7 @@ namespace EMNSystemInfo.HardwareAPITest
 
                     output.Append("   · Core Clock Speeds:").AppendLine();
                     count = 1;
-                    foreach (double clock in intelCPU.CoreFrequencyClocks)
+                    foreach (double clock in intelCPU.CoreClockSpeeds)
                     {
                         output.AppendFormat("     · Core #{0}: {1:F2} MHz (multiplier: × {2:F2})", count, clock, clock / intelCPU.BusClock).AppendLine();
                         count++;

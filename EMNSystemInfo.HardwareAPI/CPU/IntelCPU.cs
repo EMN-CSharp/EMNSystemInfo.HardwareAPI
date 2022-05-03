@@ -124,7 +124,7 @@ namespace EMNSystemInfo.HardwareAPI.CPU
         /// <summary>
         /// Gets the clock speed for all the cores. You can get the multiplier by dividing each value by the <see cref="BusClock"/> value.
         /// </summary>
-        public double[] CoreFrequencyClocks => _coreClocks;
+        public double[] CoreClockSpeeds => _coreClocks;
 
         /// <summary>
         /// Gets the maximum temperature reached by the package.
