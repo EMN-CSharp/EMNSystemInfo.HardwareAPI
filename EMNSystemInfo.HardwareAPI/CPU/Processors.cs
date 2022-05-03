@@ -34,7 +34,7 @@ namespace EMNSystemInfo.HardwareAPI.CPU
         /// <returns><see langword="false"/> if the processors were loaded before or the library is not initialized. Otherwise, <see langword="true"/>.</returns>
         public static bool LoadProcessors()
         {
-            if (_processorsAreLoaded)
+            if (!LibrarySettings.IsInitialized || _processorsAreLoaded)
             {
                 return false;
             }
