@@ -42,7 +42,7 @@ namespace EMNSystemInfo.HardwareAPI.GPU
         {
             base.Update();
 
-            _powerSensor = _intelCPU.PowerSensors[(int)IntelPowerSensorType.Graphics]?.Value;
+            _powerSensor = _intelCPU.PowerSensors.Graphics;
         }
 
         private static string GetName(string deviceId)

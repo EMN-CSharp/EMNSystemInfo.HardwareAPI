@@ -260,12 +260,14 @@ namespace EMNSystemInfo.HardwareAPITest
                     }
 
                     output.Append("   · Power Sensors:").AppendLine();
-                    count = 1;
-                    foreach (IntelPowerSensor? ps in intelCPU.PowerSensors)
-                    {
-                        output.AppendFormat("     · {0}: {1:F2} W", ps?.Type, ps?.Value).AppendLine();
-                        count++;
-                    }
+                    if (intelCPU.PowerSensors.Package.HasValue)
+                        output.AppendFormat("     · Package: {0:F2} W", intelCPU.PowerSensors.Package.Value).AppendLine();
+                    if (intelCPU.PowerSensors.Cores.HasValue)
+                        output.AppendFormat("     · Cores: {0:F2} W", intelCPU.PowerSensors.Cores.Value).AppendLine();
+                    if (intelCPU.PowerSensors.Graphics.HasValue)
+                        output.AppendFormat("     · Integrated GPU: {0:F2} W", intelCPU.PowerSensors.Graphics.Value).AppendLine();
+                    if (intelCPU.PowerSensors.Memory.HasValue)
+                        output.AppendFormat("     · Memory: {0:F2} W", intelCPU.PowerSensors.Memory.Value).AppendLine();
                 }
 
                 #endregion

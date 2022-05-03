@@ -11,9 +11,9 @@
     <Product>EMNSystemInfo.HardwareAPI</Product>
     <Company>EMN-CSharp</Company>
     <Copyright>Copyright © EMN-CSharp and Contributors. | Partial Copyright © LibreHardwareMonitor and Contributors. | Partial Copyright © Michael Möller &lt;mmoeller@openhardwaremonitor.org&gt; and Contributors.</Copyright>
-    <Version>0.2.1.1</Version>
-    <FileVersion>0.2.1.1</FileVersion>
-    <ProductVersion>0.2.1.1</ProductVersion>
+    <Version>0.2.3.1</Version>
+    <FileVersion>0.2.3.1</FileVersion>
+    <ProductVersion>0.2.3.1</ProductVersion>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <Description>EMNSystemInfo.HardwareAPI is a hardware library for Windows based on Libre Hardware Monitor. It provides a base model to access hardware information.</Description>
     <RepositoryUrl>https://github.com/EMN-CSharp/EMNSystemInfo.HardwareAPI/</RepositoryUrl>

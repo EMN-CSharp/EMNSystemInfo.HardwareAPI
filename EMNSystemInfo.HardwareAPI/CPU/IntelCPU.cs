@@ -40,45 +40,41 @@ namespace EMNSystemInfo.HardwareAPI.CPU
     }
 
     /// <summary>
-    /// Power sensor type for Intel CPUs
+    /// Power sensors for Intel CPUs
     /// </summary>
-    public enum IntelPowerSensorType
+    public class IntelPowerSensors
     {
-        /// <summary>
-        /// Power consumed by the entire package
-        /// </summary>
-        Package = 0,
+        internal DateTime packageLastEnergyTime;
+        internal uint packageLastEnergyConsumed;
+
+        internal DateTime coresLastEnergyTime;
+        internal uint coresLastEnergyConsumed;
+
+        internal DateTime graphicsLastEnergyTime;
+        internal uint graphicsLastEnergyConsumed;
+
+        internal DateTime memoryLastEnergyTime;
+        internal uint memoryLastEnergyConsumed;
 
         /// <summary>
-        /// Power consumed by all the cores
+        /// Gets the power consumed by the entire package, in watts (W). This property is nullable.
         /// </summary>
-        Cores = 1,
+        public double? Package { get; internal set; }
 
         /// <summary>
-        /// Power consumed by the integrated GPU
+        /// Gets the power consumed by all the cores, in watts (W). This property is nullable.
         /// </summary>
-        Graphics = 2,
+        public double? Cores { get; internal set; }
 
         /// <summary>
-        /// Power consumed by the CPU memory
+        /// Gets the power consumed by the integrated GPU, in watts (W). This property is nullable.
         /// </summary>
-        Memory = 3
-    }
-
-    /// <summary>
-    /// Struct that represents an Intel power sensor
-    /// </summary>
-    public struct IntelPowerSensor
-    {
-        /// <summary>
-        /// Gets the sensor value in watts (W)
-        /// </summary>
-        public double Value { get; set; }
+        public double? Graphics { get; internal set; }
 
         /// <summary>
-        /// Gets the power sensor type
+        /// Gets the power consumed by the CPU memory, in watts (W). This property is nullable.
         /// </summary>
-        public IntelPowerSensorType Type { get; set; }
+        public double? Memory { get; internal set; }
     }
 
     /// <summary>
@@ -94,22 +90,16 @@ namespace EMNSystemInfo.HardwareAPI.CPU
         private double _coreVoltage;
         private readonly double?[] _distToTjMaxTemperatures;
 
-        private readonly uint[] _energyStatusMsrs = { MSR_PKG_ENERGY_STATUS, MSR_PP0_ENERY_STATUS, MSR_PP1_ENERY_STATUS, MSR_DRAM_ENERGY_STATUS };
         private readonly double _energyUnitMultiplier;
-        private readonly uint[] _lastEnergyConsumed;
-        private readonly DateTime[] _lastEnergyTime;
 
         private readonly IntelMicroarchitecture _microarchitecture;
         private CoreTemperature? _packageTemperature;
-        private IntelPowerSensor?[] _powerSensors;
         private readonly double _timeStampCounterMultiplier;
 
         /// <summary>
         /// Gets the CPU microarchitecture
         /// </summary>
         public IntelMicroarchitecture Microarchitecture => _microarchitecture;
-
-        public double EnergyUnitsMultiplier => _energyUnitMultiplier;
 
         /// <summary>
         /// Gets the bus clock speed, in megahertz (MHz).
@@ -147,9 +137,9 @@ namespace EMNSystemInfo.HardwareAPI.CPU
         public CoreTemperature? PackageTemperature => _packageTemperature;
 
         /// <summary>
-        /// Gets the CPU power sensors. Each element is nullable.
+        /// Gets the CPU power sensors.
         /// </summary>
-        public IntelPowerSensor?[] PowerSensors => _powerSensors;
+        public IntelPowerSensors PowerSensors { get; } = new();
 
         internal IntelCPU(int processorIndex, CPUID[][] cpuId) : base(processorIndex, cpuId)
         {
@@ -445,10 +435,6 @@ namespace EMNSystemInfo.HardwareAPI.CPU
                 _microarchitecture == IntelMicroarchitecture.TigerLake ||
                 _microarchitecture == IntelMicroarchitecture.Tremont)
             {
-                _powerSensors = new IntelPowerSensor?[_energyStatusMsrs.Length];
-                _lastEnergyTime = new DateTime[_energyStatusMsrs.Length];
-                _lastEnergyConsumed = new uint[_energyStatusMsrs.Length];
-
                 if (Ring0.ReadMsr(MSR_RAPL_POWER_UNIT, out eax, out uint _))
                     switch (_microarchitecture)
                     {
@@ -463,14 +449,25 @@ namespace EMNSystemInfo.HardwareAPI.CPU
 
                 if (_energyUnitMultiplier != 0)
                 {
-                    for (int i = 0; i < _energyStatusMsrs.Length; i++)
+                    if (Ring0.ReadMsr(MSR_PKG_ENERGY_STATUS, out eax, out uint _))
                     {
-                        if (!Ring0.ReadMsr(_energyStatusMsrs[i], out eax, out uint _))
-                            continue;
-
-                        _lastEnergyTime[i] = DateTime.UtcNow;
-                        _lastEnergyConsumed[i] = eax;
-                        _powerSensors[i] = new IntelPowerSensor { Type = (IntelPowerSensorType)i };
+                        PowerSensors.packageLastEnergyTime = DateTime.UtcNow;
+                        PowerSensors.packageLastEnergyConsumed = eax;
+                    }
+                    if (Ring0.ReadMsr(MSR_PP0_ENERGY_STATUS, out eax, out uint _))
+                    {
+                        PowerSensors.coresLastEnergyTime = DateTime.UtcNow;
+                        PowerSensors.coresLastEnergyConsumed = eax;
+                    }
+                    if (Ring0.ReadMsr(MSR_PP1_ENERGY_STATUS, out eax, out uint _))
+                    {
+                        PowerSensors.graphicsLastEnergyTime = DateTime.UtcNow;
+                        PowerSensors.graphicsLastEnergyConsumed = eax;
+                    }
+                    if (Ring0.ReadMsr(MSR_DRAM_ENERGY_STATUS, out eax, out uint _))
+                    {
+                        PowerSensors.memoryLastEnergyTime = DateTime.UtcNow;
+                        PowerSensors.memoryLastEnergyConsumed = eax;
                     }
                 }
             }
@@ -620,30 +617,60 @@ namespace EMNSystemInfo.HardwareAPI.CPU
                 }
             }
 
-            if (_powerSensors != null)
+            DateTime time;
+            uint energyConsumed;
+            float deltaTime;
+            if (Ring0.ReadMsr(MSR_PKG_ENERGY_STATUS, out eax, out _))
             {
-                uint index = 0;
-                foreach (IntelPowerSensor? sensor in _powerSensors)
+                time = DateTime.UtcNow;
+                energyConsumed = eax;
+                deltaTime = (float)(time - PowerSensors.packageLastEnergyTime).TotalSeconds;
+                if (deltaTime >= 0.01)
                 {
-                    if (sensor == null)
-                        continue;
-
-                    if (!Ring0.ReadMsr(_energyStatusMsrs[index], out eax, out uint _))
-                        continue;
-
-
-                    DateTime time = DateTime.UtcNow;
-                    uint energyConsumed = eax;
-                    float deltaTime = (float)(time - _lastEnergyTime[index]).TotalSeconds;
-                    if (deltaTime < 0.01)
-                        continue;
-
-
-                    _powerSensors[index] = new IntelPowerSensor { Value = _energyUnitMultiplier * unchecked(energyConsumed - _lastEnergyConsumed[index]) / deltaTime, Type = sensor.GetValueOrDefault().Type };
-                    _lastEnergyTime[index] = time;
-                    _lastEnergyConsumed[index] = energyConsumed;
-                    index++;
+                    PowerSensors.Package = _energyUnitMultiplier * unchecked(energyConsumed - PowerSensors.packageLastEnergyConsumed) / deltaTime;
                 }
+
+                PowerSensors.packageLastEnergyTime = time;
+                PowerSensors.packageLastEnergyConsumed = energyConsumed;
+            }
+            if (Ring0.ReadMsr(MSR_PP0_ENERGY_STATUS, out eax, out _))
+            {
+                time = DateTime.UtcNow;
+                energyConsumed = eax;
+                deltaTime = (float)(time - PowerSensors.coresLastEnergyTime).TotalSeconds;
+                if (deltaTime >= 0.01)
+                {
+                    PowerSensors.Cores = _energyUnitMultiplier * unchecked(energyConsumed - PowerSensors.coresLastEnergyConsumed) / deltaTime;
+                }
+
+                PowerSensors.coresLastEnergyTime = time;
+                PowerSensors.coresLastEnergyConsumed = energyConsumed;
+            }
+            if (Ring0.ReadMsr(MSR_PP1_ENERGY_STATUS, out eax, out _))
+            {
+                time = DateTime.UtcNow;
+                energyConsumed = eax;
+                deltaTime = (float)(time - PowerSensors.graphicsLastEnergyTime).TotalSeconds;
+                if (deltaTime >= 0.01)
+                {
+                    PowerSensors.Graphics = _energyUnitMultiplier * unchecked(energyConsumed - PowerSensors.graphicsLastEnergyConsumed) / deltaTime;
+                }
+
+                PowerSensors.graphicsLastEnergyTime = time;
+                PowerSensors.graphicsLastEnergyConsumed = energyConsumed;
+            }
+            if (Ring0.ReadMsr(MSR_DRAM_ENERGY_STATUS, out eax, out _))
+            {
+                time = DateTime.UtcNow;
+                energyConsumed = eax;
+                deltaTime = (float)(time - PowerSensors.memoryLastEnergyTime).TotalSeconds;
+                if (deltaTime >= 0.01)
+                {
+                    PowerSensors.Memory = _energyUnitMultiplier * unchecked(energyConsumed - PowerSensors.memoryLastEnergyConsumed) / deltaTime;
+                }
+
+                PowerSensors.memoryLastEnergyTime = time;
+                PowerSensors.memoryLastEnergyConsumed = energyConsumed;
             }
 
             if (Ring0.ReadMsr(IA32_PERF_STATUS, out eax, out uint _))
@@ -660,8 +687,8 @@ namespace EMNSystemInfo.HardwareAPI.CPU
         private const uint MSR_DRAM_ENERGY_STATUS = 0x619;
         private const uint MSR_PKG_ENERGY_STATUS = 0x611;
         private const uint MSR_PLATFORM_INFO = 0xCE;
-        private const uint MSR_PP0_ENERY_STATUS = 0x639;
-        private const uint MSR_PP1_ENERY_STATUS = 0x641;
+        private const uint MSR_PP0_ENERGY_STATUS = 0x639;
+        private const uint MSR_PP1_ENERGY_STATUS = 0x641;
 
         private const uint MSR_RAPL_POWER_UNIT = 0x606;
     }
