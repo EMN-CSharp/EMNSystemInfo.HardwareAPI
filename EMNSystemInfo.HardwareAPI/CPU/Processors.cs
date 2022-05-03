@@ -11,7 +11,7 @@ using System.Collections.Generic;
 namespace EMNSystemInfo.HardwareAPI.CPU
 {
     /// <summary>
-    /// Processors information. It is required to initialize the library to use this class.
+    /// Processors information. It is required to initialize the library.
     /// </summary>
     public static class Processors
     {
@@ -31,10 +31,10 @@ namespace EMNSystemInfo.HardwareAPI.CPU
         /// <summary>
         /// Loads all the installed processors into the <see cref="List"/> property.
         /// </summary>
-        /// <returns><see langword="false"/> if the library is not initialized, the user is not an administrator, or the processors were loaded before. Otherwise, <see langword="true"/>.</returns>
+        /// <returns><see langword="false"/> if the processors were loaded before or the library is not initialized. Otherwise, <see langword="true"/>.</returns>
         public static bool LoadProcessors()
         {
-            if (!LibrarySettings.IsInitialized || !LibrarySettings.UserIsAdmin || _processorsAreLoaded)
+            if (_processorsAreLoaded)
             {
                 return false;
             }
@@ -55,38 +55,45 @@ namespace EMNSystemInfo.HardwareAPI.CPU
                     CPUID[][] coreThreads = GroupThreadsByCore(threads);
                     _threads[index] = coreThreads;
 
-                    switch (threads[0].Vendor)
+                    if (LibrarySettings.UserIsAdmin)
                     {
-                        case ProcessorVendor.Intel:
-                            processors.Add(new IntelCPU(index, coreThreads));
-                            break;
-                        case ProcessorVendor.AMD:
-                            switch (threads[0].Family)
-                            {
-                                case 0x0F:
-                                    processors.Add(new AMD0FCPU(index, coreThreads));
-                                    break;
-                                case 0x10:
-                                case 0x11:
-                                case 0x12:
-                                case 0x14:
-                                case 0x15:
-                                case 0x16:
-                                    processors.Add(new AMD10CPU(index, coreThreads));
-                                    break;
-                                case 0x17:
-                                case 0x19:
-                                    processors.Add(new AMD17CPU(index, coreThreads));
-                                    break;
-                                default:
-                                    processors.Add(new Processor(index, coreThreads));
-                                    break;
-                            }
+                        switch (threads[0].Vendor)
+                        {
+                            case ProcessorVendor.Intel:
+                                processors.Add(new IntelCPU(index, coreThreads));
+                                break;
+                            case ProcessorVendor.AMD:
+                                switch (threads[0].Family)
+                                {
+                                    case 0x0F:
+                                        processors.Add(new AMD0FCPU(index, coreThreads));
+                                        break;
+                                    case 0x10:
+                                    case 0x11:
+                                    case 0x12:
+                                    case 0x14:
+                                    case 0x15:
+                                    case 0x16:
+                                        processors.Add(new AMD10CPU(index, coreThreads));
+                                        break;
+                                    case 0x17:
+                                    case 0x19:
+                                        processors.Add(new AMD17CPU(index, coreThreads));
+                                        break;
+                                    default:
+                                        processors.Add(new Processor(index, coreThreads));
+                                        break;
+                                }
 
-                            break;
-                        default:
-                            processors.Add(new Processor(index, coreThreads));
-                            break;
+                                break;
+                            default:
+                                processors.Add(new Processor(index, coreThreads));
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        processors.Add(new Processor(index, coreThreads));
                     }
 
                     index++;

@@ -100,6 +100,36 @@ namespace EMNSystemInfo.HardwareAPI.CPU
         public ProcessorVendor Vendor => _vendor;
 
         /// <summary>
+        /// Gets the processor family.
+        /// </summary>
+        public uint Family => _family;
+
+        /// <summary>
+        /// Gets the processor model.
+        /// </summary>
+        public uint Model => _model;
+
+        /// <summary>
+        /// Gets the processor stepping.
+        /// </summary>
+        public uint Stepping => _stepping;
+
+        /// <summary>
+        /// Gets the processor package type.
+        /// </summary>
+        public uint PackageType => _packageType;
+
+        /// <summary>
+        /// Gets the processor core count.
+        /// </summary>
+        public int CoreCount => _coreCount;
+
+        /// <summary>
+        /// Gets the processor thread count.
+        /// </summary>
+        public int ThreadCount => _threadCount;
+
+        /// <summary>
         /// Gets the processor type.
         /// </summary>
         public ProcessorType Type { get; internal set; } = ProcessorType.Generic;

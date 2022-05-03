@@ -22,12 +22,12 @@ namespace EMNSystemInfo.HardwareAPI
         private static string _krnldrvName;
 
         /// <summary>
-        /// Gets the value that represents if the library is initialized
+        /// Gets the value that represents if the library is initialized.
         /// </summary>
         public static bool IsInitialized { get; private set; } = false;
 
         /// <summary>
-        /// Gets the value that represents if user is an administrator
+        /// Gets the value that represents if the current user is an administrator.
         /// </summary>
         public static bool UserIsAdmin
         {
@@ -56,28 +56,28 @@ namespace EMNSystemInfo.HardwareAPI
         public static string KernelDriverDisplayName { get; set; }
 
         /// <summary>
-        /// Initializes the library. Installs the kernel driver used to get hardware info, with <see cref="KernelDriverName"/> and <see cref="KernelDriverDisplayName"/> as the driver name and display name respectively.
+        /// Initializes the library. If the current user is an administrator, installs the kernel driver used to get hardware info, with <see cref="KernelDriverName"/> and <see cref="KernelDriverDisplayName"/> as the driver name and display name respectively.
         /// </summary>
-        /// <exception cref="UnauthorizedAccessException"/>
         /// <exception cref="FormatException"/>
         public static void Initialize()
         {
             if (!IsInitialized)
             {
-                if (!UserIsAdmin)
+                OpCode.Open();
+                
+                if (UserIsAdmin)
                 {
-                    throw new UnauthorizedAccessException("Program requires to be executing with administrator rights");
+                    if (string.IsNullOrWhiteSpace(KernelDriverName))
+                    {
+                        throw new FormatException($"{nameof(KernelDriverName)} cannot be null, empty, or just white spaces");
+                    }
+                    else
+                    {
+                        Ring0.Open();
+                    }
                 }
-                else if (string.IsNullOrWhiteSpace(KernelDriverName))
-                {
-                    throw new FormatException($"{nameof(KernelDriverName)} cannot be null, empty, or just white spaces");
-                }
-                else
-                {
-                    Ring0.Open();
-                    OpCode.Open();
-                    IsInitialized = true;
-                }
+
+                IsInitialized = true;
             }
         }
 
@@ -103,8 +103,12 @@ namespace EMNSystemInfo.HardwareAPI
                 GPUs.DisposeGPUs();
                 LPCChips.DisposeLPCChips();
                 StorageDrives.DisposeDrives();
-                Ring0.Close();
+
+                if (Ring0.IsOpen)
+                    Ring0.Close();
+
                 OpCode.Close();
+
                 IsInitialized = false;
             }
         }
