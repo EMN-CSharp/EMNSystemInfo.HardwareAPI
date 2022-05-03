@@ -10,7 +10,7 @@ namespace EMNSystemInfo.HardwareAPI
         /// <summary>
         /// Gets a string literal representing the library version
         /// </summary>
-        public const string Version = "0.2.7.1";
+        public const string Version = "0.2.9.1";
 
         /// <summary>
         /// Gets a <see cref="System.Version"/> instance based on <see cref="Version"/> string literal.
