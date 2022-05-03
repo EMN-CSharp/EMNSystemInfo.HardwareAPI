@@ -339,7 +339,7 @@ namespace EMNSystemInfo.HardwareAPITest
                     output.AppendFormat("   · Code Name: {0}", amd17CPU.CodeName).AppendLine();
                     output.AppendFormat("   · Bus Clock Speed: {0:F2} MHz", amd17CPU.BusClock).AppendLine();
                     output.AppendFormat("   · Core Voltage (VID): {0:F3} V", amd17CPU.CoreVoltage).AppendLine();
-                    output.AppendFormat("   · Package Power: {0:F3} V", amd17CPU.PackagePower).AppendLine();
+                    output.AppendFormat("   · Package Power: {0:F3} W", amd17CPU.PackagePower).AppendLine();
 
                     if (amd17CPU.SoCVoltage.HasValue)
                     {
