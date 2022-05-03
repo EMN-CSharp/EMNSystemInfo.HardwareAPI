@@ -10,21 +10,51 @@ using System.Threading;
 
 namespace EMNSystemInfo.HardwareAPI
 {
-    public struct SMUSensor
+    internal struct SMUSensorInfo
     {
         public string Name;
         public SMUSensorType Type;
         public float Scale;
     }
 
+    /// <summary>
+    /// SMU sensor type
+    /// </summary>
     public enum SMUSensorType
     {
+        /// <summary>
+        /// Voltage sensor, value is in volts (V).
+        /// </summary>
         Voltage, // V
+
+        /// <summary>
+        /// Current sensor, value is in amps (A).
+        /// </summary>
         Current, // A
+
+        /// <summary>
+        /// Power sensor, value is in watts (W).
+        /// </summary>
         Power, // W
+
+        /// <summary>
+        /// Clock speed sensor, value is in megahertz (MHz).
+        /// </summary>
         Clock, // MHz
+
+        /// <summary>
+        /// Temperature sensor, value is in degrees Celsius (°C).
+        /// </summary>
         Temperature, // °C
+
+        /// <summary>
+        /// Load percentage sensor.
+        /// </summary>
         Load, // %
+
+        /// <summary>
+        /// Factor sensor.
+        /// </summary>
         Factor, // 1
     }
 
@@ -60,48 +90,48 @@ namespace EMNSystemInfo.HardwareAPI
         private readonly Mutex _mutex = new();
         private readonly bool _supportedCPU;
 
-        private readonly Dictionary<uint, Dictionary<uint, SMUSensor>> _supportedPmTableVersions = new()
+        private readonly Dictionary<uint, Dictionary<uint, SMUSensorInfo>> _supportedPmTableVersions = new()
         {
             {
                 // Zen Raven Ridge APU.
-                0x001E0004, new Dictionary<uint, SMUSensor>
+                0x001E0004, new Dictionary<uint, SMUSensorInfo>
                 {
-                    { 7, new SMUSensor { Name = "TDC", Type = SMUSensorType.Current, Scale = 1 } },
-                    { 11, new SMUSensor { Name = "EDC", Type = SMUSensorType.Current, Scale = 1 } },
+                    { 7, new SMUSensorInfo { Name = "TDC", Type = SMUSensorType.Current, Scale = 1 } },
+                    { 11, new SMUSensorInfo { Name = "EDC", Type = SMUSensorType.Current, Scale = 1 } },
                     //{ 61, new SmuSensorType { Name = "Core", Type = SensorType.Voltage } },
                     //{ 62, new SmuSensorType { Name = "Core", Type = SensorType.Current, Scale = 1} },
                     //{ 63, new SmuSensorType { Name = "Core", Type = SensorType.Power, Scale = 1 } },
                     //{ 65, new SmuSensorType { Name = "SoC", Type = SensorType.Voltage } },
-                    { 66, new SMUSensor { Name = "SoC", Type = SMUSensorType.Current, Scale = 1 } },
-                    { 67, new SMUSensor { Name = "SoC", Type = SMUSensorType.Power, Scale = 1 } },
+                    { 66, new SMUSensorInfo { Name = "SoC", Type = SMUSensorType.Current, Scale = 1 } },
+                    { 67, new SMUSensorInfo { Name = "SoC", Type = SMUSensorType.Power, Scale = 1 } },
                     //{ 96, new SmuSensorType { Name = "Core #1", Type = SensorType.Power } },
                     //{ 97, new SmuSensorType { Name = "Core #2", Type = SensorType.Power } },
                     //{ 98, new SmuSensorType { Name = "Core #3", Type = SensorType.Power } },
                     //{ 99, new SmuSensorType { Name = "Core #4", Type = SensorType.Power } },
-                    { 108, new SMUSensor { Name = "Core #1", Type = SMUSensorType.Temperature, Scale = 1 } },
-                    { 109, new SMUSensor { Name = "Core #2", Type = SMUSensorType.Temperature, Scale = 1 } },
-                    { 110, new SMUSensor { Name = "Core #3", Type = SMUSensorType.Temperature, Scale = 1 } },
-                    { 111, new SMUSensor { Name = "Core #4", Type = SMUSensorType.Temperature, Scale = 1 } },
-                    { 150, new SMUSensor { Name = "GFX", Type = SMUSensorType.Voltage, Scale = 1 } },
-                    { 151, new SMUSensor { Name = "GFX", Type = SMUSensorType.Temperature, Scale = 1 } },
-                    { 154, new SMUSensor { Name = "GFX", Type = SMUSensorType.Clock, Scale = 1 } },
-                    { 156, new SMUSensor { Name = "GFX", Type = SMUSensorType.Load, Scale = 1 } },
-                    { 166, new SMUSensor { Name = "Fabric", Type = SMUSensorType.Clock, Scale = 1 } },
-                    { 177, new SMUSensor { Name = "Uncore", Type = SMUSensorType.Clock, Scale = 1 } },
-                    { 178, new SMUSensor { Name = "Memory", Type = SMUSensorType.Clock, Scale = 1 } },
-                    { 342, new SMUSensor { Name = "Displays", Type = SMUSensorType.Factor, Scale = 1 } },
+                    { 108, new SMUSensorInfo { Name = "Core #1", Type = SMUSensorType.Temperature, Scale = 1 } },
+                    { 109, new SMUSensorInfo { Name = "Core #2", Type = SMUSensorType.Temperature, Scale = 1 } },
+                    { 110, new SMUSensorInfo { Name = "Core #3", Type = SMUSensorType.Temperature, Scale = 1 } },
+                    { 111, new SMUSensorInfo { Name = "Core #4", Type = SMUSensorType.Temperature, Scale = 1 } },
+                    { 150, new SMUSensorInfo { Name = "GFX", Type = SMUSensorType.Voltage, Scale = 1 } },
+                    { 151, new SMUSensorInfo { Name = "GFX", Type = SMUSensorType.Temperature, Scale = 1 } },
+                    { 154, new SMUSensorInfo { Name = "GFX", Type = SMUSensorType.Clock, Scale = 1 } },
+                    { 156, new SMUSensorInfo { Name = "GFX", Type = SMUSensorType.Load, Scale = 1 } },
+                    { 166, new SMUSensorInfo { Name = "Fabric", Type = SMUSensorType.Clock, Scale = 1 } },
+                    { 177, new SMUSensorInfo { Name = "Uncore", Type = SMUSensorType.Clock, Scale = 1 } },
+                    { 178, new SMUSensorInfo { Name = "Memory", Type = SMUSensorType.Clock, Scale = 1 } },
+                    { 342, new SMUSensorInfo { Name = "Displays", Type = SMUSensorType.Factor, Scale = 1 } },
                 }
             },
             {
                 // Zen 2.
-                0x00240903, new Dictionary<uint, SMUSensor>
+                0x00240903, new Dictionary<uint, SMUSensorInfo>
                 {
-                    { 15, new SMUSensor { Name = "TDC", Type = SMUSensorType.Current, Scale = 1 } },
-                    { 21, new SMUSensor { Name = "EDC", Type = SMUSensorType.Current, Scale = 1 } },
-                    { 48, new SMUSensor { Name = "Fabric", Type = SMUSensorType.Clock, Scale = 1 } },
-                    { 50, new SMUSensor { Name = "Uncore", Type = SMUSensorType.Clock, Scale = 1 } },
-                    { 51, new SMUSensor { Name = "Memory", Type = SMUSensorType.Clock, Scale = 1 } },
-                    { 115, new SMUSensor { Name = "SoC", Type = SMUSensorType.Temperature, Scale = 1 } },
+                    { 15, new SMUSensorInfo { Name = "TDC", Type = SMUSensorType.Current, Scale = 1 } },
+                    { 21, new SMUSensorInfo { Name = "EDC", Type = SMUSensorType.Current, Scale = 1 } },
+                    { 48, new SMUSensorInfo { Name = "Fabric", Type = SMUSensorType.Clock, Scale = 1 } },
+                    { 50, new SMUSensorInfo { Name = "Uncore", Type = SMUSensorType.Clock, Scale = 1 } },
+                    { 51, new SMUSensorInfo { Name = "Memory", Type = SMUSensorType.Clock, Scale = 1 } },
+                    { 115, new SMUSensorInfo { Name = "SoC", Type = SMUSensorType.Temperature, Scale = 1 } },
                     //{ 66, new SmuSensorType { Name = "Bus Speed", Type = SensorType.Clock, Scale = 1 } },
                     //{ 188, new SmuSensorType { Name = "Core #1", Type = SensorType.Clock, Scale = 1000 } },
                     //{ 189, new SmuSensorType { Name = "Core #2", Type = SensorType.Clock, Scale = 1000 } },
@@ -113,14 +143,14 @@ namespace EMNSystemInfo.HardwareAPI
             },
             {
                 // Zen 3.
-                0x00380805, new Dictionary<uint, SMUSensor>
+                0x00380805, new Dictionary<uint, SMUSensorInfo>
                 {
                     // TDC and EDC don't match the HWiNFO values
                     //{ 15, new SmuSensorType { Name = "TDC", Type = SensorType.Current, Scale = 1 } },
                     //{ 21, new SmuSensorType { Name = "EDC", Type = SensorType.Current, Scale = 1 } },
-                    { 48, new SMUSensor { Name = "Fabric", Type = SMUSensorType.Clock, Scale = 1 } },
-                    { 50, new SMUSensor { Name = "Uncore", Type = SMUSensorType.Clock, Scale = 1 } },
-                    { 51, new SMUSensor { Name = "Memory", Type = SMUSensorType.Clock, Scale = 1 } },
+                    { 48, new SMUSensorInfo { Name = "Fabric", Type = SMUSensorType.Clock, Scale = 1 } },
+                    { 50, new SMUSensorInfo { Name = "Uncore", Type = SMUSensorType.Clock, Scale = 1 } },
+                    { 51, new SMUSensorInfo { Name = "Memory", Type = SMUSensorType.Clock, Scale = 1 } },
                     //{ 115, new SmuSensorType { Name = "SoC", Type = SensorType.Temperature, Scale = 1 } },
                     //{ 66, new SmuSensorType { Name = "Bus Speed", Type = SensorType.Clock, Scale = 1 } },
                     //{ 188, new SmuSensorType { Name = "Core #1", Type = SensorType.Clock, Scale = 1000 } },
@@ -318,10 +348,10 @@ namespace EMNSystemInfo.HardwareAPI
             return 0;
         }
 
-        public Dictionary<uint, SMUSensor> GetPmTableStructure()
+        public Dictionary<uint, SMUSensorInfo> GetPmTableStructure()
         {
             if (!IsPmTableLayoutDefined())
-                return new Dictionary<uint, SMUSensor>();
+                return new Dictionary<uint, SMUSensorInfo>();
 
             return _supportedPmTableVersions[_pmTableVersion];
         }

@@ -11,6 +11,29 @@ using System.Linq;
 namespace EMNSystemInfo.HardwareAPI.CPU
 {
     /// <summary>
+    /// Class that represents an individual SMU sensor for AMD CPUs.
+    /// </summary>
+    public class SMUSensor
+    {
+        internal KeyValuePair<uint, SMUSensorInfo> _smuSensorKV;
+
+        /// <summary>
+        /// Gets the sensor name
+        /// </summary>
+        public string Name => _smuSensorKV.Value.Name;
+
+        /// <summary>
+        /// Gets the sensor type
+        /// </summary>
+        public SMUSensorType Type => _smuSensorKV.Value.Type;
+
+        /// <summary>
+        /// Gets the sensor value. This property is nullable.
+        /// </summary>
+        public double? Value { get; internal set; }
+    }
+
+    /// <summary>
     /// Class that represents an individual AMD CPU family 17h-19h
     /// </summary>
     public sealed class AMD17CPU : AMDCPU
@@ -39,7 +62,7 @@ namespace EMNSystemInfo.HardwareAPI.CPU
         public double PackagePower => _processor.PackagePower;
 
         /// <summary>
-        /// Gets the SoC voltage (VID), in volts (V). This property is nullable.
+        /// Gets the SoC voltage, in volts (V). This property is nullable.
         /// </summary>
         public double? SoCVoltage => _processor.SoCVoltage;
 
@@ -64,9 +87,9 @@ namespace EMNSystemInfo.HardwareAPI.CPU
         public CoreTemperature CoreTemperatureTdie => _processor.CoreTemperatureTdie;
 
         /// <summary>
-        /// Gets the dictionary of sensors from the SMU table. The sensor value is nullable.
+        /// Gets the list of sensors from the SMU table. The sensor value is nullable.
         /// </summary>
-        public Dictionary<SMUSensor, double?> SMUSensors => _processor.SMUSensors;
+        public SMUSensor[] SMUSensors => _processor.SMUSensors.ToArray();
 
         internal AMD17CPU(int processorIndex, CPUID[][] cpuId) : base(processorIndex, cpuId)
         {
@@ -110,6 +133,7 @@ namespace EMNSystemInfo.HardwareAPI.CPU
 
             Update();
         }
+
         /// <inheritdoc/>
         public override void Update()
         {
@@ -138,7 +162,7 @@ namespace EMNSystemInfo.HardwareAPI.CPU
             private double _coreVoltage;
             private readonly AMD17CPU _cpu;
             private double _packagePower;
-            private readonly Dictionary<KeyValuePair<uint, SMUSensor>, double?> _smuSensors = new();
+            private readonly List<SMUSensor> _smuSensors = new();
             private double? _socVoltage;
             
             private CoreTemperature? _ccdsAverageTemperature;
@@ -162,19 +186,7 @@ namespace EMNSystemInfo.HardwareAPI.CPU
 
             public CoreTemperature CoreTemperatureTdie => _coreTemperatureTdie;
 
-            public Dictionary<SMUSensor, double?> SMUSensors
-            {
-                get
-                {
-                    Dictionary<SMUSensor, double?> retval = new();
-                    foreach (var sensor in _smuSensors)
-                    {
-                        retval.Add(sensor.Key.Value, sensor.Value);
-                    }
-
-                    return retval;
-                }
-            }
+            public IList<SMUSensor> SMUSensors => _smuSensors;
 
             public Processor(AMD17CPU hardware)
             {
@@ -182,9 +194,9 @@ namespace EMNSystemInfo.HardwareAPI.CPU
 
                 _ccdTemperatures = new CoreTemperature?[8]; // Hardcoded until there's a way to get max CCDs.
 
-                foreach (KeyValuePair<uint, SMUSensor> sensor in _cpu._smu.GetPmTableStructure())
+                foreach (KeyValuePair<uint, SMUSensorInfo> sensor in _cpu._smu.GetPmTableStructure())
                 {
-                    _smuSensors.Add(sensor, 0);
+                    _smuSensors.Add(new SMUSensor { _smuSensorKV = sensor });
                 }
             }
 
@@ -411,9 +423,10 @@ namespace EMNSystemInfo.HardwareAPI.CPU
                     for (int i = 0; i < _smuSensors.Count; i++)
                     {
                         var sensor = _smuSensors.ElementAt(i);
-                        if (smuData.Length > sensor.Key.Key)
+                        if (smuData.Length > sensor._smuSensorKV.Key)
                         {
-                            _smuSensors[sensor.Key] = smuData[sensor.Key.Key] * sensor.Key.Value.Scale;
+                            double value = smuData[sensor._smuSensorKV.Key] * sensor._smuSensorKV.Value.Scale;
+                            _smuSensors[i].Value = value;
                         }
                     }
                 }

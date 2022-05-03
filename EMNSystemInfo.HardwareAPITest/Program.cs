@@ -359,30 +359,30 @@ namespace EMNSystemInfo.HardwareAPITest
                     }
 
                     output.Append("   · SMU Sensors:").AppendLine();
-                    foreach (var smuSensor in amd17CPU.SMUSensors)
+                    foreach (SMUSensor smuSensor in amd17CPU.SMUSensors)
                     {
-                        switch (smuSensor.Key.Type)
+                        switch (smuSensor.Type)
                         {
                             case SMUSensorType.Voltage:
-                                output.AppendFormat("     · (Voltage) {0}: {1:F2} V", smuSensor.Key.Name, smuSensor.Value).AppendLine();
+                                output.AppendFormat("     · (Voltage) {0}: {1:F2} V", smuSensor.Name, smuSensor.Value).AppendLine();
                                 break;
                             case SMUSensorType.Current:
-                                output.AppendFormat("     · (Current) {0}: {1:F2} A", smuSensor.Key.Name, smuSensor.Value).AppendLine();
+                                output.AppendFormat("     · (Current) {0}: {1:F2} A", smuSensor.Name, smuSensor.Value).AppendLine();
                                 break;
                             case SMUSensorType.Power:
-                                output.AppendFormat("     · (Power) {0}: {1:F2} W", smuSensor.Key.Name, smuSensor.Value).AppendLine();
+                                output.AppendFormat("     · (Power) {0}: {1:F2} W", smuSensor.Name, smuSensor.Value).AppendLine();
                                 break;
                             case SMUSensorType.Clock:
-                                output.AppendFormat("     · (Clock Speed) {0}: {1:F2} MHz", smuSensor.Key.Name, smuSensor.Value).AppendLine();
+                                output.AppendFormat("     · (Clock Speed) {0}: {1:F2} MHz", smuSensor.Name, smuSensor.Value).AppendLine();
                                 break;
                             case SMUSensorType.Temperature:
-                                output.AppendFormat("     · (Temperature) {0}: {1:F2} °C", smuSensor.Key.Name, smuSensor.Value).AppendLine();
+                                output.AppendFormat("     · (Temperature) {0}: {1:F2} °C", smuSensor.Name, smuSensor.Value).AppendLine();
                                 break;
                             case SMUSensorType.Load:
-                                output.AppendFormat("     · (Load) {0}: {1:F2} %", smuSensor.Key.Name, smuSensor.Value).AppendLine();
+                                output.AppendFormat("     · (Load) {0}: {1:F2} %", smuSensor.Name, smuSensor.Value).AppendLine();
                                 break;
                             case SMUSensorType.Factor:
-                                output.AppendFormat("     · (Factor) {0}: {1:F2}", smuSensor.Key.Name, smuSensor.Value).AppendLine();
+                                output.AppendFormat("     · (Factor) {0}: {1:F2}", smuSensor.Name, smuSensor.Value).AppendLine();
                                 break;
                         }
                     }
