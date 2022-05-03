@@ -31,7 +31,7 @@ namespace EMNSystemInfo.HardwareAPI.CPU
         /// <summary>
         /// Gets the clock speed for all the cores, in megahertz (MHz). You can get the multiplier by dividing each value by the <see cref="BusClock"/> value.
         /// </summary>
-        public double[] CoreClockSpeed => _coreClocks;
+        public double[] CoreClockSpeeds => _coreClocks;
 
         /// <summary>
         /// Gets an array of <see cref="CoreTemperature"/>s for each core.

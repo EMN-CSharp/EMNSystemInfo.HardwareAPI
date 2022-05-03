@@ -281,7 +281,7 @@ namespace EMNSystemInfo.HardwareAPITest
 
                     output.Append("   · Core Clock Speeds:").AppendLine();
                     count = 1;
-                    foreach (double clock in amd0FCPU.CoreClockSpeed)
+                    foreach (double clock in amd0FCPU.CoreClockSpeeds)
                     {
                         output.AppendFormat("     · Core #{0}: {1:F2} MHz (multiplier: × {2:F2})", count, clock, clock / amd0FCPU.BusClock).AppendLine();
                         count++;
