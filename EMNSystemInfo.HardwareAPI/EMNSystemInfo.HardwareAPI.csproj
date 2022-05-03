@@ -11,13 +11,17 @@
     <Product>EMNSystemInfo.HardwareAPI</Product>
     <Company>EMN-CSharp</Company>
     <Copyright>Copyright © EMN-CSharp and Contributors. | Partial Copyright © LibreHardwareMonitor and Contributors. | Partial Copyright © Michael Möller &lt;mmoeller@openhardwaremonitor.org&gt; and Contributors.</Copyright>
-    <Version>0.2.3.1</Version>
-    <FileVersion>0.2.3.1</FileVersion>
-    <ProductVersion>0.2.3.1</ProductVersion>
+    <Version>0.2.4.1</Version>
+    <FileVersion>0.2.4.1</FileVersion>
+    <ProductVersion>0.2.4.1</ProductVersion>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <Description>EMNSystemInfo.HardwareAPI is a hardware library for Windows based on Libre Hardware Monitor. It provides a base model to access hardware information.</Description>
     <RepositoryUrl>https://github.com/EMN-CSharp/EMNSystemInfo.HardwareAPI/</RepositoryUrl>
-    <PackageReleaseNotes>· Added Update() base method for Processor class</PackageReleaseNotes>
+    <PackageReleaseNotes>· Added Update() base method for Processor class
+· Renamed IntelCPU.CoreFrequencyClocks to CoreClockSpeeds
+· Renamed AMD0FCPU.CoreClockSpeed to CoreClockSpeeds
+· IntelCPU: Access power sensors info with an IntelPowerSensors instance and properties representing each power sensor
+· Make version info publicly available through the VersionInfo static class</PackageReleaseNotes>
     <PackageTags>open-source opensource csharp dotnet hardware information monitoring library</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
