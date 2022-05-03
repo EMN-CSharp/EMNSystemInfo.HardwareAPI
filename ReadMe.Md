@@ -80,7 +80,7 @@ foreach (Processor p in Processors.List)
 {
     p.Update();
 
-    Console.WriteLine("ProcesSor N.º {0}", p.Index + 1);
+    Console.WriteLine("Processor N.º {0}", p.Index + 1);
     Console.WriteLine(" · Brand String: {0}", p.BrandString);
     Console.WriteLine(" · Name: {0}", p.Name);
     Console.WriteLine(" · Manufacturer: {0}", p.Vendor);
