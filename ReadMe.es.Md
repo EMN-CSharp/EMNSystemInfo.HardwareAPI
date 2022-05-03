@@ -57,7 +57,7 @@ Como principal componente, está la clase LibrarySettings, encargada de realizar
 | GPUs| No | Sí |
 | LPCChips| Sí | Sí |
 | StorageDrives| No | No** |
-| Coolers| No | Yes (probablemente) |
+| Coolers| No | Sí (probablemente) |
 
 **: Pero, si la biblioteca no se está ejecutando con privilegios de administrador, solamente se puede acceder a la información genérica de las unidades de almacenamiento, sin importar el tipo de unidad.<br/>
 *: Es el mismo caso que StorageDrives. Si no hay permisos de administrador, solamente se accede a la información genérica de los procesadores, sin importar su tipo.
