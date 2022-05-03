@@ -72,13 +72,13 @@ namespace EMNSystemInfo.HardwareAPI.CPU
     /// </summary>
     public class Processor
     {
-        protected readonly int _coreCount;
-        protected readonly int _threadCount;
+        protected private readonly int _coreCount;
+        protected private readonly int _threadCount;
         internal readonly CPUID[][] _cpuId;
-        protected readonly uint _family;
-        protected readonly uint _model;
-        protected readonly uint _packageType;
-        protected readonly uint _stepping;
+        protected private readonly uint _family;
+        protected private readonly uint _model;
+        protected private readonly uint _packageType;
+        protected private readonly uint _stepping;
 
         private readonly CPULoad _cpuLoad;
         private readonly double _estimatedTimeStampCounterFrequency;
@@ -107,51 +107,12 @@ namespace EMNSystemInfo.HardwareAPI.CPU
         /// <summary>
         /// Gets the CPU total load
         /// </summary>
-        public double TotalLoad
-        {
-            get
-            {
-                if (_cpuLoad.IsAvailable)
-                {
-                    _cpuLoad.Update();
-                    return _cpuLoad.GetTotalLoad();
-                }
-
-                return 0;
-            }
-        }
+        public double TotalLoad { get; private set; }
 
         /// <summary>
         /// Gets an array of <see cref="ThreadLoad"/>s, each element representing a core and, if available, a thread.
         /// </summary>
-        public ThreadLoad[] ThreadLoads
-        {
-            get
-            {
-                if (_cpuLoad.IsAvailable)
-                {
-                    ThreadLoad[] threadLoads = new ThreadLoad[_threadCount];
-                    for (int coreIdx = 0; coreIdx < _cpuId.Length; coreIdx++)
-                    {
-                        for (int threadIdx = 0; threadIdx < _cpuId[coreIdx].Length; threadIdx++)
-                        {
-                            int thread = _cpuId[coreIdx][threadIdx].Thread;
-                            if (thread < threadLoads.Length)
-                            {
-                                threadLoads[thread].Core = coreIdx;
-                                // Some cores may have 2 threads while others have only one (e.g. P-cores vs E-cores on Intel 12th gen).
-                                threadLoads[thread].Thread = _cpuId[coreIdx].Length > 1 ? threadIdx : null;
-                                threadLoads[thread].Value = _cpuLoad.GetThreadLoad(thread);
-                            }
-                        }
-                    }
-
-                    return threadLoads;
-                }
-
-                return Array.Empty<ThreadLoad>();
-            }
-        }
+        public ThreadLoad[] ThreadLoads { get; private set; }
 
         internal Processor(int processorIndex, CPUID[][] cpuId)
         {
@@ -212,6 +173,35 @@ namespace EMNSystemInfo.HardwareAPI.CPU
         /// Gets the CPU TSC frequency, in megahertz (MHz).
         /// </summary>
         public double TimeStampCounterFrequency { get; private set; }
+
+        /// <summary>
+        /// Updates processor properties
+        /// </summary>
+        public virtual void Update()
+        {
+            if (_cpuLoad.IsAvailable)
+            {
+                _cpuLoad.Update();
+                TotalLoad = _cpuLoad.GetTotalLoad();
+
+                ThreadLoad[] threadLoads = new ThreadLoad[_threadCount];
+                for (int coreIdx = 0; coreIdx < _cpuId.Length; coreIdx++)
+                {
+                    for (int threadIdx = 0; threadIdx < _cpuId[coreIdx].Length; threadIdx++)
+                    {
+                        int thread = _cpuId[coreIdx][threadIdx].Thread;
+                        if (thread < threadLoads.Length)
+                        {
+                            threadLoads[thread].Core = coreIdx;
+                            // Some cores may have 2 threads while others have only one (e.g. P-cores vs E-cores on Intel 12th gen).
+                            threadLoads[thread].Thread = _cpuId[coreIdx].Length > 1 ? threadIdx : null;
+                            threadLoads[thread].Value = _cpuLoad.GetThreadLoad(thread);
+                        }
+                    }
+                }
+                ThreadLoads = threadLoads;
+            }
+        }
 
         private void EstimateTimeStampCounterFrequency(out double frequency, out double error)
         {

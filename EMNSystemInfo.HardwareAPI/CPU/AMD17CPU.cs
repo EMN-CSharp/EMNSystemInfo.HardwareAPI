@@ -110,9 +110,11 @@ namespace EMNSystemInfo.HardwareAPI.CPU
 
             Update();
         }
-
-        public void Update()
+        /// <inheritdoc/>
+        public override void Update()
         {
+            base.Update();
+
             _processor.UpdateSensors();
 
             foreach (NumaNode node in _processor.Nodes)

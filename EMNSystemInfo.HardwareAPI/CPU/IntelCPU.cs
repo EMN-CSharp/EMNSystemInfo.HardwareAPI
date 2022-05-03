@@ -501,8 +501,11 @@ namespace EMNSystemInfo.HardwareAPI.CPU
             return result;
         }
 
-        public void Update()
+        /// <inheritdoc/>
+        public override void Update()
         {
+            base.Update();
+
             double coreMax = float.MinValue;
             double coreAvg = 0;
             uint eax = 0;

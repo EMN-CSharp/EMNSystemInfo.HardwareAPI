@@ -82,8 +82,11 @@ namespace EMNSystemInfo.HardwareAPI.CPU
             Update();
         }
 
-        public void Update()
+        /// <inheritdoc/>
+        public override void Update()
         {
+            base.Update();
+
             if (Ring0.WaitPciBusMutex(10))
             {
                 if (_miscellaneousControlAddress != WinRing0.INVALID_PCI_ADDRESS)

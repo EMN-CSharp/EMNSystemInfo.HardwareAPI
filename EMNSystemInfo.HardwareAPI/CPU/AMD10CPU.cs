@@ -346,8 +346,11 @@ namespace EMNSystemInfo.HardwareAPI.CPU
             }
         }
 
-        public void Update()
+        /// <inheritdoc/>
+        public override void Update()
         {
+            base.Update();
+
             if (_miscellaneousControlAddress != WinRing0.INVALID_PCI_ADDRESS)
             {
                 bool isValueValid = _hasSmuTemperatureRegister
