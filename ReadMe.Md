@@ -53,13 +53,14 @@ The main component is the LibrarySettings class, whose task is provide library c
 | Class name| Requires library initialization? | Requires admin privileges? |
 | --- | --- | --- |
 | Batteries| No | No |
-| Processors| Yes | Yes |
+| Processors| Yes | No* |
 | GPUs| No | Yes |
 | LPCChips| Yes | Yes |
-| StorageDrives| No | No* |
+| StorageDrives| No | No** |
 | Coolers| No | Yes (probably) |
 
-*: But, if the library is not executing with admin privileges, only generic storage info can be accessed, regardless of the drive type.
+**: But, if the library is not executing with admin privileges, only generic storage info can be accessed, regardless of the drive type.
+*: It's the same case as StorageDrives. No admin privileges, only generic CPU info can be accessed, regardless of the type.
 
 These hardware group classes have a property named "List" that contains classes that represent each installed hardware element, and methods to load and delete them from the mentioned property.<br/>Finally, these classes that represent a hardware element contain properties about its information and sensor values. Some of these classes instances provide more detailed-and-specific information for a hardware. To access it, you have to check the hardware type the instance is representing, with the "Type" property. Then, you have to convert that instance into the one denoted by the "Type" property.
 
@@ -67,26 +68,30 @@ These hardware group classes have a property named "List" that contains classes 
 Because the majority of hardware information, like CPU info or LPC chips info, is obtained through the execution of instructions not available for a normal app. Also, it communicates with hardware through system buses. Those functions are only available for kernel drivers, that's the reason it is necessary to install one. All programs that show detailed info about hardware and sensors install one too. In the case of this library, you decide when to install or uninstall the driver, with the methods Initialize & Close from LibrarySettings class.
 
 ## Example for .NET 6:
-Get info about installed CPUs (admin privileges are required)
+Get info about installed CPUs
 ``` c#
 using EMNSystemInfo.HardwareAPI;
 using EMNSystemInfo.HardwareAPI.CPU;
 
-// Set name and display name for the kernel driver
-LibrarySettings.KernelDriverName = "CPUInfoExampleKrnlDrv";
-LibrarySettings.KernelDriverDisplayName = "CPU Info Example Kernel Driver";
-LibrarySettings.Initialize(); // It's necessary to initialize the library to get CPU info
+LibrarySettings.Initialize(); // It's necessary to initialize the library to get generic CPU info
 
-Processors.LoadProcessors(); // Load CPUs into the List property
+Processors.Load(); // Load CPUs into the List property
 foreach (Processor p in Processors.List)
 {
-    Console.WriteLine("Processor #{0}", p.Index + 1);
-    Console.WriteLine(" · Name: {0}", p.BrandString);
-    Console.WriteLine(" · Short Name: {0}", p.Name);
+    p.Update();
+
+    Console.WriteLine("ProcesSor N.º {0}", p.Index + 1);
+    Console.WriteLine(" · Brand String: {0}", p.BrandString);
+    Console.WriteLine(" · Name: {0}", p.Name);
     Console.WriteLine(" · Manufacturer: {0}", p.Vendor);
-    Console.WriteLine(" · Load: {0:F2} %", p.TotalLoad);
+    Console.WriteLine(" · Family: {0}", p.Family);
+    Console.WriteLine(" · Model: {0}", p.Model);
+    Console.WriteLine(" · Stepping: {0}", p.Stepping);
+    Console.WriteLine(" · Core Count: {0}", p.CoreCount);
+    Console.WriteLine(" · Thread Count: {0}", p.ThreadCount);
+    Console.WriteLine(" · Total Load: {0:F2} %", p.TotalLoad);
 }
-Processors.DisposeAllProcessors();
+Processors.Dispose();
 
 LibrarySettings.Close();
 ```

@@ -53,13 +53,14 @@ Como principal componente, está la clase LibrarySettings, encargada de realizar
 | Nombre de clase| ¿Requiere inicializar la biblioteca? | ¿Requiere permisos de administrador? |
 | --- | --- | --- |
 | Batteries| No | No |
-| Processors| Sí | Sí |
+| Processors| Sí | No* |
 | GPUs| No | Sí |
 | LPCChips| Sí | Sí |
-| StorageDrives| No | No* |
+| StorageDrives| No | No** |
 | Coolers| No | Yes (probablemente) |
 
-*: Pero, si la biblioteca no se está ejecutando con privilegios de administrador, solamente se puede acceder a la información genérica de las unidades de almacenamiento, sin importar el tipo de unidad.
+**: Pero, si la biblioteca no se está ejecutando con privilegios de administrador, solamente se puede acceder a la información genérica de las unidades de almacenamiento, sin importar el tipo de unidad.
+*: Es el mismo caso que StorageDrives. Si no hay permisos de administrador, solamente se accede a la información genérica de los procesadores, sin importar su tipo.
 
 Estas clases de grupos de hardware contienen una propiedad llamada List que contiene clases que representan cada elemento de hardware instalado, y métodos para cargarlos y eliminarlos de la propiedad mencionada.<br/>Finalmente, éstas clases que representan un elemento de hardware contienen propiedades que representan su información y valores de sensores, además de un método Update para actualizarlas. Algunas de estas instancias de clases ofrecen información más detallada y específica para un hardware. Para acceder a ella, hay que verificar el tipo de hardware que representa la instancia, indicado con la propiedad Type. Después, hay que convertir la instancia en la instancia indicada por la propiedad Type.
 
@@ -67,26 +68,30 @@ Estas clases de grupos de hardware contienen una propiedad llamada List que cont
 Debido a que la mayoría de información del hardware, como la de los procesadores o los chips LPC, se obtiene mediante la ejecución de instrucciones no disponibles para una aplicación normal, además de comunicarse con el hardware mediante los buses del sistema. Todas estas funciones están disponibles para los controladores y por eso, es necesario instalar uno. Todos los programas que dan información detallada del hardware y sus sensores instalan uno también. En el caso de esta biblioteca, tú decides cuando instalar o desinstalar el controlador, con los métodos Initialize y Close de la clase LibrarySettings.
 
 ## Ejemplo para .NET 6:
-Obtener info. de los procesadores instalados (requiere permisos de administrador)
+Obtener info. de los procesadores instalados
 ``` c#
 using EMNSystemInfo.HardwareAPI;
 using EMNSystemInfo.HardwareAPI.CPU;
 
-// Asignar el nombre y nombre para mostrar del controlador en modo de kernel
-LibrarySettings.KernelDriverName = "CPUInfoExampleKrnlDrv";
-LibrarySettings.KernelDriverDisplayName = "Controlador del kernel para el ejemplo de info. de CPU";
 LibrarySettings.Initialize(); // Es necesario inicializar la biblioteca para obtener info. de las CPU
 
-Processors.LoadProcessors(); // Cargar las CPU a la propiedad List
+Processors.Load(); // Cargar las CPU a la propiedad List
 foreach (Processor p in Processors.List)
 {
+    p.Update();
+
     Console.WriteLine("Procesador N.º {0}", p.Index + 1);
     Console.WriteLine(" · Nombre: {0}", p.BrandString);
     Console.WriteLine(" · Nombre resumido: {0}", p.Name);
     Console.WriteLine(" · Fabricante: {0}", p.Vendor);
+    Console.WriteLine(" · Familia: {0}", p.Family);
+    Console.WriteLine(" · Modelo: {0}", p.Model);
+    Console.WriteLine(" · \"Stepping\": {0}", p.Stepping);
+    Console.WriteLine(" · Cantidad de núcleos: {0}", p.CoreCount);
+    Console.WriteLine(" · Cantidad de hilos: {0}", p.ThreadCount);
     Console.WriteLine(" · Utilización: {0:F2} %", p.TotalLoad);
 }
-Processors.DisposeAllProcessors();
+Processors.Dispose();
 
 LibrarySettings.Close();
 ```
