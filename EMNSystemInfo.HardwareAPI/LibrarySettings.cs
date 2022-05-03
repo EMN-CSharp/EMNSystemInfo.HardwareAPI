@@ -107,6 +107,9 @@ namespace EMNSystemInfo.HardwareAPI
                 if (Ring0.IsOpen)
                     Ring0.Close();
 
+                if (InpOut.IsOpen)
+                    InpOut.Close();
+
                 OpCode.Close();
 
                 IsInitialized = false;
