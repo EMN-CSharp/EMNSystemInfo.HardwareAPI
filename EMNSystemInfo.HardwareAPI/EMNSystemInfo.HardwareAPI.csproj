@@ -20,7 +20,7 @@
     <RepositoryUrl>https://github.com/EMN-CSharp/EMNSystemInfo.HardwareAPI/</RepositoryUrl>
     <PackageReleaseNotes> · Fixed a bug that prevented checking if the drive is a NVMe drive with the "Type" property.
 · Fixed a bug that prevented updating NVMe drives info.
-· Fixed other stupid errors in NVMeDrive class.</PackageReleaseNotes>
+· Fixed other stupid bugs in NVMeDrive class.</PackageReleaseNotes>
     <PackageTags>open-source opensource csharp dotnet hardware information monitoring library</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
