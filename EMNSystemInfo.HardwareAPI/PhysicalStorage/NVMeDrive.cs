@@ -118,8 +118,11 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
 
         public uint? CriticalCompositeTemperatureTime { get; private set; }
 
-        protected override void UpdateSensors()
+        /// <inheritdoc/>
+        public override void Update()
         {
+            base.Update();
+
             NVMeHealthInfo healthInfo = Smart.GetHealthInfo();
 
             List<double> tempSensors = new();
@@ -186,6 +189,8 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
         internal NVMeDrive(StorageInfo storageInfo, NVMeInfo info)
             : base(storageInfo)
         {
+            Type = PhysicalDriveType.NVMe;
+
             Smart = new NVMeSmart(storageInfo);
             _info = info;
         }
@@ -208,6 +213,7 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
             return Units * u / Scale;
         }
 
+        /// <inheritdoc/>
         public override void Close()
         {
             Smart?.Close();

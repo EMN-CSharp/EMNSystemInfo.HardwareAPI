@@ -99,7 +99,7 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
         /// <summary>
         /// Gets the drive type.
         /// </summary>
-        public PhysicalDriveType Type { get; internal set; } = PhysicalDriveType.Generic;
+        public PhysicalDriveType Type { get; protected private set; } = PhysicalDriveType.Generic;
 
         /// <summary>
         /// Gets the used capacity percentage of the drive. Does not include hidden partitions.
@@ -243,9 +243,9 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
             return new Drive(info);
         }
 
-        protected virtual void UpdateSensors()
-        { }
-
+        /// <summary>
+        /// Updates the drive properties.
+        /// </summary>
         public virtual void Update()
         {
             //read out with updateInterval
@@ -276,8 +276,6 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
 
                 _lastUpdate = DateTime.UtcNow;
 
-                UpdateSensors();
-
                 long totalSize = 0;
                 long totalFreeSpace = 0;
 
@@ -302,6 +300,9 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
             }
         }
 
+        /// <summary>
+        /// Frees the resources used by the instance. It is not necessary to call this method, <see cref="StorageDrives.Dispose"/> does all the work.
+        /// </summary>
         public virtual void Close()
         {
             _drivePCs?.Dispose();

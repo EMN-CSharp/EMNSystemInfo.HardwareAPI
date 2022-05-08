@@ -46,7 +46,7 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
         private readonly List<SMARTSensor> _sensors = new();
 
         /// <summary>
-        /// Gets the S.M.A.R.T. sensors
+        /// Gets the S.M.A.R.T. sensors.
         /// </summary>
         public SMARTSensor[] SMARTSensors
         {
@@ -145,7 +145,6 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
             }
             
             SmartAttributes = smartAttributes;
-            CreateSensors();
         }
 
         internal static Drive CreateInstance(StorageInfo storageInfo)
@@ -255,10 +254,6 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
             return null;
         }
 
-        private void CreateSensors()
-        {
-        }
-
         internal virtual void UpdateAdditionalSensors(Kernel32.SMART_ATTRIBUTE[] values) { }
 
         internal void DefaultUpdateAdditionalSensors(Kernel32.SMART_ATTRIBUTE[] values, byte? powOnHrsAttr, byte? powCycleCntAttr, byte? tempAttr)
@@ -280,15 +275,11 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
             }
         }
 
+        /// <inheritdoc/>
         public override void Update()
         {
             base.Update();
 
-            UpdateSensors();
-        }
-
-        protected override void UpdateSensors()
-        {
             if (Smart.IsValid)
             {
                 Kernel32.SMART_ATTRIBUTE[] smartAttributes = Smart.ReadSmartData();
@@ -301,6 +292,7 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
             return (raw[3] << 24) | (raw[2] << 16) | (raw[1] << 8) | raw[0];
         }
 
+        /// <inheritdoc/>
         public override void Close()
         {
             Smart.Close();
