@@ -103,3 +103,6 @@ This library is licensed under the Mozilla Public License (MPL) 2.0, you can use
 ## Name meaning and, why I've made this library?
 The name comes from a personal app about system info I'm developing as a hobby. The letters EMN are my initials.<br/>
 I've made this library because the way of getting hardware info Libre Hardware Monitor offers didn't convince me. I wanted to access hardware info directly with one or more properties instead of searching it in a sensor list. That's why I've decided to fork Libre Hardware Monitor, replacing the model it offered with the one I'm proposing here.
+
+## Announcement
+EMNSystemInfo.HardwareAPI will adopt semantic versioning when version 0.3 is released.

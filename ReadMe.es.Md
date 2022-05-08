@@ -103,3 +103,6 @@ Esta biblioteca está disponible bajo la Licencia Pública de Mozilla (MPL) 2.0.
 ## Significado del nombre y ¿por qué decidí hacer esta biblioteca?
 El nombre de esta biblioteca deriva del nombre de una aplicación personal de información del sistema que desarrollo como hobby. Las letras EMN son mis iniciales.
 Decidí hacer esta biblioteca ya que no estaba conforme con la forma de obtener información que me otorgaba Libre Hardware Monitor, me restringía a un modelo de "vista de árbol" y para buscar un sensor específico debía buscarlo con su nombre en la lista de sensores. A pesar de que no es un mal método para acceder a la información, yo quería acceder a ella directamente con una o varias propiedades, por eso decidí crear un fork de Libre Hardware Monitor, cambiando el modelo que ofrecía para acceder a la información por el que propongo aquí.
+
+## Aviso
+EMNSystemInfo.HardwareAPI adoptará versionado semántico cuando se lance la versión 0.3.
