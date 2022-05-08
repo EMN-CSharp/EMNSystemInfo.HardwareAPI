@@ -43,8 +43,7 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
     /// </summary>
     public sealed class NVMeDrive : Drive
     {
-        private const ulong Scale = 1000000;
-        private const ulong Units = 512;
+        private const ulong Units = 512000;
         private readonly NVMeInfo _info;
 
         public ushort PCIVendorID => _info.VID;
@@ -125,6 +124,9 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
 
             NVMeHealthInfo healthInfo = Smart.GetHealthInfo();
 
+            if (ValueIsInRange(healthInfo.Temperature))
+                Temperature = healthInfo.Temperature;
+
             List<double> tempSensors = new();
             foreach (short tempSensor in healthInfo.TemperatureSensors)
             {
@@ -133,50 +135,35 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
             }
             TemperatureSensors = tempSensors.ToArray();
 
-            if (ValueIsInRange(healthInfo.AvailableSpare))
-                AvailableSpare = healthInfo.AvailableSpare;
+            AvailableSpare = healthInfo.AvailableSpare;
 
-            if (ValueIsInRange(healthInfo.AvailableSpareThreshold))
-                AvailableSpareThreshold = healthInfo.AvailableSpareThreshold;
+            AvailableSpareThreshold = healthInfo.AvailableSpareThreshold;
 
-            if (ValueIsInRange(healthInfo.PercentageUsed))
-                PercentageUsed = healthInfo.PercentageUsed;
+            PercentageUsed = healthInfo.PercentageUsed;
 
-            if (ValueIsInRange(healthInfo.DataUnitRead))
-                DataRead = UnitsToData(healthInfo.DataUnitRead);
+            DataRead = UnitsToData(healthInfo.DataUnitRead);
 
-            if (ValueIsInRange(healthInfo.DataUnitWritten))
-                DataWritten = UnitsToData(healthInfo.DataUnitWritten);
+            DataWritten = UnitsToData(healthInfo.DataUnitWritten);
 
-            if (ValueIsInRange(healthInfo.HostReadCommands))
-                HostReadCommands = healthInfo.HostReadCommands;
+            HostReadCommands = healthInfo.HostReadCommands;
 
-            if (ValueIsInRange(healthInfo.HostWriteCommands))
-                HostWriteCommands = healthInfo.HostWriteCommands;
+            HostWriteCommands = healthInfo.HostWriteCommands;
 
-            if (ValueIsInRange(healthInfo.ControllerBusyTime))
-                ControllerBusyTime = healthInfo.ControllerBusyTime;
+            ControllerBusyTime = healthInfo.ControllerBusyTime;
 
-            if (ValueIsInRange(healthInfo.PowerCycle))
-                PowerCycles = healthInfo.PowerCycle;
+            PowerCycles = healthInfo.PowerCycle;
 
-            if (ValueIsInRange(healthInfo.PowerOnHours))
-                PowerOnTime = TimeSpan.FromHours(healthInfo.PowerOnHours);
+            PowerOnTime = TimeSpan.FromHours(healthInfo.PowerOnHours);
 
-            if (ValueIsInRange(healthInfo.UnsafeShutdowns))
-                UnsafeShutdowns = healthInfo.UnsafeShutdowns;
+            UnsafeShutdowns = healthInfo.UnsafeShutdowns;
 
-            if (ValueIsInRange(healthInfo.MediaErrors))
-                MediaErrors = healthInfo.MediaErrors;
+            MediaErrors = healthInfo.MediaErrors;
 
-            if (ValueIsInRange(healthInfo.ErrorInfoLogEntryCount))
-                ErrorInfoLogCount = healthInfo.ErrorInfoLogEntryCount;
+            ErrorInfoLogCount = healthInfo.ErrorInfoLogEntryCount;
 
-            if (ValueIsInRange(healthInfo.WarningCompositeTemperatureTime))
-                WarningCompositeTemperatureTime = healthInfo.WarningCompositeTemperatureTime;
+            WarningCompositeTemperatureTime = healthInfo.WarningCompositeTemperatureTime;
 
-            if (ValueIsInRange(healthInfo.CriticalCompositeTemperatureTime))
-                CriticalCompositeTemperatureTime = healthInfo.CriticalCompositeTemperatureTime;
+            CriticalCompositeTemperatureTime = healthInfo.CriticalCompositeTemperatureTime;
         }
 
         private bool ValueIsInRange(double value) => value >= -1000 && value <= 1000;
@@ -209,8 +196,8 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
 
         private static ulong UnitsToData(ulong u)
         {
-            // one unit is 512 * 1000 bytes, return in GB (not GiB)
-            return Units * u / Scale;
+            // One unit is 512000 bytes
+            return Units * u;
         }
 
         /// <inheritdoc/>

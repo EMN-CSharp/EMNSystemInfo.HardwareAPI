@@ -19,7 +19,8 @@
     <Description>EMNSystemInfo.HardwareAPI is a hardware library for Windows based on Libre Hardware Monitor. It provides a base model to access hardware information.</Description>
     <RepositoryUrl>https://github.com/EMN-CSharp/EMNSystemInfo.HardwareAPI/</RepositoryUrl>
     <PackageReleaseNotes> · Fixed a bug that prevented checking if the drive is a NVMe drive with the "Type" property.
-· Fixed a bug that prevented updating NVMe drives info.</PackageReleaseNotes>
+· Fixed a bug that prevented updating NVMe drives info.
+· Fixed other stupid errors in NVMeDrive class.</PackageReleaseNotes>
     <PackageTags>open-source opensource csharp dotnet hardware information monitoring library</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
