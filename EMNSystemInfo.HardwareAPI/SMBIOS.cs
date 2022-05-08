@@ -764,7 +764,7 @@ namespace EMNSystemInfo.HardwareAPI
         public ChassisStates BootUpState { get; }
 
         /// <summary>
-        /// Gets <inheritdoc cref="LibreHardwareMonitor.Hardware.ChassisType" />
+        /// Gets <inheritdoc cref="ChassisType" />
         /// </summary>
         public ChassisType ChassisType { get; }
 
@@ -909,7 +909,7 @@ namespace EMNSystemInfo.HardwareAPI
         public int ExternalClock { get; }
 
         /// <summary>
-        /// Gets <inheritdoc cref="LibreHardwareMonitor.Hardware.ProcessorFamily" />
+        /// Gets <inheritdoc cref="ProcessorFamily" />
         /// </summary>
         public ProcessorFamily Family { get; }
 
@@ -924,7 +924,7 @@ namespace EMNSystemInfo.HardwareAPI
         public int MaxSpeed { get; }
 
         /// <summary>
-        /// Gets <inheritdoc cref="LibreHardwareMonitor.Hardware.ProcessorType" />
+        /// Gets <inheritdoc cref="ProcessorType" />
         /// </summary>
         public SMBIOSProcessorType ProcessorType { get; }
 
@@ -935,7 +935,7 @@ namespace EMNSystemInfo.HardwareAPI
         public string Serial { get; }
 
         /// <summary>
-        /// Gets <inheritdoc cref="LibreHardwareMonitor.Hardware.ProcessorSocket" />
+        /// Gets <inheritdoc cref="ProcessorSocket" />
         /// </summary>
         public ProcessorSocket Socket { get; }
 
@@ -1029,17 +1029,17 @@ namespace EMNSystemInfo.HardwareAPI
         }
 
         /// <summary>
-        /// Gets an <see cref="RAMFormFactor"/> enum that represents the RAM module form factor.
+        /// Gets a <see cref="RAMFormFactor"/> enum that represents the RAM module form factor.
         /// </summary>
         public RAMFormFactor FormFactor { get; }
 
         /// <summary>
-        /// Gets an <see cref="RAMType"/> enum that represents the RAM module type.
+        /// Gets a <see cref="RAMType"/> enum that represents the RAM module type.
         /// </summary>
         public RAMType Type { get; }
 
         /// <summary>
-        /// Gets an <see cref="RAMTypeDetail"/> enum that represents an additional detail on the RAM module type.
+        /// Gets a <see cref="RAMTypeDetail"/> enum that represents an additional detail on the RAM module type.
         /// </summary>
         public RAMTypeDetail TypeDetail { get; }
 
