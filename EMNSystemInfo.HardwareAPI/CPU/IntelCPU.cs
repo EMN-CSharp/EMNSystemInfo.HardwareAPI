@@ -88,6 +88,7 @@ namespace EMNSystemInfo.HardwareAPI.CPU
         private double _coreMax;
         private readonly CoreTemperature[] _coreTemperatures;
         private double _coreVoltage;
+        private double[] _coreVoltages;
         private readonly double?[] _distToTjMaxTemperatures;
 
         private readonly double _energyUnitMultiplier;
@@ -130,6 +131,11 @@ namespace EMNSystemInfo.HardwareAPI.CPU
         /// Gets the CPU core voltage (VID), in volts (V).
         /// </summary>
         public double CoreVoltage => _coreVoltage;
+
+        /// <summary>
+        /// Gets the voltage (VID) for each CPU core, in volts (V).
+        /// </summary>
+        public double[] CoreVoltages => _coreVoltages;
 
         /// <summary>
         /// Gets the package temperature. This property is nullable.
@@ -472,6 +478,8 @@ namespace EMNSystemInfo.HardwareAPI.CPU
                 }
             }
 
+            _coreVoltages = new double[_coreCount];
+
             Update();
         }
 
@@ -505,7 +513,7 @@ namespace EMNSystemInfo.HardwareAPI.CPU
 
             double coreMax = float.MinValue;
             double coreAvg = 0;
-            uint eax = 0;
+            uint eax, edx;
 
             for (int i = 0; i < _coreTemperatures.Length; i++)
             {
@@ -673,9 +681,17 @@ namespace EMNSystemInfo.HardwareAPI.CPU
                 PowerSensors.memoryLastEnergyConsumed = energyConsumed;
             }
 
-            if (Ring0.ReadMsr(IA32_PERF_STATUS, out eax, out uint _))
+            if (Ring0.ReadMsr(IA32_PERF_STATUS, out _, out edx))
             {
-                _coreVoltage = ((eax >> 32) & 0xFFFF) / (double)(1 << 13);
+                _coreVoltage = ((edx >> 32) & 0xFFFF) / (double)(1 << 13);
+            }
+
+            for (int i = 0; i < _coreVoltages.Length; i++)
+            {
+                if (Ring0.ReadMsr(IA32_PERF_STATUS, out _, out edx, _cpuId[i][0].Affinity) && ((edx >> 32) & 0xFFFF) > 0)
+                {
+                    _coreVoltages[i] = ((edx >> 32) & 0xFFFF) / (double)(1 << 13);
+                }
             }
         }
 
