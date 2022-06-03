@@ -20,12 +20,12 @@ namespace EMNSystemInfo.HardwareAPI.Battery
         private readonly uint _batteryTag;
 
         internal Battery(string name,
-                        string manufacturer,
-                        uint batteryTag,
-                        SafeFileHandle batteryHandle,
-                        BatteryChemistry chemistry,
-                        uint designedCapacity,
-                        uint fullChargedCapacity)
+                         string manufacturer,
+                         uint batteryTag,
+                         SafeFileHandle batteryHandle,
+                         BatteryChemistry chemistry,
+                         uint designedCapacity,
+                         uint fullChargedCapacity)
         {
             Name = name;
             Manufacturer = manufacturer;
@@ -85,7 +85,7 @@ namespace EMNSystemInfo.HardwareAPI.Battery
                 else
                     ChargeDischargeCurrent = (double)batteryStatus.Rate / (double)batteryStatus.Voltage;
 
-                uint estimatedRunTime = 0;
+                uint estimatedRunTime = BatteryUnknownValue;
                 BATTERY_QUERY_INFORMATION bqi = default;
                 bqi.BatteryTag = _batteryTag;
                 bqi.InformationLevel = BATTERY_QUERY_INFORMATION_LEVEL.BatteryEstimatedTime;
@@ -96,12 +96,13 @@ namespace EMNSystemInfo.HardwareAPI.Battery
                                     ref estimatedRunTime,
                                     Marshal.SizeOf<uint>(),
                                     out _,
-                                    IntPtr.Zero))
+                                    IntPtr.Zero) && estimatedRunTime != BatteryUnknownValue)
                 {
-                    if (estimatedRunTime != BatteryUnknownValue)
-                    {
-                        EstimatedRemainingTime = TimeSpan.FromSeconds(estimatedRunTime);
-                    }
+                    EstimatedRemainingTime = TimeSpan.FromSeconds(estimatedRunTime);
+                }
+                else
+                {
+                    EstimatedRemainingTime = null;
                 }
             }
         }
