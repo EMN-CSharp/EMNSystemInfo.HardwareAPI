@@ -41,7 +41,7 @@ namespace EMNSystemInfo.HardwareAPI.Battery
         Discharging = 0x00000002,
 
         /// <summary>
-        /// THe system is connected to AC power, thus, no batteries are discharging.
+        /// The system is connected to AC power, thus, no batteries are discharging.
         /// </summary>
         OnAC = 0x00000001
     }
