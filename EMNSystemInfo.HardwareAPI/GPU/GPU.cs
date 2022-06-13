@@ -9,7 +9,7 @@ using System;
 namespace EMNSystemInfo.HardwareAPI.GPU
 {
     /// <summary>
-    /// GPU type. These values are required to get the proper instance. For example. if your GPU type is an <see cref="NvidiaGPU"/>, you can convert your <see cref="GPU"/> instance into <see cref="HardwareAPI.GPU.NvidiaGPU"/> using type casting.
+    /// GPU type. These values are required to get the proper instance. For example, if your GPU type is an <see cref="NvidiaGPU"/>, you can convert your <see cref="GPU"/> instance into <see cref="HardwareAPI.GPU.NvidiaGPU"/> using type casting.
     /// </summary>
     public enum GPUType
     {
@@ -36,14 +36,14 @@ namespace EMNSystemInfo.HardwareAPI.GPU
     /// </summary>
     public class GPU
     {
-        protected string _d3dDeviceId;
-        protected string _gpuName;
-        protected ulong _gpuDedicatedMemoryUsage;
-        private bool _arraysInitialized = false;
-        protected NodeUsageSensor[] _gpuNodeUsage;
-        protected DateTime[] _gpuNodeUsagePrevTick;
-        protected long[] _gpuNodeUsagePrevValue;
-        protected ulong _gpuSharedMemoryUsage;
+        protected private string _d3dDeviceId;
+        protected private string _gpuName;
+        protected private ulong _gpuDedicatedMemoryUsage;
+        //private bool _arraysInitialized = false;
+        protected private NodeUsageSensor[] _gpuNodeUsage;
+        protected private DateTime[] _gpuNodeUsagePrevTick;
+        protected private long[] _gpuNodeUsagePrevValue;
+        protected private ulong _gpuSharedMemoryUsage;
 
         /// <summary>
         /// Gets the GPU name
@@ -70,6 +70,24 @@ namespace EMNSystemInfo.HardwareAPI.GPU
         /// </summary>
         public GPUType Type { get; internal set; } = GPUType.Generic;
 
+        protected private void Initialize(string d3dDevId)
+        {
+            _d3dDeviceId = d3dDevId;
+
+            if (_d3dDeviceId != null && D3DDisplayDevice.GetDeviceInfoByIdentifier(_d3dDeviceId, out D3DDisplayDevice.D3DDeviceInfo deviceInfo))
+            {
+                _gpuNodeUsage = new NodeUsageSensor[deviceInfo.Nodes.Length];
+                _gpuNodeUsagePrevValue = new long[deviceInfo.Nodes.Length];
+                _gpuNodeUsagePrevTick = new DateTime[deviceInfo.Nodes.Length];
+
+                foreach (NodeUsageSensor node in deviceInfo.Nodes)
+                {
+                    _gpuNodeUsagePrevTick[node.Id] = node.QueryTime;
+                    _gpuNodeUsagePrevValue[node.Id] = node._runningTime;
+                }
+            }
+        }
+
         /// <summary>
         /// Updates all the GPU properties.
         /// </summary>
@@ -77,25 +95,21 @@ namespace EMNSystemInfo.HardwareAPI.GPU
         {
             if (_d3dDeviceId != null && D3DDisplayDevice.GetDeviceInfoByIdentifier(_d3dDeviceId, out D3DDisplayDevice.D3DDeviceInfo deviceInfo))
             {
-                if (!_arraysInitialized)
-                {
-                    _gpuNodeUsage = deviceInfo.Nodes;
-                    _gpuNodeUsagePrevValue = new long[deviceInfo.Nodes.Length];
-                    _gpuNodeUsagePrevTick = new DateTime[deviceInfo.Nodes.Length];
-                    _arraysInitialized = true;
-                }
-
                 _gpuDedicatedMemoryUsage = deviceInfo.GpuDedicatedUsed;
                 _gpuSharedMemoryUsage = deviceInfo.GpuSharedUsed;
                 
-                foreach (NodeUsageSensor node in _gpuNodeUsage)
+                for (int i = 0; i < deviceInfo.Nodes.Length; i++)
                 {
+                    NodeUsageSensor node = deviceInfo.Nodes[i];
+
                     long runningTimeDiff = node._runningTime - _gpuNodeUsagePrevValue[node.Id];
                     long timeDiff = node.QueryTime.Ticks - _gpuNodeUsagePrevTick[node.Id].Ticks;
 
-                    _gpuNodeUsage[node.Id].Value = 100f * runningTimeDiff / timeDiff;
+                    node.Value = 100f * runningTimeDiff / timeDiff;
                     _gpuNodeUsagePrevValue[node.Id] = node._runningTime;
                     _gpuNodeUsagePrevTick[node.Id] = node.QueryTime;
+
+                    _gpuNodeUsage[i] = node;
                 }
             }
         }

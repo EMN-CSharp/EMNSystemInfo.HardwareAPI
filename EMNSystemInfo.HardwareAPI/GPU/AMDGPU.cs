@@ -209,7 +209,7 @@ namespace EMNSystemInfo.HardwareAPI.GPU
                     if ((actualDeviceId.IndexOf(adapterInfo.PNPString, StringComparison.OrdinalIgnoreCase) != -1 ||
                          adapterInfo.PNPString.IndexOf(actualDeviceId, StringComparison.OrdinalIgnoreCase) != -1))
                     {
-                        _d3dDeviceId = deviceId;
+                        Initialize(deviceId);
 
                         break;
                     }

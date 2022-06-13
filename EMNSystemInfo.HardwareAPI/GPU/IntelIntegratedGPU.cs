@@ -28,8 +28,7 @@ namespace EMNSystemInfo.HardwareAPI.GPU
             Type = GPUType.IntelIntegratedGPU;
 
             _intelCPU = intelCPU;
-            _d3dDeviceId = deviceId;
-
+            Initialize(deviceId);
             _gpuName = GetName(_d3dDeviceId);
 
             intelCPU.Update();

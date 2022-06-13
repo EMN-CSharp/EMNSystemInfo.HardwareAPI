@@ -438,7 +438,7 @@ namespace EMNSystemInfo.HardwareAPI.GPU
                 }
             }
 
-            if (NvidiaML.IsAvailable || Initialize())
+            if (NvidiaML.IsAvailable || NvidiaML.Initialize())
             {
                 if (hasBusId)
                     _nvmlDevice = NvmlDeviceGetHandleByPciBusId($" 0000:{busId:X2}:00.0") ?? NvmlDeviceGetHandleByIndex(_adapterIndex);
@@ -515,7 +515,7 @@ namespace EMNSystemInfo.HardwareAPI.GPU
 
                                     if (isMatch)
                                     {
-                                        _d3dDeviceId = deviceId;
+                                        Initialize(deviceId);
                                     }
                                 }
                             }
