@@ -21,61 +21,6 @@ namespace EMNSystemInfo.HardwareAPITest
 {
     class Program
     {
-        static string ConvertBytesToHexString(byte[] buffer)
-        {
-            string[] hexStrArr = new string[buffer.Length];
-
-            for (long i = 0; i < buffer.LongLength; i++)
-            {
-                hexStrArr[i] = buffer[i].ToString("X2");
-            }
-
-            return string.Join("", hexStrArr.Reverse());
-        }
-
-        static string GetNodeName(NodeEngineType nodeEngineType, string nodeEngTypeStrWhenOther)
-        {
-            string nodeName = "<Unknown>";
-            switch (nodeEngineType)
-            {
-                case NodeEngineType.Other:
-                    if (string.IsNullOrEmpty(nodeEngTypeStrWhenOther))
-                    {
-                        nodeName = "Other";
-                    }
-                    else
-                    {
-                        nodeName = nodeEngTypeStrWhenOther;
-                    }
-                    break;
-                case NodeEngineType._3D:
-                    nodeName = "3D";
-                    break;
-                case NodeEngineType.VideoDecode:
-                    nodeName = "Video Decode";
-                    break;
-                case NodeEngineType.VideoEncode:
-                    nodeName = "Video Encode";
-                    break;
-                case NodeEngineType.VideoProcessing:
-                    nodeName = "Video Processing";
-                    break;
-                case NodeEngineType.SceneAssembly:
-                    nodeName = "Scene Assembly";
-                    break;
-                case NodeEngineType.Copy:
-                    nodeName = "Copy";
-                    break;
-                case NodeEngineType.Overlay:
-                    nodeName = "Overlay";
-                    break;
-                case NodeEngineType.Crypto:
-                    nodeName = "Cryptography";
-                    break;
-            }
-
-            return nodeName;
-        }
 
         static void Main()
         {
@@ -406,17 +351,17 @@ namespace EMNSystemInfo.HardwareAPITest
                 gpu.Update();
                 output.AppendFormat("GPU #{0}:", count).AppendLine();
                 output.AppendFormat(" · Name: {0}", gpu.Name).AppendLine();
-                output.AppendFormat(" · Dedicated Memory Usage: {0}", ByteConversions.ConvertBytesToString(gpu.DedicatedMemoryUsage, Unit.BinaryByte)).AppendLine();
-                output.AppendFormat(" · Shared Memory Usage: {0}", ByteConversions.ConvertBytesToString(gpu.SharedMemoryUsage, Unit.BinaryByte)).AppendLine();
+                output.AppendFormat(" · Dedicated Memory Usage: {0}/", gpu.DedicatedMemoryUsage.ToDataUnitString(), gpu.DedicatedMemoryLimit.ToDataUnitString()).AppendLine();
+                output.AppendFormat(" · Shared Memory Usage: {0}/", gpu.SharedMemoryUsage.ToDataUnitString(), gpu.SharedMemoryLimit.ToDataUnitString()).AppendLine();
                 output.Append(" · Node Usages:").AppendLine();
                 foreach (var nodeGroup in from nd in gpu.NodeUsage
-                                          orderby GetNodeName(nd.NodeEngineType, nd.NodeEngineTypeString) ascending
-                                          group nd by GetNodeName(nd.NodeEngineType, nd.NodeEngineTypeString))
+                                          orderby nd.NodeEngineType.GetNodeName(nd.NodeEngineTypeString) ascending
+                                          group nd by nd.NodeEngineType.GetNodeName(nd.NodeEngineTypeString))
                 {
                     int nodeCount = 0;
                     foreach (NodeUsageSensor node in nodeGroup)
                     {
-                        string nodeName = GetNodeName(node.NodeEngineType, node.NodeEngineTypeString);
+                        string nodeName = node.NodeEngineType.GetNodeName(node.NodeEngineTypeString);
 
                         if (nodeGroup.Count() > 1)
                         {
@@ -566,17 +511,17 @@ namespace EMNSystemInfo.HardwareAPITest
                         count++;
                     }
 
-                    output.AppendFormat(" · Total Memory: {0}", ByteConversions.ConvertBytesToString((ulong)nvGPU.MemoryTotal, Unit.BinaryByte)).AppendLine();
-                    output.AppendFormat(" · Used Memory: {0}", ByteConversions.ConvertBytesToString((ulong)nvGPU.MemoryUsed, Unit.BinaryByte)).AppendLine();
-                    output.AppendFormat(" · Available Memory: {0}", ByteConversions.ConvertBytesToString((ulong)nvGPU.MemoryFree, Unit.BinaryByte)).AppendLine();
+                    output.AppendFormat(" · Total Memory: {0}", nvGPU.MemoryTotal.ToDataUnitString()).AppendLine();
+                    output.AppendFormat(" · Used Memory: {0}", nvGPU.MemoryUsed.ToDataUnitString()).AppendLine();
+                    output.AppendFormat(" · Available Memory: {0}", nvGPU.MemoryFree.ToDataUnitString()).AppendLine();
 
                     if (nvGPU.PCIeThroughputRX.HasValue)
                     {
-                        output.AppendFormat(" · PCI-Express RX Throughput: {0}", ByteConversions.ConvertBytesToString((ulong)nvGPU.PCIeThroughputRX.Value, Unit.BytesPerSecond)).AppendLine();
+                        output.AppendFormat(" · PCI-Express RX Throughput: {0}", nvGPU.PCIeThroughputRX.Value.ToDataSpeedUnitString()).AppendLine();
                     }
                     if (nvGPU.PCIeThroughputTX.HasValue)
                     {
-                        output.AppendFormat(" · PCI-Express TX Throughput: {0}", ByteConversions.ConvertBytesToString((ulong)nvGPU.PCIeThroughputTX.Value, Unit.BytesPerSecond)).AppendLine();
+                        output.AppendFormat(" · PCI-Express TX Throughput: {0}", nvGPU.PCIeThroughputTX.Value.ToDataSpeedUnitString()).AppendLine();
                     }
                 }
 
@@ -797,7 +742,7 @@ namespace EMNSystemInfo.HardwareAPITest
                 output.AppendFormat("Physical Storage #{0}:", drive.Index + 1).AppendLine();
                 output.AppendFormat(" · Name: {0}", drive.Name).AppendLine();
                 output.AppendFormat(" · Serial Number: {0}", drive.SerialNumber).AppendLine();
-                output.AppendFormat(" · Capacity: {0}", ByteConversions.ConvertBytesToString(drive.Capacity, Unit.BinaryByte)).AppendLine();
+                output.AppendFormat(" · Capacity: {0}", drive.Capacity.ToDataUnitString()).AppendLine();
                 output.AppendFormat(" · Firmware Revision: {0}", drive.FirmwareRevision).AppendLine();
                 output.AppendFormat(" · Device Id.: {0}", drive.DeviceId).AppendLine();
                 output.AppendFormat(" · Type: {0}", drive.Type).AppendLine();
@@ -816,10 +761,10 @@ namespace EMNSystemInfo.HardwareAPITest
                     output.AppendFormat("     · Drive Type: {0}", logicalDrive.DriveType).AppendLine();
                     output.AppendFormat("     · File System: {0}", logicalDrive.DriveFormat).AppendLine();
                     output.AppendFormat("     · Root Directory: {0}", logicalDrive.RootDirectory).AppendLine();
-                    output.AppendFormat("     · Capacity: {0}", ByteConversions.ConvertBytesToString((ulong)logicalDrive.TotalSize, Unit.BinaryByte)).AppendLine();
+                    output.AppendFormat("     · Capacity: {0}", logicalDrive.TotalSize.ToDataUnitString()).AppendLine();
                     output.AppendFormat("     · Used Space Percentage: {0:F2} %", usedSpace * 100d / logicalDrive.TotalSize).AppendLine();
-                    output.AppendFormat("     · Used Space: {0}", ByteConversions.ConvertBytesToString((ulong)usedSpace, Unit.BinaryByte)).AppendLine();
-                    output.AppendFormat("     · Available Space: {0}", ByteConversions.ConvertBytesToString((ulong)logicalDrive.AvailableFreeSpace, Unit.BinaryByte)).AppendLine();
+                    output.AppendFormat("     · Used Space: {0}", usedSpace.ToDataUnitString()).AppendLine();
+                    output.AppendFormat("     · Available Space: {0}", logicalDrive.AvailableFreeSpace.ToDataUnitString()).AppendLine();
                 }
 
                 #endregion
@@ -854,19 +799,19 @@ namespace EMNSystemInfo.HardwareAPITest
                     output.AppendFormat(" · Write Activity: {0:F2} %", drive.TotalWriteActivityPercentage.Value).AppendLine();
 
                 if (drive.ReadSpeed.HasValue)
-                    output.AppendFormat(" · Read Speed: {0}", ByteConversions.ConvertBytesToString((ulong)drive.ReadSpeed.Value, Unit.BytesPerSecond)).AppendLine();
+                    output.AppendFormat(" · Read Speed: {0}", drive.ReadSpeed.Value.ToDataSpeedUnitString()).AppendLine();
 
                 if (drive.WriteSpeed.HasValue)
-                    output.AppendFormat(" · Write Speed: {0}", ByteConversions.ConvertBytesToString((ulong)drive.WriteSpeed.Value, Unit.BytesPerSecond)).AppendLine();
+                    output.AppendFormat(" · Write Speed: {0}", drive.WriteSpeed.Value.ToDataSpeedUnitString()).AppendLine();
 
                 if (drive.AverageResponseTimePerTransfer.HasValue)
-                    output.AppendFormat(" · Avg. Response Time per Transfer: {0}", SecondsToString.Convert(drive.AverageResponseTimePerTransfer.Value)).AppendLine();
+                    output.AppendFormat(" · Avg. Response Time per Transfer: {0}", drive.AverageResponseTimePerTransfer.Value.ToSecondUnitString()).AppendLine();
                 
                 if (drive.AverageResponseTimePerRead.HasValue)
-                    output.AppendFormat(" · Avg. Response Time per Read: {0}", SecondsToString.Convert(drive.AverageResponseTimePerRead.Value)).AppendLine();
+                    output.AppendFormat(" · Avg. Response Time per Read: {0}", drive.AverageResponseTimePerRead.Value.ToSecondUnitString()).AppendLine();
                 
                 if (drive.AverageResponseTimePerWrite.HasValue)
-                    output.AppendFormat(" · Avg. Response Time per Write: {0}", SecondsToString.Convert(drive.AverageResponseTimePerWrite.Value)).AppendLine();
+                    output.AppendFormat(" · Avg. Response Time per Write: {0}", drive.AverageResponseTimePerWrite.Value.ToSecondUnitString()).AppendLine();
 
                 output.AppendFormat(" · Is ATA Drive?: {0}", drive.IsATADrive).AppendLine();
 
@@ -911,7 +856,7 @@ namespace EMNSystemInfo.HardwareAPITest
                         output.AppendFormat("    │ {0,-9}", sensor.WorstValue);
                         output.AppendFormat("    │ {0,-6}", sensor.Threshold);
                         output.AppendFormat("    │ {0,-15}", sensor.Value);
-                        output.AppendFormat("    │ {0,-15} │", ConvertBytesToHexString(sensor.RawValue));
+                        output.AppendFormat("    │ {0,-15} │", sensor.RawValue.ToHexString());
 
                         count++;
                     }
@@ -927,8 +872,8 @@ namespace EMNSystemInfo.HardwareAPITest
                     output.Append(" · NVM Express (NVMe) Drive Specific Information:").AppendLine();
                     NVMeDrive nvmeDrive = (NVMeDrive)drive;
 
-                    output.AppendFormat("   · Total NVM Capacity: {0}", ByteConversions.ConvertBytesToString(nvmeDrive.TotalNVMCapacity, Unit.BinaryByte)).AppendLine();
-                    output.AppendFormat("   · Unallocated NVM Capacity: {0}", ByteConversions.ConvertBytesToString(nvmeDrive.UnallocatedNVMCapacity, Unit.BinaryByte)).AppendLine();
+                    output.AppendFormat("   · Total NVM Capacity: {0}", nvmeDrive.TotalNVMCapacity.ToDataUnitString()).AppendLine();
+                    output.AppendFormat("   · Unallocated NVM Capacity: {0}", nvmeDrive.UnallocatedNVMCapacity.ToDataUnitString()).AppendLine();
 
                     output.Append("   · Critical Warnings:").AppendLine();
                     NVMeCriticalWarning[] warnings = nvmeDrive.CriticalWarnings;
@@ -975,15 +920,15 @@ namespace EMNSystemInfo.HardwareAPITest
                     }
 
                     if (nvmeDrive.AvailableSpare.HasValue)
-                        output.AppendFormat("   · Available Spare: {0}", ByteConversions.ConvertBytesToString((ulong)nvmeDrive.AvailableSpare.Value, Unit.BinaryByte)).AppendLine();
+                        output.AppendFormat("   · Available Spare: {0}", nvmeDrive.AvailableSpare.Value.ToDataUnitString()).AppendLine();
                     if (nvmeDrive.AvailableSpareThreshold.HasValue)
-                        output.AppendFormat("   · Available Spare Threshold: {0}", ByteConversions.ConvertBytesToString((ulong)nvmeDrive.AvailableSpareThreshold.Value, Unit.BinaryByte)).AppendLine();
+                        output.AppendFormat("   · Available Spare Threshold: {0}", nvmeDrive.AvailableSpareThreshold.Value.ToDataUnitString()).AppendLine();
                     if (nvmeDrive.PercentageUsed.HasValue)
                         output.AppendFormat("   · Percentage Used: {0} %", nvmeDrive.DataRead.Value).AppendLine();
                     if (nvmeDrive.DataRead.HasValue)
-                        output.AppendFormat("   · Data Read: {0}", ByteConversions.ConvertBytesToString(nvmeDrive.DataRead.Value, Unit.BinaryByte)).AppendLine();
+                        output.AppendFormat("   · Data Read: {0}", nvmeDrive.DataRead.Value.ToDataUnitString()).AppendLine();
                     if (nvmeDrive.DataWritten.HasValue)
-                        output.AppendFormat("   · Data Written: {0}", ByteConversions.ConvertBytesToString(nvmeDrive.DataWritten.Value, Unit.BinaryByte)).AppendLine();
+                        output.AppendFormat("   · Data Written: {0}", nvmeDrive.DataWritten.Value.ToDataUnitString()).AppendLine();
                     if (nvmeDrive.HostReadCommands.HasValue)
                         output.AppendFormat("   · Host Read Commands: {0}", nvmeDrive.HostReadCommands.Value).AppendLine();
                     if (nvmeDrive.HostWriteCommands.HasValue)

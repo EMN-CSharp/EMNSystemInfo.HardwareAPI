@@ -39,11 +39,12 @@ namespace EMNSystemInfo.HardwareAPI.GPU
         protected private string _d3dDeviceId;
         protected private string _gpuName;
         protected private ulong _gpuDedicatedMemoryUsage;
-        //private bool _arraysInitialized = false;
+        protected private ulong _gpuDedicatedMemoryLimit;
         protected private NodeUsageSensor[] _gpuNodeUsage;
         protected private DateTime[] _gpuNodeUsagePrevTick;
         protected private long[] _gpuNodeUsagePrevValue;
         protected private ulong _gpuSharedMemoryUsage;
+        protected private ulong _gpuSharedMemoryLimit;
 
         /// <summary>
         /// Gets the GPU name
@@ -56,6 +57,11 @@ namespace EMNSystemInfo.HardwareAPI.GPU
         public ulong DedicatedMemoryUsage => _gpuDedicatedMemoryUsage;
 
         /// <summary>
+        /// Gets the dedicated memory limit, in bytes.
+        /// </summary>
+        public ulong DedicatedMemoryLimit => _gpuDedicatedMemoryLimit;
+
+        /// <summary>
         /// Gets the usages of all the GPU nodes.
         /// </summary>
         public NodeUsageSensor[] NodeUsage => _gpuNodeUsage;
@@ -64,6 +70,11 @@ namespace EMNSystemInfo.HardwareAPI.GPU
         /// Gets the shared memory usage, in bytes.
         /// </summary>
         public ulong SharedMemoryUsage => _gpuSharedMemoryUsage;
+
+        /// <summary>
+        /// Gets the shared memory limit, in bytes.
+        /// </summary>
+        public ulong SharedMemoryLimit => _gpuSharedMemoryLimit;
 
         /// <summary>
         /// Gets the GPU type.
@@ -96,7 +107,10 @@ namespace EMNSystemInfo.HardwareAPI.GPU
             if (_d3dDeviceId != null && D3DDisplayDevice.GetDeviceInfoByIdentifier(_d3dDeviceId, out D3DDisplayDevice.D3DDeviceInfo deviceInfo))
             {
                 _gpuDedicatedMemoryUsage = deviceInfo.GpuDedicatedUsed;
+                _gpuDedicatedMemoryLimit = deviceInfo.GpuDedicatedLimit;
+
                 _gpuSharedMemoryUsage = deviceInfo.GpuSharedUsed;
+                _gpuSharedMemoryLimit = deviceInfo.GpuSharedLimit;
                 
                 for (int i = 0; i < deviceInfo.Nodes.Length; i++)
                 {
