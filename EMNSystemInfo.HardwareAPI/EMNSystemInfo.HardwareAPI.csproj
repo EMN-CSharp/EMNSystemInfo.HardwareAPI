@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net472;netcoreapp3.1;netstandard2.0;net5.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>net472;netcoreapp3.1;netstandard2.0;net6.0</TargetFrameworks>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
@@ -11,15 +11,14 @@
     <Product>EMNSystemInfo.HardwareAPI</Product>
     <Company>EMN-CSharp</Company>
     <Copyright>Copyright © EMN-CSharp and Contributors. | Partial Copyright © LibreHardwareMonitor and Contributors. | Partial Copyright © Michael Möller &lt;mmoeller@openhardwaremonitor.org&gt; and Contributors.</Copyright>
-    <Version>0.2.14.5</Version>
-    <FileVersion>0.2.14.5</FileVersion>
-    <ProductVersion>0.2.14.5</ProductVersion>
+    <Version>0.2.15.6</Version>
+    <FileVersion>0.2.15.6</FileVersion>
+    <ProductVersion>0.2.15.6</ProductVersion>
     <PackageLicense>https://github.com/EMN-CSharp/EMNSystemInfo.HardwareAPI/blob/main/LICENSE</PackageLicense>
     <PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
     <Description>EMNSystemInfo.HardwareAPI is a hardware library for Windows based on Libre Hardware Monitor. It provides a base model to access hardware information.</Description>
     <RepositoryUrl>https://github.com/EMN-CSharp/EMNSystemInfo.HardwareAPI/</RepositoryUrl>
-    <PackageReleaseNotes> · Fixed a bug in the GPU class. When getting the value of a NodeUsageSensor it returned NaN instead of a number value.
-· Added DedicatedMemoryLimit and SharedMemoryLimit properties to the GPU class.</PackageReleaseNotes>
+    <PackageReleaseNotes> · Drop support for .NET 5.0</PackageReleaseNotes>
     <PackageTags>open-source opensource csharp dotnet hardware information monitoring library</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
