@@ -163,12 +163,12 @@ namespace EMNSystemInfo.HardwareAPITest
                     }
                 }
 
-                output.AppendFormat(" · ¿Has TSC?: {0}", p.HasTimeStampCounter).AppendLine();
+                output.AppendFormat(" · Has TSC?: {0}", p.HasTimeStampCounter).AppendLine();
                 if (p.HasTimeStampCounter)
                 {
                     output.AppendFormat(" · TSC Frequency: {0:F2} MHz", p.TimeStampCounterFrequency).AppendLine();
                 }
-                output.AppendFormat(" · ¿Has MSRs?: {0}", p.HasModelSpecificRegisters).AppendLine();
+                output.AppendFormat(" · Has MSRs?: {0}", p.HasModelSpecificRegisters).AppendLine();
 
                 #region Intel CPU
 
