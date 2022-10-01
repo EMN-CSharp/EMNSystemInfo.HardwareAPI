@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading;
 using Microsoft.Win32;
 using HidSharp;
+using EMNSystemInfo.HardwareAPI.NativeInterop;
 
 namespace EMNSystemInfo.HardwareAPI.Cooler
 {
@@ -184,9 +185,116 @@ namespace EMNSystemInfo.HardwareAPI.Cooler
 
                 #endregion
 
+                #region TBalancer cooler listing
+                ListTBalancerCoolers(coolers);
+                #endregion
+
                 List = coolers.ToArray();
 
                 CoolersAreLoaded = true;
+            }
+        }
+
+        private static void ListTBalancerCoolers(List<ICooler> coolers)
+        {
+            uint numDevices;
+
+            try
+            {
+                if (!Ftd2xx.DllExists())
+                {
+                    return;
+                }
+
+                if (Ftd2xx.FT_CreateDeviceInfoList(out numDevices) != Ftd2xx.FT_STATUS.FT_OK)
+                {
+                    return;
+                }
+            }
+            catch (Exception e) when (e is DllNotFoundException or ArgumentNullException or EntryPointNotFoundException or BadImageFormatException)
+            {
+                return;
+            }
+
+            Ftd2xx.FT_DEVICE_INFO_NODE[] info = new Ftd2xx.FT_DEVICE_INFO_NODE[numDevices];
+            if (Ftd2xx.FT_GetDeviceInfoList(info, ref numDevices) != Ftd2xx.FT_STATUS.FT_OK)
+            {
+                return;
+            }
+
+            // make sure numDevices is not larger than the info array
+            if (numDevices > info.Length)
+                numDevices = (uint)info.Length;
+
+            for (int i = 0; i < numDevices; i++)
+            {
+                // the T-Balancer always uses an FT232BM
+                if (info[i].Type != Ftd2xx.FT_DEVICE.FT_DEVICE_232BM)
+                {
+                    continue;
+                }
+
+                Ftd2xx.FT_STATUS status = Ftd2xx.FT_Open(i, out Ftd2xx.FT_HANDLE handle);
+                if (status != Ftd2xx.FT_STATUS.FT_OK)
+                {
+                    continue;
+                }
+
+                Ftd2xx.FT_SetBaudRate(handle, 19200);
+                Ftd2xx.FT_SetDataCharacteristics(handle, 8, 1, 0);
+                Ftd2xx.FT_SetFlowControl(handle, Ftd2xx.FT_FLOW_CONTROL.FT_FLOW_RTS_CTS, 0x11, 0x13);
+                Ftd2xx.FT_SetTimeouts(handle, 1000, 1000);
+                Ftd2xx.FT_Purge(handle, Ftd2xx.FT_PURGE.FT_PURGE_ALL);
+
+                status = Ftd2xx.Write(handle, new byte[] { 0x38 });
+                if (status != Ftd2xx.FT_STATUS.FT_OK)
+                {
+                    Ftd2xx.FT_Close(handle);
+                    continue;
+                }
+
+                bool isValid = false;
+                byte protocolVersion = 0;
+
+                int j = 0;
+                while (Ftd2xx.BytesToRead(handle) == 0 && j < 2)
+                {
+                    Thread.Sleep(100);
+                    j++;
+                }
+
+                if (Ftd2xx.BytesToRead(handle) > 0)
+                {
+                    if (Ftd2xx.ReadByte(handle) == TBalancer.StartFlag)
+                    {
+                        while (Ftd2xx.BytesToRead(handle) < 284 && j < 5)
+                        {
+                            Thread.Sleep(100);
+                            j++;
+                        }
+
+                        int length = Ftd2xx.BytesToRead(handle);
+                        if (length >= 284)
+                        {
+                            byte[] data = new byte[285];
+                            data[0] = TBalancer.StartFlag;
+                            for (int k = 1; k < data.Length; k++)
+                                data[k] = Ftd2xx.ReadByte(handle);
+
+                            // check protocol version 2X (protocols seen: 2C, 2A, 28)
+                            isValid = (data[274] & 0xF0) == 0x20;
+                            protocolVersion = data[274];
+                        }
+                    }
+                }
+
+                Ftd2xx.FT_Purge(handle, Ftd2xx.FT_PURGE.FT_PURGE_ALL);
+                Ftd2xx.FT_Close(handle);
+
+                if (isValid)
+                {
+                    coolers.Add(new TBalancer(i, protocolVersion));
+                }
             }
         }
 

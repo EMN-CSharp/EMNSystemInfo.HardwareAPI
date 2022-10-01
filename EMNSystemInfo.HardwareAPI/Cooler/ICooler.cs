@@ -13,7 +13,8 @@ namespace EMNSystemInfo.HardwareAPI.Cooler
         AquaComputerD5Next,
         AquaComputerMPS,
         Heatmaster,
-        NZXTKrakenX3
+        NZXTKrakenX3,
+        TBalancer
     }
 
     public interface ICooler
