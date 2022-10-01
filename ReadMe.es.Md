@@ -42,6 +42,7 @@ EMNSystemInfo.HardwareAPI es una biblioteca de hardware para Windows basada en [
   - AquaComputer (Aquastream XT, D5Next, MPS) (refrigeración líquida)
   - Heatmaster (refrigeración líquida)
   - NZXT Kraken X3 (refrigeración líquida)
+  - TBalancer (refrigeración líquida)
 
 ## ¿De dónde la puedo descargar?
 Puedes descargar la última versión desde NuGet [aquí](https://www.nuget.org/packages/EMNSystemInfo.HardwareAPI/).

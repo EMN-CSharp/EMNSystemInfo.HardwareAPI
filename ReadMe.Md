@@ -30,25 +30,26 @@ EMNSystemInfo.HardwareAPI is a hardware library for Windows based on [Libre Hard
   - Any drive with S.M.A.R.T. access
   - HDDs
   - NVMe drives
-  - SSDs Indilinx
-  - SSDs Intel
-  - SSDs Micron
-  - SSDs Plextor
-  - SSDs Samsung
-  - SSDs Sandforce
+  - Indilinx SSDs
+  - Intel SSDs
+  - Micron SSDs
+  - Plextor SSDs
+  - Samsung SSDs
+  - Sandforce SSDs
 
 - Coolers:
   - AeroCool P7-H1
   - AquaComputer (Aquastream XT, D5Next, MPS) (water cooling)
   - Heatmaster (water cooling)
   - NZXT Kraken X3 (water cooling)
+  - TBalancer (water cooling)
 
 ## Where can I download it?
 You can download the latest version from NuGet [here](https://www.nuget.org/packages/EMNSystemInfo.HardwareAPI/).
 Alternatively, you can download the NuGet package from [Releases](https://github.com/EMN-CSharp/EMNSystemInfo.HardwareAPI/releases) page.
 
 ## How does it work?
-The main component is the LibrarySettings class, whose task is provide library configuration options, like the kernel driver name, and provide the Initialize & Close methods that prepare the library to use its components and free resources when it's no longer needed, respectively.<br/>This library has static classes that represent a hardware group, some of them have requirements about library initialization and execution with admin privileges.<br/>This table shows the hardware group classes and its requirements:
+The main component is the LibrarySettings class, whose task is provide library configuration options, like the kernel driver name, and provide the Initialize & Close methods that prepare the library to use its components and free resources when it's no longer needed, respectively.<br/>This library has static classes that represent a hardware group, some of them have requirements about library initialization and execution with admin privileges.<br/>This table shows the hardware group classes and their requirements:
 
 | Class name| Requires library initialization? | Requires admin privileges? |
 | --- | --- | --- |
@@ -100,7 +101,7 @@ Check out the EMNSystemInfo.HardwareAPITest folder for a complete example with a
 ## License
 This library is licensed under the Mozilla Public License (MPL) 2.0, you can use it on private and commercial projects, but you must include a copy of this license in your project.
 
-## Name meaning and, why I've made this library?
+## Name meaning and why I've made this library?
 The name comes from a personal app about system info I'm developing as a hobby. The letters EMN are my initials.<br/>
 I've made this library because the way of getting hardware info Libre Hardware Monitor offers didn't convince me. I wanted to access hardware info directly with one or more properties instead of searching it in a sensor list. That's why I've decided to fork Libre Hardware Monitor, replacing the model it offered with the one I'm proposing here.
 
