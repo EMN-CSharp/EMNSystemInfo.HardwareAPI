@@ -351,8 +351,8 @@ namespace EMNSystemInfo.HardwareAPITest
                 gpu.Update();
                 output.AppendFormat("GPU #{0}:", count).AppendLine();
                 output.AppendFormat(" · Name: {0}", gpu.Name).AppendLine();
-                output.AppendFormat(" · Dedicated Memory Usage: {0}/", gpu.DedicatedMemoryUsage.ToDataUnitString(), gpu.DedicatedMemoryLimit.ToDataUnitString()).AppendLine();
-                output.AppendFormat(" · Shared Memory Usage: {0}/", gpu.SharedMemoryUsage.ToDataUnitString(), gpu.SharedMemoryLimit.ToDataUnitString()).AppendLine();
+                output.AppendFormat(" · Dedicated Memory Usage: {0}", gpu.DedicatedMemoryUsage.ToDataUnitString(), gpu.DedicatedMemoryLimit.ToDataUnitString()).AppendLine();
+                output.AppendFormat(" · Shared Memory Usage: {0}", gpu.SharedMemoryUsage.ToDataUnitString(), gpu.SharedMemoryLimit.ToDataUnitString()).AppendLine();
                 output.Append(" · Node Usages:").AppendLine();
                 foreach (var nodeGroup in from nd in gpu.NodeUsage
                                           orderby nd.NodeEngineType.GetNodeName(nd.NodeEngineTypeString) ascending
@@ -1098,6 +1098,84 @@ namespace EMNSystemInfo.HardwareAPITest
                     output.AppendFormat("   · Pump Control: {0:F2} %", krakenX3.PumpControlSensor).AppendLine();
                     output.AppendFormat("   · Pump Speed: {0:F2} RPM", krakenX3.PumpRPM).AppendLine();
                     output.AppendFormat("   · Internal Water Temperature: {0:F2} °C", krakenX3.InternalWaterTemperature).AppendLine();
+                }
+
+                #endregion
+
+                #region TBalancer
+
+                else if (cooler.Type == CoolerType.TBalancer)
+                {
+                    output.Append(" · TBalancer Specific Info:").AppendLine();
+                    TBalancer tbalancer = (TBalancer)cooler;
+                    output.AppendFormat("   · Name: {0}", tbalancer.Name).AppendLine();
+                    output.AppendFormat("   · Port Index: {0}", tbalancer.PortIndex).AppendLine();
+                    output.AppendFormat("   · Protocol Version: {0}", tbalancer.ProtocolVersion).AppendLine();
+
+                    double? value;
+
+                    output.Append("   · Analog Temperatures:").AppendLine();
+                    for (int i = 0; i < tbalancer.AnalogTemperatures.Length; i++)
+                    {
+                        value = tbalancer.AnalogTemperatures[i];
+                        output.AppendFormat("     · #{0}: {0}", i, value.HasValue ? string.Format("{0:F2} °C", value.Value) : "N/A").AppendLine();
+                    }
+
+                    output.Append("   · Digital Temperatures:").AppendLine();
+                    for (int i = 0; i < tbalancer.DigitalTemperatures.Length; i++)
+                    {
+                        value = tbalancer.DigitalTemperatures[i];
+                        output.AppendFormat("     · #{0}: {0}", i, value.HasValue ? string.Format("{0:F2} °C", value.Value) : "N/A").AppendLine();
+                    }
+
+                    output.Append("   · Fan Controls:").AppendLine();
+                    for (int i = 0; i < tbalancer.Controls.Length; i++)
+                    {
+                        value = tbalancer.Controls[i];
+                        output.AppendFormat("     · Fan Channel #{0}: {0}", i, value.HasValue ? string.Format("{0:F2} %", value.Value) : "N/A").AppendLine();
+                    }
+
+                    output.Append("   · miniNG Controls:").AppendLine();
+                    for (int i = 0; i < tbalancer.MiniNGControls.Length; i++)
+                    {
+                        value = tbalancer.MiniNGControls[i];
+                        output.AppendFormat("     · #{0}: {0}", i, value.HasValue ? string.Format("{0:F0} %", value.Value) : "N/A").AppendLine();
+                    }
+
+                    output.Append("   · Fan Speeds:").AppendLine();
+                    for (int i = 0; i < tbalancer.Fans.Length; i++)
+                    {
+                        TBalancerFanSensor fanSensor = tbalancer.Fans[i];
+                        output.AppendFormat("     · Fan Channel #{0}: {0:F2} RPM (max. speed: {0:F2} RPM)", i, fanSensor.Value, fanSensor.MaxFanSpeed).AppendLine();
+                    }
+
+                    output.Append("   · miniNG Fan Speeds:").AppendLine();
+                    for (int i = 0; i < tbalancer.MiniNGFans.Length; i++)
+                    {
+                        value = tbalancer.MiniNGFans[i];
+                        output.AppendFormat("     · #{0}: {0}", i, value.HasValue ? string.Format("{0:F2} %", value.Value) : "N/A").AppendLine();
+                    }
+
+                    output.Append("   · miniNG Temperatures:").AppendLine();
+                    for (int i = 0; i < tbalancer.MiniNGTemperatures.Length; i++)
+                    {
+                        value = tbalancer.MiniNGTemperatures[i];
+                        output.AppendFormat("     · #{0}: {0}", i, value.HasValue ? string.Format("{0:F2} °C", value.Value) : "N/A").AppendLine();
+                    }
+
+                    output.Append("   · Sensorhub Flows:").AppendLine();
+                    for (int i = 0; i < tbalancer.SensorHubFlows.Length; i++)
+                    {
+                        value = tbalancer.SensorHubFlows[i];
+                        output.AppendFormat("     · Flow Meter #{0}: {0}", i, value.HasValue ? string.Format("{0:F2} L/h", value.Value) : "N/A").AppendLine();
+                    }
+
+                    output.Append("   · Sensorhub Temperatures:").AppendLine();
+                    for (int i = 0; i < tbalancer.SensorHubTemperatures.Length; i++)
+                    {
+                        value = tbalancer.SensorHubTemperatures[i];
+                        output.AppendFormat("     · Sensor #{0}: {0}", i, value.HasValue ? string.Format("{0:F2} °C", value.Value) : "N/A").AppendLine();
+                    }
                 }
 
                 #endregion
