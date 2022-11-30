@@ -25,7 +25,7 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
 
         public byte WorstValue { get; internal set; }
 
-        public byte Threshold { get; internal set; }
+        public byte? Threshold { get; internal set; }
 
         public byte[] RawValue { get; internal set; }
 
@@ -80,12 +80,22 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
                         Kernel32.SMART_ATTRIBUTE smartAttrib = (from attr in smartAttributes
                                                                 where attr.Id == smartSensor.Attribute.Id
                                                                 select attr).First();
-                        Kernel32.SMART_THRESHOLD smartThreshold = (from thres in smartThresholds
-                                                                   where thres.Id == smartSensor.Attribute.Id
-                                                                   select thres).First();
+                        var possibleSmartThreshold = from thres in smartThresholds
+                                                     where thres.Id == smartSensor.Attribute.Id
+                                                     select thres;
+
+                        // EMN-CSharp:
+                        // It is necessary to check if the threshold was found, because some
+                        // thresholds may be unavailable. It's a fairly uncommon error I
+                        // experienced when testing an app that uses this lib.
+                        // As a result, SMARTSensor.Threshold is nullable now.
+                        if (possibleSmartThreshold.Any())
+                            smartSensor.Threshold = possibleSmartThreshold.First().Threshold;
+                        else
+                            smartSensor.Threshold = null;
+
                         smartSensor.NormalizedValue = smartAttrib.CurrentValue;
                         smartSensor.WorstValue = smartAttrib.WorstValue;
-                        smartSensor.Threshold = smartThreshold.Threshold;
                         smartSensor.RawValue = smartAttrib.RawValue;
                         smartSensor.Value = smartSensor.Attribute.ConvertValue(smartAttrib, smartSensor.Attribute.Parameter);
                     }
