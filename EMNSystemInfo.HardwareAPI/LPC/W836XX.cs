@@ -384,65 +384,6 @@ namespace EMNSystemInfo.HardwareAPI.LPC
             Ring0.ReleaseIsaBusMutex();
         }
 
-        public string GetReport()
-        {
-            StringBuilder r = new StringBuilder();
-
-            r.AppendLine("LPC " + GetType().Name);
-            r.AppendLine();
-            r.Append("Chip Id: 0x");
-            r.AppendLine(Chip.ToString("X"));
-            r.Append("Chip Revision: 0x");
-            r.AppendLine(_revision.ToString("X", CultureInfo.InvariantCulture));
-            r.Append("Base Address: 0x");
-            r.AppendLine(_address.ToString("X4", CultureInfo.InvariantCulture));
-            r.AppendLine();
-
-            if (!Ring0.WaitIsaBusMutex(100))
-                return r.ToString();
-
-
-            r.AppendLine("Hardware Monitor Registers");
-            r.AppendLine();
-            r.AppendLine("      00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F");
-            r.AppendLine();
-            for (int i = 0; i <= 0x7; i++)
-            {
-                r.Append(" ");
-                r.Append((i << 4).ToString("X2", CultureInfo.InvariantCulture));
-                r.Append("  ");
-                for (int j = 0; j <= 0xF; j++)
-                {
-                    r.Append(" ");
-                    r.Append(ReadByte(0, (byte)((i << 4) | j)).ToString("X2", CultureInfo.InvariantCulture));
-                }
-
-                r.AppendLine();
-            }
-
-            for (int k = 1; k <= 15; k++)
-            {
-                r.AppendLine("Bank " + k);
-                for (int i = 0x5; i < 0x6; i++)
-                {
-                    r.Append(" ");
-                    r.Append((i << 4).ToString("X2", CultureInfo.InvariantCulture));
-                    r.Append("  ");
-                    for (int j = 0; j <= 0xF; j++)
-                    {
-                        r.Append(" ");
-                        r.Append(ReadByte((byte)k, (byte)((i << 4) | j)).ToString("X2", CultureInfo.InvariantCulture));
-                    }
-
-                    r.AppendLine();
-                }
-            }
-
-            r.AppendLine();
-            Ring0.ReleaseIsaBusMutex();
-            return r.ToString();
-        }
-
         private byte ReadByte(byte bank, byte register)
         {
             Ring0.WriteIoPort((ushort)(_address + ADDRESS_REGISTER_OFFSET), BANK_SELECT_REGISTER);

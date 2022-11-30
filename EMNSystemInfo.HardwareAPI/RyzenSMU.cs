@@ -265,35 +265,6 @@ namespace EMNSystemInfo.HardwareAPI
             return AMDCPUCodeName.Undefined;
         }
 
-        public string GetReport()
-        {
-            StringBuilder r = new();
-
-            r.AppendLine("Ryzen SMU");
-            r.AppendLine();
-            r.AppendLine($" PM table version: 0x{_pmTableVersion:X8}");
-            r.AppendLine($" PM table supported: {_supportedCPU}");
-            r.AppendLine($" PM table layout defined: {IsPmTableLayoutDefined()}");
-
-            if (_supportedCPU)
-            {
-                r.AppendLine($" PM table size: 0x{_pmTableSize:X3}");
-                r.AppendLine($" PM table start address: 0x{_dramBaseAddr:X8}");
-                r.AppendLine();
-                r.AppendLine(" PM table dump:");
-                r.AppendLine("  Idx    Offset   Value");
-                r.AppendLine(" ------------------------");
-
-                float[] pm_values = GetPmTable();
-                for (int i = 0; i < pm_values.Length; i++)
-                {
-                    r.AppendLine($" {i,4}    0x{i * 4:X3}    {pm_values[i]}");
-                }
-            }
-
-            return r.ToString();
-        }
-
         private bool SetAddresses(AMDCPUCodeName codeName)
         {
             switch (codeName)
