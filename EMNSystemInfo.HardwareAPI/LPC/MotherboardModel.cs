@@ -143,6 +143,7 @@ namespace EMNSystemInfo.HardwareAPI.LPC
         X470_AORUS_GAMING_7_WIFI,
         X570_AORUS_MASTER,
         X570_GAMING_X,
+        X570_AORUS_ULTRA,
 
         // Shuttle
         FH67,

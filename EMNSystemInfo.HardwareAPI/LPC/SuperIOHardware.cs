@@ -30,18 +30,8 @@ namespace EMNSystemInfo.HardwareAPI.LPC
     /// <summary>
     /// Class that represents a LPC voltage sensor
     /// </summary>
-    public class LPCVoltageSensor
+    public class LPCVoltageSensor : LPCSensor
     {
-        /// <summary>
-        /// Sensor identifier
-        /// </summary>
-        public string Identifier { get; internal set; }
-
-        /// <summary>
-        /// Sensor value, in volts (V).
-        /// </summary>
-        public double? Value { get; internal set; }
-
         internal double InputResistance { get; set; }
         internal double ReferenceResistance { get; set; }
         internal double ReferenceVoltage { get; set; }
@@ -1454,6 +1444,7 @@ namespace EMNSystemInfo.HardwareAPI.LPC
                             break;
                         }
                         case MotherboardModel.X570_AORUS_MASTER: // IT8688E
+                        case MotherboardModel.X570_AORUS_ULTRA:
                         {
                             v.Add(new Voltage("Vcore", 0));
                             v.Add(new Voltage("+3.3V", 1, 29.4f, 45.3f));
@@ -1847,6 +1838,7 @@ namespace EMNSystemInfo.HardwareAPI.LPC
                     switch (model)
                     {
                         case MotherboardModel.X570_AORUS_MASTER: // IT879XE
+                        case MotherboardModel.X570_AORUS_ULTRA:
                         {
                             v.Add(new Voltage("CPU VDD18", 0));
                             v.Add(new Voltage("DDRVTT AB", 1));

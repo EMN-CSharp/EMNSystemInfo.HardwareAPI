@@ -19,6 +19,9 @@ namespace EMNSystemInfo.HardwareAPI.LPC.EC
         public double? Value { get; internal set; }
     }
 
+    /// <summary>
+    /// Embedded Controller sensor types.
+    /// </summary>
     public enum ECSensorType
     {
         /// <summary>Chipset temperature [°C]</summary>

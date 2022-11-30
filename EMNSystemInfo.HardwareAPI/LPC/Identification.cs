@@ -338,6 +338,8 @@ namespace EMNSystemInfo.HardwareAPI.LPC
                     return MotherboardModel.X470_AORUS_GAMING_7_WIFI;
                 case var _ when name.Equals("X570 AORUS MASTER", StringComparison.OrdinalIgnoreCase):
                     return MotherboardModel.X570_AORUS_MASTER;
+                case var _ when name.Equals("X570 AORUS ULTRA", StringComparison.OrdinalIgnoreCase):
+                    return MotherboardModel.X570_AORUS_ULTRA;
                 case var _ when name.Equals("X570 GAMING X", StringComparison.OrdinalIgnoreCase):
                     return MotherboardModel.X570_GAMING_X;
                 case var _ when name.Equals("TUF GAMING B550M-PLUS (WI-FI)", StringComparison.OrdinalIgnoreCase):
