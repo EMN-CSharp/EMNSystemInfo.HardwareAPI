@@ -28,7 +28,7 @@ namespace EMNSystemInfo.HardwareAPI.LPC.EC
         TempChipset,
         /// <summary>CPU temperature [°C]</summary>
         TempCPU,
-        /// motherboard temperature [°C]</summary>
+        /// <summary>motherboard temperature [°C]</summary>
         TempMB,
         /// <summary>"T_Sensor" temperature sensor reading [°C]</summary>
         TempTSensor,
