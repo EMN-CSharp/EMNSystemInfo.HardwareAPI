@@ -139,6 +139,7 @@ namespace EMNSystemInfo.HardwareAPI.LPC
         Z68X_UD7_B3,
         Z68XP_UD3R,
         Z690_AORUS_PRO,
+        Z690_GAMING_X_DDR4,
         Z170N_WIFI,
         X470_AORUS_GAMING_7_WIFI,
         X570_AORUS_MASTER,
@@ -149,7 +150,7 @@ namespace EMNSystemInfo.HardwareAPI.LPC
         FH67,
 
         // Sleepy_IL
-        SLEEPY_IL,
+        SLEEPY_IL, // Laptop motherboard
 
         // Unknown
         Unknown

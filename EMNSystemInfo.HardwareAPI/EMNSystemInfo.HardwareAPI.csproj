@@ -21,7 +21,8 @@
     <PackageReleaseNotes> · Drop support for .NET 5.0
  · Add support for TBalancer coolers (from LibreHardwareMonitor)
  · Fix possible InvalidOperationException when getting S.M.A.R.T. sensors.
- · Merge PR #711 from LibreHardwareMonitor (Added X570 Aorus Ultra to supported list)</PackageReleaseNotes>
+ · Merge PR #711 from LibreHardwareMonitor (Added X570 Aorus Ultra to supported list)
+ · Merge PR #704 from LibreHardwareMonitor (Add motherboard: Gigabyte Z690 Gaming X DDR4 (#703))</PackageReleaseNotes>
     <PackageTags>open-source opensource csharp dotnet hardware information monitoring library</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>

@@ -296,6 +296,8 @@ namespace EMNSystemInfo.HardwareAPI.LPC
                     return MotherboardModel.Z390_UD;
                 case var _ when name.Equals("Z690 AORUS PRO", StringComparison.OrdinalIgnoreCase):
                     return MotherboardModel.Z690_AORUS_PRO;
+                case var _ when name.Equals("Z690 GAMING X DDR4", StringComparison.OrdinalIgnoreCase):
+                    return MotherboardModel.Z690_GAMING_X_DDR4;
                 case var _ when name.Equals("FH67", StringComparison.OrdinalIgnoreCase):
                     return MotherboardModel.FH67;
                 case var _ when name.Equals("AX370-Gaming K7", StringComparison.OrdinalIgnoreCase):
