@@ -49,8 +49,14 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
         /// </summary>
         public byte Id { get; }
 
+        /// <summary>
+        /// Gets the attribute name.
+        /// </summary>
         public string Name { get; }
 
+        /// <summary>
+        /// Gets the value used when converting the raw value into a number.
+        /// </summary>
         public double? Parameter { get; }
 
         internal double ConvertValue(Kernel32.SMART_ATTRIBUTE value, double? parameter = null)

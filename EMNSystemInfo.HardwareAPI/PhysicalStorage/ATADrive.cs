@@ -19,16 +19,34 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
     /// </summary>
     public class SMARTSensor
     {
+        /// <summary>
+        /// Gets information about this sensor (e.g.: attribute name and ID).
+        /// </summary>
         public SMARTAttribute Attribute { get; internal set; }
 
+        /// <summary>
+        /// Gets the normalized value, which goes from 1 (the worst value) to 253 (the best value).
+        /// </summary>
         public byte NormalizedValue { get; internal set; }
 
+        /// <summary>
+        /// Gets the lowest value recorded in <see cref="NormalizedValue"/>.
+        /// </summary>
         public byte WorstValue { get; internal set; }
 
+        /// <summary>
+        /// Gets the threshold, a limit value the attribute should not pass. This property is nullable.
+        /// </summary>
         public byte? Threshold { get; internal set; }
 
+        /// <summary>
+        /// Gets the raw value, a 8-byte array whose meaning is different among drive manufacturers.
+        /// </summary>
         public byte[] RawValue { get; internal set; }
 
+        /// <summary>
+        /// Gets a value converted from the raw value.
+        /// </summary>
         public double Value { get; internal set; }
     }
 
@@ -37,8 +55,8 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
     /// </summary>
     public abstract class ATADrive : Drive
     {
-        protected const byte POWERONHOURS_ATTRIBUTE = 0x09;
-        protected const byte POWERCYCLECOUNT_ATTRIBUTE = 0x0C;
+        protected private const byte POWERONHOURS_ATTRIBUTE = 0x09;
+        protected private const byte POWERCYCLECOUNT_ATTRIBUTE = 0x0C;
 
         // array of all hard drive types, matching type is searched in this order
         private static readonly Type[] _hddTypes = { typeof(SSDPlextor), typeof(SSDIntel), typeof(SSDSandforce), typeof(SSDIndilinx), typeof(SSDSamsung), typeof(SSDMicron), typeof(GenericHardDisk) };
@@ -46,7 +64,8 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
         private readonly List<SMARTSensor> _sensors = new();
 
         /// <summary>
-        /// Gets the S.M.A.R.T. sensors.
+        /// Gets the S.M.A.R.T. sensors.<br/>
+        /// The getter of this property is <strong>not meant to be called frequently</strong>.
         /// </summary>
         public SMARTSensor[] SMARTSensors
         {
@@ -84,10 +103,8 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
                                                      where thres.Id == smartSensor.Attribute.Id
                                                      select thres;
 
-                        // EMN-CSharp:
-                        // It is necessary to check if the threshold was found, because some
-                        // thresholds may be unavailable. It's a fairly uncommon error I
-                        // experienced when testing an app that uses this lib.
+                        // It is necessary to check if the threshold was found, because (rarely) some
+                        // thresholds may be unavailable.
                         // As a result, SMARTSensor.Threshold is nullable now.
                         if (possibleSmartThreshold.Any())
                             smartSensor.Threshold = possibleSmartThreshold.First().Threshold;
