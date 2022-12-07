@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net472;netcoreapp3.1;netstandard2.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>net472;netcoreapp3.1;netstandard2.0;net6.0;net7.0</TargetFrameworks>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
@@ -26,6 +26,7 @@
    - Added new ECSensorType: VoltageCPU
  · Port PR #768 from LibreHardwareMonitor (Add Aqua Computer Octo support)
    - Added new class: AquaComputerOcto
+ · Add support for .NET 7
 
 Merged PRs from LibreHardwareMonitor:
  · #711 (Added X570 Aorus Ultra to supported list)
