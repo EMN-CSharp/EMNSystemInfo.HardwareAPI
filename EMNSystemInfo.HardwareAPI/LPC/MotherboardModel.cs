@@ -66,6 +66,7 @@ namespace EMNSystemInfo.HardwareAPI.LPC
         RAMPAGE_II_GENE,
         ROG_MAXIMUS_X_APEX,
         ROG_ZENITH_EXTREME,
+        ROG_ZENITH_II_EXTREME,
         TUF_X470_PLUS_GAMING,
         Z170_A,
         TUF_GAMING_B550M_PLUS_WIFI,

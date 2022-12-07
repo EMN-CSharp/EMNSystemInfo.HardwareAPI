@@ -6,7 +6,6 @@
 // All Rights Reserved.
 
 using System;
-using System.Reflection;
 
 namespace EMNSystemInfo.HardwareAPI.LPC
 {
@@ -321,6 +320,8 @@ namespace EMNSystemInfo.HardwareAPI.LPC
                     return MotherboardModel.X399_AORUS_Gaming_7;
                 case var _ when name.Equals("ROG ZENITH EXTREME", StringComparison.OrdinalIgnoreCase):
                     return MotherboardModel.ROG_ZENITH_EXTREME;
+                case var _ when name.Equals("ROG ZENITH II EXTREME", StringComparison.OrdinalIgnoreCase):
+                    return MotherboardModel.ROG_ZENITH_II_EXTREME;
                 case var _ when name.Equals("Z170-A", StringComparison.OrdinalIgnoreCase):
                     return MotherboardModel.Z170_A;
                 case var _ when name.Equals("Z77 Pro4-M", StringComparison.OrdinalIgnoreCase):
