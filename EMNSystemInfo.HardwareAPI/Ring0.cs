@@ -21,10 +21,10 @@ namespace EMNSystemInfo.HardwareAPI
     internal static class Ring0
     {
         private static KernelDriver _driver;
+        private static Mutex _ecMutex;
         private static string _filePath;
         private static Mutex _isaBusMutex;
         private static Mutex _pciBusMutex;
-        private static Mutex _ecMutex;
 
         private static readonly StringBuilder _report = new();
 
@@ -93,81 +93,21 @@ namespace EMNSystemInfo.HardwareAPI
                 _driver = null;
 
             const string isaMutexName = "Global\\Access_ISABUS.HTP.Method";
-
-            try
+            if (!TryCreateOrOpenExistingMutex(isaMutexName, out _isaBusMutex))
             {
-#if NETFRAMEWORK
-                //mutex permissions set to everyone to allow other software to access the hardware
-                //otherwise other monitoring software cant access
-                var allowEveryoneRule = new MutexAccessRule(new SecurityIdentifier(WellKnownSidType.WorldSid, null), MutexRights.FullControl, AccessControlType.Allow);
-                var securitySettings = new MutexSecurity();
-                securitySettings.AddAccessRule(allowEveryoneRule);
-                _isaBusMutex = new Mutex(false, isaMutexName, out _, securitySettings);
-#else
-                _isaBusMutex = new Mutex(false, isaMutexName);
-#endif
-            }
-            catch (UnauthorizedAccessException)
-            {
-                try
-                {
-#if NETFRAMEWORK
-                    _isaBusMutex = Mutex.OpenExisting(isaMutexName, MutexRights.Synchronize);
-#else
-                    _isaBusMutex = Mutex.OpenExisting(isaMutexName);
-#endif
-                }
-                catch
-                { }
+                // Mutex could not be created or opened.
             }
 
             const string pciMutexName = "Global\\Access_PCI";
-
-            try
+            if (!TryCreateOrOpenExistingMutex(pciMutexName, out _pciBusMutex))
             {
-                _pciBusMutex = new Mutex(false, pciMutexName);
-            }
-            catch (UnauthorizedAccessException)
-            {
-                try
-                {
-#if NETFRAMEWORK
-                    _pciBusMutex = Mutex.OpenExisting(pciMutexName, MutexRights.Synchronize);
-#else
-                    _pciBusMutex = Mutex.OpenExisting(pciMutexName);
-#endif
-                }
-                catch
-                { }
+                // Mutex could not be created or opened.
             }
 
             const string ecMutexName = "Global\\Access_EC";
-
-            try
+            if (!TryCreateOrOpenExistingMutex(ecMutexName, out _ecMutex))
             {
-#if NETFRAMEWORK
-                //mutex permissions set to everyone to allow other software to access the hardware
-                //otherwise other monitoring software cant access
-                var allowEveryoneRule = new MutexAccessRule(new SecurityIdentifier(WellKnownSidType.WorldSid, null), MutexRights.FullControl, AccessControlType.Allow);
-                var securitySettings = new MutexSecurity();
-                securitySettings.AddAccessRule(allowEveryoneRule);
-                _ecMutex = new Mutex(false, ecMutexName, out _, securitySettings);
-#else
-                _ecMutex = new Mutex(false, ecMutexName);
-#endif
-            }
-            catch (UnauthorizedAccessException)
-            {
-                try
-                {
-#if NETFRAMEWORK
-                    _ecMutex = Mutex.OpenExisting(ecMutexName, MutexRights.Synchronize);
-#else
-                    _ecMutex = Mutex.OpenExisting(ecMutexName);
-#endif
-                }
-                catch
-                { }
+                // Mutex could not be created or opened.
             }
         }
 
@@ -230,18 +170,65 @@ namespace EMNSystemInfo.HardwareAPI
             return false;
         }
 
+        private static bool TryCreateOrOpenExistingMutex(string name, out Mutex mutex)
+        {
+#if NETFRAMEWORK
+            MutexSecurity mutexSecurity = new();
+            SecurityIdentifier identity = new(WellKnownSidType.WorldSid, null);
+            mutexSecurity.AddAccessRule(new MutexAccessRule(identity, MutexRights.Synchronize | MutexRights.Modify, AccessControlType.Allow));
+
+            try
+            {
+                // If the CreateMutex call fails, the framework will attempt to use OpenMutex
+                // to open the named mutex requesting SYNCHRONIZE and MUTEX_MODIFY rights.
+                mutex = new Mutex(false, name, out _, mutexSecurity);
+                return true;
+            }
+            catch
+            {
+                // WaitHandleCannotBeOpenedException:
+                // The mutex cannot be opened, probably because a Win32 object of a different type with the same name already exists.
+
+                // UnauthorizedAccessException:
+                // The mutex exists, but the current process or thread token does not have permission to open the mutex with SYNCHRONIZE | MUTEX_MODIFY rights.
+                mutex = null;
+                return false;
+            }
+#else
+            try
+            {
+                mutex = new Mutex(false, name);
+                return true;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                try
+                {
+                    mutex = Mutex.OpenExisting(name);
+                    return true;
+                }
+                catch { }
+
+                mutex = null;
+            }
+            return false;
+#endif
+        }
+
         private static void DeleteDriver()
         {
             try
             {
-                // try to delete the driver file
+                // Try to delete the driver file
                 if (_filePath != null && File.Exists(_filePath))
                     File.Delete(_filePath);
 
                 _filePath = null;
             }
             catch
-            { }
+            {
+                // Mutex could not be created or opened
+            }
         }
 
         private static string GetFilePath()
@@ -371,7 +358,6 @@ namespace EMNSystemInfo.HardwareAPI
             if (_isaBusMutex == null)
                 return true;
 
-
             try
             {
                 return _isaBusMutex.WaitOne(millisecondsTimeout, false);
@@ -396,7 +382,6 @@ namespace EMNSystemInfo.HardwareAPI
             if (_pciBusMutex == null)
                 return true;
 
-
             try
             {
                 return _pciBusMutex.WaitOne(millisecondsTimeout, false);
@@ -420,7 +405,6 @@ namespace EMNSystemInfo.HardwareAPI
         {
             if (_ecMutex == null)
                 return true;
-
 
             try
             {
@@ -470,7 +454,6 @@ namespace EMNSystemInfo.HardwareAPI
             if (_driver == null)
                 return false;
 
-
             WriteMsrInput input = new() { Register = index, Value = ((ulong)edx << 32) | eax };
             return _driver.DeviceIOControl(WinRing0.IOCTL_OLS_WRITE_MSR, input);
         }
@@ -479,7 +462,6 @@ namespace EMNSystemInfo.HardwareAPI
         {
             if (_driver == null)
                 return 0;
-
 
             uint value = 0;
             _driver.DeviceIOControl(WinRing0.IOCTL_OLS_READ_IO_PORT_BYTE, port, ref value);
@@ -490,7 +472,6 @@ namespace EMNSystemInfo.HardwareAPI
         {
             if (_driver == null)
                 return;
-
 
             WriteIoPortInput input = new() { PortNumber = port, Value = value };
             _driver.DeviceIOControl(WinRing0.IOCTL_OLS_WRITE_IO_PORT_BYTE, input);
@@ -520,7 +501,6 @@ namespace EMNSystemInfo.HardwareAPI
             if (_driver == null || (regAddress & 3) != 0)
                 return false;
 
-
             WritePciConfigInput input = new() { PciAddress = pciAddress, RegAddress = regAddress, Value = value };
             return _driver.DeviceIOControl(WinRing0.IOCTL_OLS_WRITE_PCI_CONFIG, input);
         }
@@ -530,7 +510,6 @@ namespace EMNSystemInfo.HardwareAPI
             if (_driver == null)
                 return false;
 
-
             ReadMemoryInput input = new() { Address = address, UnitSize = 1, Count = (uint)Marshal.SizeOf(buffer) };
             return _driver.DeviceIOControl(WinRing0.IOCTL_OLS_READ_MEMORY, input, ref buffer);
         }
@@ -539,7 +518,6 @@ namespace EMNSystemInfo.HardwareAPI
         {
             if (_driver == null)
                 return false;
-
 
             ReadMemoryInput input = new() { Address = address, UnitSize = (uint)Marshal.SizeOf(typeof(T)), Count = (uint)buffer.Length };
             return _driver.DeviceIOControl(WinRing0.IOCTL_OLS_READ_MEMORY, input, ref buffer);

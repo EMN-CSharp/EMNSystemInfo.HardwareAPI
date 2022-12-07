@@ -36,7 +36,8 @@ Merged PRs from LibreHardwareMonitor:
  · #752 (Add support for ROG MAXIMUS Z690 EXTREME GLACIAL)
    - Added new ECSensorType: TempWaterBlockIn
  · #750 (RyzenSMU: add some more metrics for Zen3)
- · #754 (Exclude 980 Pro from samsung NVMe protocol)</PackageReleaseNotes>
+ · #754 (Exclude 980 Pro from samsung NVMe protocol)
+ · #758 (Cleaned up mutex security code.)</PackageReleaseNotes>
     <PackageTags>open-source opensource csharp dotnet hardware information monitoring library</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
