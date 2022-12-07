@@ -31,7 +31,6 @@ namespace EMNSystemInfo.HardwareAPI.LPC
         Gigabyte,
         HP,
         IBM,
-        IL,
         Intel,
         Jetway,
         LattePanda,

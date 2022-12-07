@@ -229,9 +229,6 @@ namespace EMNSystemInfo.HardwareAPI.LPC.EC
             new(MotherboardModel.Z170_A, BoardFamily.Intel100,
                 ECSensorType.TempTSensor, ECSensorType.TempChipset, ECSensorType.FanWaterPump,
                 ECSensorType.CurrCPU, ECSensorType.VoltageCPU
-            ),
-            new(MotherboardModel.SLEEPY_IL, BoardFamily.Intel600,
-                ECSensorType.FanCPUOpt
             )
         };
 
@@ -310,7 +307,7 @@ namespace EMNSystemInfo.HardwareAPI.LPC.EC
                 };
                 readRegister += _boardSensors[si].Source.Size;
 
-                _ecSensors[si].Value = val != _boardSensors[si].Source.Blank ? val * _boardSensors[si].Source.Factor : null;
+                _ecSensors[si].Value = val != _boardSensors[si].Source.Blank ? val * _boardSensors[si].Source.Factor : nu ll;
             }
         }
 

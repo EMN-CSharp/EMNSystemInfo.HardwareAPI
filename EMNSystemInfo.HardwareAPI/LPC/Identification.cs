@@ -62,8 +62,6 @@ namespace EMNSystemInfo.HardwareAPI.LPC
                     return MotherboardManufacturer.HP;
                 case var _ when name.Equals("IBM", StringComparison.OrdinalIgnoreCase):
                     return MotherboardManufacturer.IBM;
-                case var _ when name.Equals("IL", StringComparison.OrdinalIgnoreCase):
-                    return MotherboardManufacturer.IL;
                 case var _ when name.Equals("Intel", StringComparison.OrdinalIgnoreCase):
                 case var _ when name.StartsWith("Intel Corp", StringComparison.OrdinalIgnoreCase):
                     return MotherboardManufacturer.Intel;
@@ -366,8 +364,6 @@ namespace EMNSystemInfo.HardwareAPI.LPC
                     return MotherboardModel.ROG_MAXIMUS_Z690_EXTREME_GLACIAL;
                 case var _ when name.Equals("B660GTN", StringComparison.OrdinalIgnoreCase):
                     return MotherboardModel.B660GTN;
-                case var _ when name.Equals("Sleepy_IL", StringComparison.OrdinalIgnoreCase):
-                    return MotherboardModel.SLEEPY_IL;
                 case var _ when name.Equals("Base Board Product Name", StringComparison.OrdinalIgnoreCase):
                 case var _ when name.Equals("To be filled by O.E.M.", StringComparison.OrdinalIgnoreCase):
                     return MotherboardModel.Unknown;

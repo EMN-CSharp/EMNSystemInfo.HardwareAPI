@@ -153,9 +153,6 @@ namespace EMNSystemInfo.HardwareAPI.LPC
         // Shuttle
         FH67,
 
-        // Sleepy_IL
-        SLEEPY_IL, // Laptop motherboard
-
         // Unknown
         Unknown
     }
