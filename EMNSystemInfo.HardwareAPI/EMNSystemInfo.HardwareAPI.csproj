@@ -24,6 +24,8 @@
    As a result, SMARTSensor.Threshold is a nullable property now.
  · Port PR #720 from LibreHardwareMonitor (Sync EC implementation to the Linux driver)
    - Added new ECSensorType: VoltageCPU
+ · Port PR #768 from LibreHardwareMonitor (Add Aqua Computer Octo support)
+   - Added new class: AquaComputerOcto
 
 Merged PRs from LibreHardwareMonitor:
  · #711 (Added X570 Aorus Ultra to supported list)

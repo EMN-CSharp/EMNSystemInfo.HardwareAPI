@@ -15,6 +15,8 @@ using System.Threading;
 using Microsoft.Win32;
 using HidSharp;
 using EMNSystemInfo.HardwareAPI.NativeInterop;
+using HidSharp.Reports;
+using System.Runtime;
 
 namespace EMNSystemInfo.HardwareAPI.Cooler
 {
@@ -54,23 +56,29 @@ namespace EMNSystemInfo.HardwareAPI.Cooler
                     switch (dev.ProductID)
                     {
                         case 0xF00E:
-                            {
-                                var device = new AquaComputerD5Next(dev);
-                                coolers.Add(device);
-                                break;
-                            }
-                        case 0xf0b6:
-                            {
-                                var device = new AquaComputerAquastreamXT(dev);
-                                coolers.Add(device);
-                                break;
-                            }
-                        case 0xf003:
-                            {
-                                var device = new AquaComputerMPS(dev);
-                                coolers.Add(device);
-                                break;
-                            }
+                        {
+                            var device = new AquaComputerD5Next(dev);
+                            coolers.Add(device);
+                            break;
+                        }
+                        case 0xF0b6:
+                        {
+                            var device = new AquaComputerAquastreamXT(dev);
+                            coolers.Add(device);
+                            break;
+                        }
+                        case 0xF003:
+                        {
+                            var device = new AquaComputerMPS(dev);
+                            coolers.Add(device);
+                            break;
+                        }
+                        case 0xF011:
+                        {
+                            var device = new AquaComputerOcto(dev);
+                            coolers.Add(device);
+                            break;
+                        }
                     }
                 }
 
@@ -175,11 +183,11 @@ namespace EMNSystemInfo.HardwareAPI.Cooler
                     switch (dev.ProductID)
                     {
                         case 0x2007:
-                            {
-                                var device = new NZXTKrakenX3(dev);
-                                coolers.Add(device);
-                                break;
-                            }
+                        {
+                            var device = new NZXTKrakenX3(dev);
+                            coolers.Add(device);
+                            break;
+                        }
                     }
                 }
 
