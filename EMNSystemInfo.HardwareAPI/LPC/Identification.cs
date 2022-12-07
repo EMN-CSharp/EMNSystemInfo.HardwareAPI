@@ -352,7 +352,7 @@ namespace EMNSystemInfo.HardwareAPI.LPC
                 case var _ when name.Equals("TUF GAMING B550M-PLUS (WI-FI)", StringComparison.OrdinalIgnoreCase):
                     return MotherboardModel.TUF_GAMING_B550M_PLUS_WIFI;
                 case var _ when name.Equals("B360 AORUS GAMING 3 WIFI-CF", StringComparison.OrdinalIgnoreCase):
-                return MotherboardModel.B360_AORUS_GAMING_3_WIFI_CF;
+                    return MotherboardModel.B360_AORUS_GAMING_3_WIFI_CF;
                 case var _ when name.Equals("B560M AORUS ELITE", StringComparison.OrdinalIgnoreCase):
                     return MotherboardModel.B560M_AORUS_ELITE;
                 case var _ when name.Equals("B560M AORUS PRO", StringComparison.OrdinalIgnoreCase):
@@ -361,6 +361,8 @@ namespace EMNSystemInfo.HardwareAPI.LPC
                     return MotherboardModel.B560M_AORUS_PRO_AX;
                 case var _ when name.Equals("ROG STRIX Z690-A GAMING WIFI D4", StringComparison.OrdinalIgnoreCase):
                     return MotherboardModel.ROG_STRIX_Z690_A_GAMING_WIFI_D4;
+                case var _ when name.Equals("ROG MAXIMUS Z690 EXTREME GLACIAL", StringComparison.OrdinalIgnoreCase):
+                    return MotherboardModel.ROG_MAXIMUS_Z690_EXTREME_GLACIAL;
                 case var _ when name.Equals("B660GTN", StringComparison.OrdinalIgnoreCase):
                     return MotherboardModel.B660GTN;
                 case var _ when name.Equals("Sleepy_IL", StringComparison.OrdinalIgnoreCase):

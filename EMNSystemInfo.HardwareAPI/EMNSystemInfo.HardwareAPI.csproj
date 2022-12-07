@@ -21,14 +21,20 @@
     <PackageReleaseNotes> · Drop support for .NET 5.0
  · Add support for TBalancer coolers (from LibreHardwareMonitor)
  · Fix possible InvalidOperationException when getting S.M.A.R.T. sensors.
+   As a result, SMARTSensor.Threshold is a nullable property now.
  · Port PR #720 from LibreHardwareMonitor (Sync EC implementation to the Linux driver)
+   - Added new ECSensorType: VoltageCPU
 
 Merged PRs from LibreHardwareMonitor:
  · #711 (Added X570 Aorus Ultra to supported list)
  · #704 (Add motherboard: Gigabyte Z690 Gaming X DDR4 (#703))
  · #700 (Add EC sensors and fan names for ASUS Z170-A)
+   - Added new ECSensorType: FanWaterPump
  · #722 (Add a note with a plea to share updates to the EC data with the Linux community)
- · #726 (EC: add sensors for ProArt X570-CREATOR WIFI)</PackageReleaseNotes>
+ · #726 (EC: add sensors for ProArt X570-CREATOR WIFI)
+ · #740 (Update EmbeddedController.cs)
+ · #752 (Add support for ROG MAXIMUS Z690 EXTREME GLACIAL)
+   - Added new ECSensorType: TempWaterBlockIn</PackageReleaseNotes>
     <PackageTags>open-source opensource csharp dotnet hardware information monitoring library</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>

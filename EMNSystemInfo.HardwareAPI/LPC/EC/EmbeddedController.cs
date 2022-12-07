@@ -53,6 +53,8 @@ namespace EMNSystemInfo.HardwareAPI.LPC.EC
         TempWaterIn,
         /// <summary>"Water_Out" temperature sensor reading [°C]</summary>
         TempWaterOut,
+        /// <summary>Water block temperature sensor reading [°C]</summary>
+        TempWaterBlockIn,
         Max
     };
 
@@ -175,7 +177,7 @@ namespace EMNSystemInfo.HardwareAPI.LPC.EC
                 ECSensorType.TempChipset, ECSensorType.TempCPU, ECSensorType.TempMB,
                 ECSensorType.TempVrm, ECSensorType.FanChipset, ECSensorType.CurrCPU, ECSensorType.VoltageCPU
             ),
-            new(new MotherboardModel[] {MotherboardModel.ROG_CROSSHAIR_VIII_HERO, MotherboardModel.ROG_CROSSHAIR_VIII_HERO_WIFI }, BoardFamily.Amd500,
+            new(new MotherboardModel[] { MotherboardModel.ROG_CROSSHAIR_VIII_HERO, MotherboardModel.ROG_CROSSHAIR_VIII_HERO_WIFI, MotherboardModel.ROG_CROSSHAIR_VIII_FORMULA }, BoardFamily.Amd500,
                 ECSensorType.TempChipset, ECSensorType.TempCPU, ECSensorType.TempMB,
                 ECSensorType.TempTSensor, ECSensorType.TempVrm, ECSensorType.TempWaterIn, ECSensorType.TempWaterOut,
                 ECSensorType.FanCPUOpt, ECSensorType.FanChipset, ECSensorType.FanWaterFlow,
@@ -220,6 +222,9 @@ namespace EMNSystemInfo.HardwareAPI.LPC.EC
             ),
             new(MotherboardModel.ROG_STRIX_Z690_A_GAMING_WIFI_D4, BoardFamily.Intel600,
                 ECSensorType.TempTSensor, ECSensorType.TempVrm
+            ),
+            new(MotherboardModel.ROG_MAXIMUS_Z690_EXTREME_GLACIAL, BoardFamily.Intel600,
+                ECSensorType.TempVrm, ECSensorType.TempWaterIn, ECSensorType.TempWaterOut, ECSensorType.TempWaterBlockIn, ECSensorType.FanWaterFlow
             ),
             new(MotherboardModel.Z170_A, BoardFamily.Intel100,
                 ECSensorType.TempTSensor, ECSensorType.TempChipset, ECSensorType.FanWaterPump,
