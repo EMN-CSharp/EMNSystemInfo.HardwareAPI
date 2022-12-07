@@ -6,6 +6,7 @@
 // All Rights Reserved.
 
 using System;
+using System.Reflection;
 
 namespace EMNSystemInfo.HardwareAPI.LPC
 {
@@ -308,6 +309,8 @@ namespace EMNSystemInfo.HardwareAPI.LPC
                     return MotherboardModel.PRIME_X470_PRO;
                 case var _ when name.Equals("PRIME X570-PRO", StringComparison.OrdinalIgnoreCase):
                     return MotherboardModel.PRIME_X570_PRO;
+                case var _ when name.Equals("ProArt X570-CREATOR WIFI", StringComparison.OrdinalIgnoreCase):
+                    return MotherboardModel.PROART_X570_CREATOR_WIFI;
                 case var _ when name.Equals("Pro WS X570-ACE", StringComparison.OrdinalIgnoreCase):
                     return MotherboardModel.PRO_WS_X570_ACE;
                 case var _ when name.Equals("ROG MAXIMUS X APEX", StringComparison.OrdinalIgnoreCase):

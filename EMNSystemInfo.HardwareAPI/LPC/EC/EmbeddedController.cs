@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace EMNSystemInfo.HardwareAPI.LPC.EC
 {
@@ -164,6 +165,11 @@ namespace EMNSystemInfo.HardwareAPI.LPC.EC
             new (MotherboardModel.PRIME_X570_PRO, BoardFamily.Amd500,
                 ECSensorType.TempChipset, ECSensorType.TempCPU, ECSensorType.TempMB,
                 ECSensorType.TempVrm, ECSensorType.TempTSensor, ECSensorType.FanChipset
+            ),
+            new(MotherboardModel.PROART_X570_CREATOR_WIFI, BoardFamily.Amd500,
+                ECSensorType.TempChipset, ECSensorType.TempCPU, ECSensorType.TempMB,
+                ECSensorType.TempVrm, ECSensorType.TempTSensor, ECSensorType.FanCPUOpt,
+                ECSensorType.CurrCPU, ECSensorType.VoltageCPU
             ),
             new(MotherboardModel.PRO_WS_X570_ACE, BoardFamily.Amd500,
                 ECSensorType.TempChipset, ECSensorType.TempCPU, ECSensorType.TempMB,

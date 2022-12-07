@@ -59,6 +59,7 @@ namespace EMNSystemInfo.HardwareAPI.LPC
         PRIME_X370_PRO,
         PRIME_X470_PRO,
         PRIME_X570_PRO,
+        PROART_X570_CREATOR_WIFI,
         PRO_WS_X570_ACE,
         RAMPAGE_EXTREME,
         RAMPAGE_II_GENE,
