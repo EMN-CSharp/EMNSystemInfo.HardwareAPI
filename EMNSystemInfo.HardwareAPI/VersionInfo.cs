@@ -20,6 +20,6 @@ namespace EMNSystemInfo.HardwareAPI
         /// <summary>
         /// Gets the library build date
         /// </summary>
-        public static DateTime BuildDate => new(year: 2022, month: 11, day: 29);
+        public static DateTime BuildDate => new(year: 2022, month: 12, day: 7);
     }
 }
