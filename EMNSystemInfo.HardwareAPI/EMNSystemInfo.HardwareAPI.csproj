@@ -26,7 +26,8 @@
 Merged PRs from LibreHardwareMonitor:
  · #711 (Added X570 Aorus Ultra to supported list)
  · #704 (Add motherboard: Gigabyte Z690 Gaming X DDR4 (#703))
- · #700 (Add EC sensors and fan names for ASUS Z170-A)</PackageReleaseNotes>
+ · #700 (Add EC sensors and fan names for ASUS Z170-A)
+ · #722 (Add a note with a plea to share updates to the EC data with the Linux community)</PackageReleaseNotes>
     <PackageTags>open-source opensource csharp dotnet hardware information monitoring library</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
