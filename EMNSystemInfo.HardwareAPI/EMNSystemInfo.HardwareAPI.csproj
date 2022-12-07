@@ -34,7 +34,8 @@ Merged PRs from LibreHardwareMonitor:
  · #726 (EC: add sensors for ProArt X570-CREATOR WIFI)
  · #740 (Update EmbeddedController.cs)
  · #752 (Add support for ROG MAXIMUS Z690 EXTREME GLACIAL)
-   - Added new ECSensorType: TempWaterBlockIn</PackageReleaseNotes>
+   - Added new ECSensorType: TempWaterBlockIn
+ · #750 (RyzenSMU: add some more metrics for Zen3)</PackageReleaseNotes>
     <PackageTags>open-source opensource csharp dotnet hardware information monitoring library</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>

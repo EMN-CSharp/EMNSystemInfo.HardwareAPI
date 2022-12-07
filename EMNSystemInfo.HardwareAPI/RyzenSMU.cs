@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using EMNSystemInfo.HardwareAPI.LPC.EC;
 
 // ReSharper disable InconsistentNaming
 
@@ -145,20 +146,30 @@ namespace EMNSystemInfo.HardwareAPI
                 // Zen 3.
                 0x00380805, new Dictionary<uint, SMUSensorInfo>
                 {
-                    // TDC and EDC don't match the HWiNFO values
-                    //{ 15, new SmuSensorType { Name = "TDC", Type = SensorType.Current, Scale = 1 } },
-                    //{ 21, new SmuSensorType { Name = "EDC", Type = SensorType.Current, Scale = 1 } },
+                    { 3, new SMUSensorInfo { Name = "TDC", Type = SMUSensorType.Current, Scale = 1 } },
+                    // TODO: requires some post-processing
+                    // see: https://gitlab.com/leogx9r/ryzen_smu/-/blob/master/userspace/monitor_cpu.c#L577
+                    // { 9, new SmuSensorType { Name = "EDC", Type = SensorType.Current, Scale = 1 } },
                     { 48, new SMUSensorInfo { Name = "Fabric", Type = SMUSensorType.Clock, Scale = 1 } },
                     { 50, new SMUSensorInfo { Name = "Uncore", Type = SMUSensorType.Clock, Scale = 1 } },
                     { 51, new SMUSensorInfo { Name = "Memory", Type = SMUSensorType.Clock, Scale = 1 } },
-                    //{ 115, new SmuSensorType { Name = "SoC", Type = SensorType.Temperature, Scale = 1 } },
-                    //{ 66, new SmuSensorType { Name = "Bus Speed", Type = SensorType.Clock, Scale = 1 } },
-                    //{ 188, new SmuSensorType { Name = "Core #1", Type = SensorType.Clock, Scale = 1000 } },
-                    //{ 189, new SmuSensorType { Name = "Core #2", Type = SensorType.Clock, Scale = 1000 } },
-                    //{ 190, new SmuSensorType { Name = "Core #3", Type = SensorType.Clock, Scale = 1000 } },
-                    //{ 191, new SmuSensorType { Name = "Core #4", Type = SensorType.Clock, Scale = 1000 } },
-                    //{ 192, new SmuSensorType { Name = "Core #5", Type = SensorType.Clock, Scale = 1000 } },
-                    //{ 193, new SmuSensorType { Name = "Core #6", Type = SensorType.Clock, Scale = 1000 } },
+                    { 127, new SMUSensorInfo { Name = "SoC", Type = SMUSensorType.Temperature, Scale = 1 } },
+                    { 268, new SMUSensorInfo { Name = "Core #1 (Effective)", Type = SMUSensorType.Clock, Scale = 1000 } },
+                    { 269, new SMUSensorInfo { Name = "Core #2 (Effective)", Type = SMUSensorType.Clock, Scale = 1000 } },
+                    { 270, new SMUSensorInfo { Name = "Core #3 (Effective)", Type = SMUSensorType.Clock, Scale = 1000 } },
+                    { 271, new SMUSensorInfo { Name = "Core #4 (Effective)", Type = SMUSensorType.Clock, Scale = 1000 } },
+                    { 272, new SMUSensorInfo { Name = "Core #5 (Effective)", Type = SMUSensorType.Clock, Scale = 1000 } },
+                    { 273, new SMUSensorInfo { Name = "Core #6 (Effective)", Type = SMUSensorType.Clock, Scale = 1000 } },
+                    { 274, new SMUSensorInfo { Name = "Core #7 (Effective)", Type = SMUSensorType.Clock, Scale = 1000 } },
+                    { 275, new SMUSensorInfo { Name = "Core #8 (Effective)", Type = SMUSensorType.Clock, Scale = 1000 } },
+                    { 276, new SMUSensorInfo { Name = "Core #9 (Effective)", Type = SMUSensorType.Clock, Scale = 1000 } },
+                    { 277, new SMUSensorInfo { Name = "Core #10 (Effective)", Type = SMUSensorType.Clock, Scale = 1000 } },
+                    { 278, new SMUSensorInfo { Name = "Core #11 (Effective)", Type = SMUSensorType.Clock, Scale = 1000 } },
+                    { 279, new SMUSensorInfo { Name = "Core #12 (Effective)", Type = SMUSensorType.Clock, Scale = 1000 } },
+                    { 280, new SMUSensorInfo { Name = "Core #13 (Effective)", Type = SMUSensorType.Clock, Scale = 1000 } },
+                    { 281, new SMUSensorInfo { Name = "Core #14 (Effective)", Type = SMUSensorType.Clock, Scale = 1000 } },
+                    { 282, new SMUSensorInfo { Name = "Core #15 (Effective)", Type = SMUSensorType.Clock, Scale = 1000 } },
+                    { 283, new SMUSensorInfo { Name = "Core #16 (Effective)", Type = SMUSensorType.Clock, Scale = 1000 } },
                 }
             }
         };
