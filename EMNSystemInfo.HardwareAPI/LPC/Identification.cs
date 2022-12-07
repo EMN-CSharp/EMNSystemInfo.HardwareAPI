@@ -304,6 +304,8 @@ namespace EMNSystemInfo.HardwareAPI.LPC
                     return MotherboardModel.AX370_Gaming_K7;
                 case var _ when name.Equals("PRIME X370-PRO", StringComparison.OrdinalIgnoreCase):
                     return MotherboardModel.PRIME_X370_PRO;
+                case var _ when name.Equals("PRIME X470-PRO", StringComparison.OrdinalIgnoreCase):
+                    return MotherboardModel.PRIME_X470_PRO;
                 case var _ when name.Equals("PRIME X570-PRO", StringComparison.OrdinalIgnoreCase):
                     return MotherboardModel.PRIME_X570_PRO;
                 case var _ when name.Equals("Pro WS X570-ACE", StringComparison.OrdinalIgnoreCase):

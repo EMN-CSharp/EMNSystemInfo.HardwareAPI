@@ -8,11 +8,10 @@ namespace EMNSystemInfo.HardwareAPI.LPC.EC
 {
     internal class EmbeddedControllerSource
     {
-        public EmbeddedControllerSource(ECSensorType type, ushort register, byte size = 1, float factor = 1.0f, int blank = int.MaxValue)
+        public EmbeddedControllerSource(ushort register, byte size = 1, float factor = 1.0f, int blank = int.MaxValue)
         {
             Register = register;
             Size = size;
-            Type = type;
             Factor = factor;
             Blank = blank;
         }
@@ -24,7 +23,5 @@ namespace EMNSystemInfo.HardwareAPI.LPC.EC
         public int Blank { get; }
 
         public EmbeddedControllerReader Reader { get; }
-
-        public ECSensorType Type { get; }
     }
 }

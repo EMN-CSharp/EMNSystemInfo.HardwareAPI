@@ -57,6 +57,7 @@ namespace EMNSystemInfo.HardwareAPI.LPC
         P8Z77_V,
         P9X79,
         PRIME_X370_PRO,
+        PRIME_X470_PRO,
         PRIME_X570_PRO,
         PRO_WS_X570_ACE,
         RAMPAGE_EXTREME,
