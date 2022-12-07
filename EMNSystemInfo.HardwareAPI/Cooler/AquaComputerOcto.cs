@@ -8,7 +8,7 @@ using HidSharp;
 
 namespace EMNSystemInfo.HardwareAPI.Cooler
 {
-    internal sealed class AquaComputerOcto : ICooler
+    public sealed class AquaComputerOcto : ICooler
     {
         private double? _inputVoltage;
 
