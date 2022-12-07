@@ -307,7 +307,7 @@ namespace EMNSystemInfo.HardwareAPI.LPC.EC
                 };
                 readRegister += _boardSensors[si].Source.Size;
 
-                _ecSensors[si].Value = val != _boardSensors[si].Source.Blank ? val * _boardSensors[si].Source.Factor : nu ll;
+                _ecSensors[si].Value = val != _boardSensors[si].Source.Blank ? val * _boardSensors[si].Source.Factor : null;
             }
         }
 
