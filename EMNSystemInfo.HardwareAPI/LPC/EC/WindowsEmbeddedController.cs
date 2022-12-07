@@ -10,7 +10,7 @@ namespace EMNSystemInfo.HardwareAPI.LPC.EC
 {
     internal class WindowsEmbeddedController : EmbeddedController
     {
-        public WindowsEmbeddedController(IEnumerable<EmbeddedControllerSource> sources) : base(sources)
+        public WindowsEmbeddedController(IEnumerable<(ECSensorType SensorType, EmbeddedControllerSource Source)> boardSensors) : base(boardSensors)
         { }
 
         internal override IEmbeddedControllerIO AcquireIOInterface()

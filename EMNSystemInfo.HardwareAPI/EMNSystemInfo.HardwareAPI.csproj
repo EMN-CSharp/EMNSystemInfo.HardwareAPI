@@ -21,8 +21,12 @@
     <PackageReleaseNotes> · Drop support for .NET 5.0
  · Add support for TBalancer coolers (from LibreHardwareMonitor)
  · Fix possible InvalidOperationException when getting S.M.A.R.T. sensors.
- · Merge PR #711 from LibreHardwareMonitor (Added X570 Aorus Ultra to supported list)
- · Merge PR #704 from LibreHardwareMonitor (Add motherboard: Gigabyte Z690 Gaming X DDR4 (#703))</PackageReleaseNotes>
+ · Port PR #720 from LibreHardwareMonitor (Sync EC implementation to the Linux driver)
+
+Merged PRs from LibreHardwareMonitor:
+ · #711 (Added X570 Aorus Ultra to supported list)
+ · #704 (Add motherboard: Gigabyte Z690 Gaming X DDR4 (#703))
+ · #700 (Add EC sensors and fan names for ASUS Z170-A)</PackageReleaseNotes>
     <PackageTags>open-source opensource csharp dotnet hardware information monitoring library</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
