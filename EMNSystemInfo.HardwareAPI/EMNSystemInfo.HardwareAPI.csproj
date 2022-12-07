@@ -39,7 +39,8 @@ Merged PRs from LibreHardwareMonitor:
    - Added new ECSensorType: TempWaterBlockIn
  · #750 (RyzenSMU: add some more metrics for Zen3)
  · #754 (Exclude 980 Pro from samsung NVMe protocol)
- · #758 (Cleaned up mutex security code.)</PackageReleaseNotes>
+ · #758 (Cleaned up mutex security code.)
+ · #767 (added specific support for X570-i in superio and added vrm/chipset temperature sensor in Asus EC.)</PackageReleaseNotes>
     <PackageTags>open-source opensource csharp dotnet hardware information monitoring library</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>

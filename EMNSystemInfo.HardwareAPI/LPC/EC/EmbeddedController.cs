@@ -218,7 +218,8 @@ namespace EMNSystemInfo.HardwareAPI.LPC.EC
             ),
             new(MotherboardModel.ROG_STRIX_X570_I_GAMING, BoardFamily.Amd500,
                 ECSensorType.TempTSensor, ECSensorType.FanVrmHS, ECSensorType.FanChipset,
-                ECSensorType.CurrCPU, ECSensorType.VoltageCPU
+                ECSensorType.CurrCPU, ECSensorType.VoltageCPU, ECSensorType.TempChipset,
+                ECSensorType.TempVrm
             ),
             new(MotherboardModel.ROG_STRIX_Z690_A_GAMING_WIFI_D4, BoardFamily.Intel600,
                 ECSensorType.TempTSensor, ECSensorType.TempVrm
