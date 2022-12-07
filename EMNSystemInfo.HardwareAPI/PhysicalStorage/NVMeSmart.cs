@@ -29,6 +29,10 @@ namespace EMNSystemInfo.HardwareAPI.PhysicalStorage
                 if (_handle != null)
                 {
                     NVMeDrive = new NVMeSamsung();
+                    if (!NVMeDrive.IdentifyController(_handle, out _))
+                    {
+                        NVMeDrive = null;
+                    }
                 }
             }
 
