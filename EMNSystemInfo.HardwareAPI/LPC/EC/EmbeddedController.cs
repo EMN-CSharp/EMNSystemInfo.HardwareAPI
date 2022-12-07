@@ -40,6 +40,8 @@ namespace EMNSystemInfo.HardwareAPI.LPC.EC
         FanVrmHS,
         /// <summary>Chipset fan [RPM]</summary>
         FanChipset,
+        /// <summary>Water Pump [RPM]</summary>
+        FanWaterPump,
         /// <summary>Water flow sensor reading [L/h]</summary>
         FanWaterFlow,
         /// <summary>CPU current [A]</summary>
@@ -66,6 +68,7 @@ namespace EMNSystemInfo.HardwareAPI.LPC.EC
             { ECSensorType.FanCPUOpt, new EmbeddedControllerSource(ECSensorType.FanCPUOpt, 0x00b0, 2) },
             { ECSensorType.FanVrmHS, new EmbeddedControllerSource(ECSensorType.FanVrmHS, 0x00b2, 2) },
             { ECSensorType.FanChipset, new EmbeddedControllerSource(ECSensorType.FanChipset, 0x00b4, 2) },
+            { ECSensorType.FanWaterPump, new EmbeddedControllerSource(ECSensorType.FanWaterPump, 0x00bc, 2) },
             // TODO: "why 42?" is a silly question, I know, but still, why? On the serious side, it might be 41.6(6)
             { ECSensorType.FanWaterFlow, new EmbeddedControllerSource(ECSensorType.FanWaterFlow, 0x00bc, 2, factor: 1.0f / 42f * 60f) },
             { ECSensorType.CurrCPU, new EmbeddedControllerSource(ECSensorType.CurrCPU, 0x00f4) },
@@ -151,6 +154,11 @@ namespace EMNSystemInfo.HardwareAPI.LPC.EC
                 MotherboardModel.ROG_STRIX_Z690_A_GAMING_WIFI_D4,
                 new ECSensorType[] {
                     ECSensorType.TempTSensor, ECSensorType.TempVrm }
+            },
+            {
+                MotherboardModel.Z170_A,
+                new ECSensorType[] {
+                    ECSensorType.TempTSensor, ECSensorType.TempChipset, ECSensorType.FanWaterPump, ECSensorType.CurrCPU }
             }
         };
 
