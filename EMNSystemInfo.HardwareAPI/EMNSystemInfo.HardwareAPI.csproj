@@ -41,7 +41,10 @@ Merged PRs from LibreHardwareMonitor:
  · #754 (Exclude 980 Pro from samsung NVMe protocol)
  · #758 (Cleaned up mutex security code.)
  · #767 (added specific support for X570-i in superio and added vrm/chipset temperature sensor in Asus EC.)
- · #777 (ROG Zenith II Extreme support)</PackageReleaseNotes>
+ · #777 (ROG Zenith II Extreme support)
+ · #779 (Added Alder Lake-H model ID)
+ · #815 (Add RaptorLake and one more Alder Lake)
+   - Added new IntelMicroarchitecture: RaptorLake</PackageReleaseNotes>
     <PackageTags>open-source opensource csharp dotnet hardware information monitoring library</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>

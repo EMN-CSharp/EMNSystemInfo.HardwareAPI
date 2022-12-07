@@ -36,6 +36,7 @@ namespace EMNSystemInfo.HardwareAPI.CPU
         Skylake,
         TigerLake,
         Tremont,
+        RaptorLake,
         Unknown
     }
 
@@ -305,10 +306,18 @@ namespace EMNSystemInfo.HardwareAPI.CPU
                             _microarchitecture = IntelMicroarchitecture.TigerLake;
                             tjMax = GetTjMaxFromMsr();
                             break;
-                        case 0x97: // Alder Lake (7nm)
+                        case 0x97: // Alder Lake (7/10nm)
+                        case 0x9A: // Alder Lake-L (7/10nm)
+                        case 0xBE: // Alder Lake-N (7/10nm)
                             _microarchitecture = IntelMicroarchitecture.AlderLake;
                             tjMax = GetTjMaxFromMsr();
                             break;
+                        case 0xB7: // Raptor Lake (7nm)
+                        case 0xBA: // Raptor Lake-P (7nm)
+                        case 0xBF: // Raptor Lake-N (7nm)
+                            _microarchitecture = IntelMicroarchitecture.RaptorLake;
+                            tjMax = GetTjMaxFromMsr();
+                                break;
                         case 0x9C: // Jasper Lake (10nm)
                             _microarchitecture = IntelMicroarchitecture.JasperLake;
                             tjMax = GetTjMaxFromMsr();
@@ -376,6 +385,7 @@ namespace EMNSystemInfo.HardwareAPI.CPU
                 case IntelMicroarchitecture.JasperLake:
                 case IntelMicroarchitecture.KabyLake:
                 case IntelMicroarchitecture.Nehalem:
+                case IntelMicroarchitecture.RaptorLake:
                 case IntelMicroarchitecture.RocketLake:
                 case IntelMicroarchitecture.SandyBridge:
                 case IntelMicroarchitecture.Silvermont:
@@ -434,6 +444,7 @@ namespace EMNSystemInfo.HardwareAPI.CPU
                 _microarchitecture == IntelMicroarchitecture.IvyBridge ||
                 _microarchitecture == IntelMicroarchitecture.JasperLake ||
                 _microarchitecture == IntelMicroarchitecture.KabyLake ||
+                _microarchitecture == IntelMicroarchitecture.RaptorLake ||
                 _microarchitecture == IntelMicroarchitecture.RocketLake ||
                 _microarchitecture == IntelMicroarchitecture.SandyBridge ||
                 _microarchitecture == IntelMicroarchitecture.Silvermont ||
@@ -593,6 +604,7 @@ namespace EMNSystemInfo.HardwareAPI.CPU
                             case IntelMicroarchitecture.IvyBridge:
                             case IntelMicroarchitecture.JasperLake:
                             case IntelMicroarchitecture.KabyLake:
+                            case IntelMicroarchitecture.RaptorLake:
                             case IntelMicroarchitecture.RocketLake:
                             case IntelMicroarchitecture.SandyBridge:
                             case IntelMicroarchitecture.Silvermont:
