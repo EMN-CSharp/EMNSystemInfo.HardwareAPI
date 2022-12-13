@@ -10,7 +10,7 @@
     <AssemblyTitle>EMNSystemInfo.HardwareAPI</AssemblyTitle>
     <Product>EMNSystemInfo.HardwareAPI</Product>
     <Company>EMN-CSharp</Company>
-    <Copyright>Copyright © EMN-CSharp and Contributors. | Partial Copyright © LibreHardwareMonitor and Contributors. | Partial Copyright © Michael Möller &lt;mmoeller@openhardwaremonitor.org&gt; and Contributors.</Copyright>
+    <Copyright>Copyright © LibreHardwareMonitor and Contributors. | Partial Copyright © Michael Möller &lt;mmoeller@openhardwaremonitor.org&gt; and Contributors.</Copyright>
     <Version>0.3.0</Version>
     <FileVersion>0.3.0</FileVersion>
     <ProductVersion>0.3.0</ProductVersion>
